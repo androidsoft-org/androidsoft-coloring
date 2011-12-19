@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (C) 2010 Peter Dornbach.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+--> 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:coloring="http://schemas.android.com/apk/res/org.androidsoft.coloring"
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+              
+	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	             android:layout_width="fill_parent"
+	             android:layout_height="wrap_content"
+	             android:layout_centerInParent="true">
+	
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#8B0000"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FF0000"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FA8072"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FFC0CB"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FFDEAD"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#F4A460"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#D2691E"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#8B4513"/>
+	    </TableRow>
+	
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#800080"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#C71585"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FF1493"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FF69B4"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FFFF00"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FFD700"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FFA500"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FF4500"/>
+	    </TableRow>
+	
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#4B0082"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#9400D3"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#FF00FF"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#EE82EE"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#F0E68C"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#BDB76B"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#808000"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#556B2F"/>
+	    </TableRow>
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#483D8B"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#6A5ACD"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#4682B4"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#B0C4DE"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#98FB98"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#32CD32"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#228B22"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#006400"/>
+	    </TableRow>
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#000080"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#0000FF"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#00BFFF"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#87CEEB"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#ADFF2F"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#00FF00"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#708090"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#2F4F4F"/>
+	    </TableRow>
+	    <TableRow>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#008080"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#00CED1"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#00FFFF"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#7FFFD4"/>
+            <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+                                             android:layout_height="wrap_content"
+                                             coloring:color="#FFFFFF"/>
+            <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+                                             android:layout_height="wrap_content"
+                                             coloring:color="#C0C0C0"/>
+	        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+	                                         android:layout_height="wrap_content"
+	                                         coloring:color="#808080"/>
+            <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
+                                             android:layout_height="wrap_content"
+                                             coloring:color="#404040"/>
+	    </TableRow>
+	
+	</TableLayout>
+</RelativeLayout>   
