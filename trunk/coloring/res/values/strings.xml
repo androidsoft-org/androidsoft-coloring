@@ -30,7 +30,7 @@
     <string name="saved_image_path_prefix">/dcim/Coloring for Kids/</string>
     
         <!-- Credits screen -->
-    <string name="credits_current_version">Version 0.9.1</string>
+    <string name="credits_current_version">Version 1.0.0</string>
     <string name="credits_app_name">Coloring for Kids</string>
     
     <string name="button_go">Go</string>
@@ -44,7 +44,7 @@
     </string>
     <string name="whats_new_dialog_title">What\'s new in Coloring for Kids</string>
     <string name="whats_new_dialog_message">Thanks for upgrading Coloring for Kids\n\n
-    <b>New in version 0.9.1:</b>\n
+    <b>New in version 1.0.0:</b>\n
     \t• Minor bugs fixes (uninstall synchronization).\n
     \n\nEnjoy it and don\'t forget to rate it to support the development.
     </string>
