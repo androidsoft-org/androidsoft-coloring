@@ -48,9 +48,11 @@ import java.util.List;
 import java.util.ArrayList;
 import org.androidsoft.coloring.R;
 
-public class PaintActivity extends AbstractColoring implements
+public class PaintActivity extends AbstractColoringActivity implements
         PaintView.LifecycleListener
 {
+
+    public static final String FILE_BACKUP = "backup";
 
     public PaintActivity()
     {
@@ -131,11 +133,15 @@ public class PaintActivity extends AbstractColoring implements
                 new BitmapSaver();
                 return true;
             case R.id.about:
-                startActivity( new Intent( INTENT_ABOUT ) );
+                startActivity(new Intent(INTENT_ABOUT));
+                return true;
+            case R.id.share:
+                new BitmapSharer();
                 return true;
         }
         return false;
     }
+
 
     @Override
     public Object onRetainNonConfigurationInstance()
@@ -317,8 +323,7 @@ public class PaintActivity extends AbstractColoring implements
         private LinkedList<ColorButton> _usedColorButtons = new LinkedList<ColorButton>();
         private ColorButton _selectedColorButton;
     }
-    
-    
+
     private class InitPaintView implements Runnable
     {
 
@@ -369,7 +374,6 @@ public class PaintActivity extends AbstractColoring implements
         private Handler _handler;
     }
 
-    
     // Class needed to work-around gallery crash bug. If we do not have this
     // scanner then the save succeeds but the Pictures app will crash when
     // trying to open.
@@ -398,7 +402,12 @@ public class PaintActivity extends AbstractColoring implements
         private String _mimeType;
     }
 
-      
+    public static interface OnSavedListener
+    {
+
+        void onSaved(String filename);
+    }
+
     private class BitmapSaver implements Runnable
     {
 
@@ -476,7 +485,7 @@ public class PaintActivity extends AbstractColoring implements
             _paintView.saveToFile(_file, _originalOutlineBitmap, _progressHandler);
         }
 
-        private void finishSaving()
+        protected void finishSaving()
         {
             // Save it to the MediaStore.
             ContentValues values = new ContentValues();
@@ -516,7 +525,30 @@ public class PaintActivity extends AbstractColoring implements
         private String _fileName;
         private File _file;
         private Handler _progressHandler;
-        private Uri _newImageUri;
+        protected Uri _newImageUri;
+    }
+
+    private class BitmapSharer extends BitmapSaver
+    {
+
+        public BitmapSharer()
+        {
+            super();
+        }
+
+        @Override
+        protected void finishSaving()
+        {
+            super.finishSaving();
+
+            if (_newImageUri != null)
+            {
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("image/png");
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, _newImageUri);
+                startActivity(Intent.createChooser(sharingIntent, getString( R.string.dialog_share )));
+            }
+        }
     }
 
     // The state of the whole drawing. This is used to transfer the state if

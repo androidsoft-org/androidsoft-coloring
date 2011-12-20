@@ -32,6 +32,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import java.io.FileOutputStream;
 
 public class PaintView extends View
 {
@@ -48,7 +49,6 @@ public class PaintView extends View
         super(context, attrs);
         _state = new State();
         _paint = new Paint();
-        _context = context;
         
     }
 
@@ -258,8 +258,7 @@ public class PaintView extends View
         {
             // Write the result to the dest file.
             file.getParentFile().mkdirs();
-//            OutputStream outStream = new FileOutputStream(file);
-            OutputStream outStream = _context.openFileOutput ( "backup" , 0 );
+            OutputStream outStream = new FileOutputStream(file);
             result.compress(Bitmap.CompressFormat.PNG, 90, outStream);
             outStream.close();
             Progress.sendIncrementProgress(progressHandler, PROGRESS_SAVE);
@@ -378,5 +377,4 @@ public class PaintView extends View
     }
     private State _state;
     private Paint _paint;
-    private Context _context;
 }

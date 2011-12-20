@@ -20,7 +20,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import org.androidsoft.coloring.R;
-import org.androidsoft.coloring.ui.activity.AbstractColoring;
+import org.androidsoft.coloring.ui.activity.AbstractColoringActivity;
 
 // A button that is proportional to the screen size.
 public class ColoringButton extends View
@@ -44,12 +44,12 @@ public class ColoringButton extends View
 
     public static int getPreferredWidth()
     {
-        return AbstractColoring.getDisplayWitdh() / 8;
+        return AbstractColoringActivity.getDisplayWitdh() / 8;
     }
 
     public static int getPreferredHeight()
     {
-        return AbstractColoring.getDisplayHeight() / 8;
+        return AbstractColoringActivity.getDisplayHeight() / 8;
     }
 
     @Override

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.androidsoft.coloring.ui.activity;
 
 import org.androidsoft.coloring.ui.widget.ColorButton;
@@ -25,7 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
-public abstract class AbstractColoring extends NoTitleActivity
+public abstract class AbstractColoringActivity extends NoTitleActivity
 {
 
     public static final String INTENT_START_NEW = "org.androidsoft.coloring.paint.START_NEW";
