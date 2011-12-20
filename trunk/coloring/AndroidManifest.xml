@@ -16,10 +16,11 @@
 --> 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.androidsoft.coloring"
-          android:versionName="0.9.0" 
+          android:versionName="0.9.1" 
           android:versionCode="1">
               
     <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="11" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application android:icon="@drawable/icon"
                 android:logo="@drawable/icon"
