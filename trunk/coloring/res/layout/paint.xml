@@ -23,7 +23,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="vertical"
                   android:layout_width="wrap_content"
-                  android:layout_height="fill_parent" >
+                  android:layout_height="fill_parent"
+                  >
                   
         <!-- The colors used here should match one of the colors in pick_color.xml -->
         <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
@@ -44,9 +45,16 @@
         <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
                                          android:layout_height="wrap_content"
                                          coloring:color="#800080"/>
-        <org.androidsoft.coloring.ui.widget.ColoringImageButton android:id="@+id/pick_color_button"
-                                         android:layout_width="wrap_content"
+<!--        <org.androidsoft.coloring.ui.widget.ColoringImageButton android:id="@+id/pick_color_button"
+                                         android:layout_width="wrap_content" 
                                          android:layout_height="wrap_content"/>
+                                         -->
+        <ImageView android:id="@+id/pick_color_button"
+                android:src="@drawable/palette"
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
     </LinearLayout>
 
     <LinearLayout android:orientation="vertical"
