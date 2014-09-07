@@ -1,0 +1,5 @@
+/.nb-gradle/private/
+/.gradle/
+/bin/
+/gen/
+/build/
