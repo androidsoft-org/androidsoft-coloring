@@ -39,6 +39,7 @@ public class ColorButton extends ColoringButton
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.ColorButton, defStyle, 0);
         _color = a.getColor(R.styleable.ColorButton_color, Color.RED);
+        a.recycle();
 
         _highlightDrawable = new GradientDrawable(Orientation.TOP_BOTTOM,
                 new int[]

@@ -6,7 +6,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.0'
+        classpath 'com.android.tools.build:gradle:0.12.2'
     }
 }
 
@@ -14,16 +14,20 @@ repositories {
     mavenCentral()
 }
 
-
+dependencies {
+    compile fileTree( dir: 'libs', include:'*.jar' )
+}
 
 android {
     compileSdkVersion 19
 
     buildToolsVersion "19.1.0"
 
-    dependencies {
-        compile fileTree( dir: 'libs', include:'*.jar' )
+    lintOptions {
+        enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
     }
+
+    apply from: 'sign.gradle'
 }
 
 

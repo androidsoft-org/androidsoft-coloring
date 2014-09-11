@@ -1,0 +1,49 @@
+final Console console = System.console();
+
+if (console != null) {
+
+    android.signingConfigs {
+        release {
+            project.ext.keyStorePath = System.getenv("ANDROID_KEYSTORE")
+            if( project.keyStorePath != null )
+            {
+                storeFile file( keyStorePath )
+                keyAlias System.getenv("ANDROID_KEY_ALIAS")
+            }
+            storePassword "password"
+            keyPassword "password"
+        }
+    }
+    
+    task askForPasswords << {
+        // Must create String because System.readPassword() returns char[]
+        // (and assigning that below fails silently)
+        def storePw = new String(System.console().readPassword("\nKeystore password: "))
+        def keyPw  = new String(System.console().readPassword("Key password: "))
+
+        android.signingConfigs.release.storePassword = storePw
+        android.signingConfigs.release.keyPassword = keyPw
+    }
+
+    tasks.whenTaskAdded { theTask -> 
+        if (theTask.name.equals("packageRelease")) {
+            theTask.dependsOn "askForPasswords"
+        }
+    }
+    
+    android.buildTypes {
+        release {
+            signingConfig android.signingConfigs.release
+        }
+    }
+} else {
+
+    // Building from IDE's "Run" button
+    android.signingConfigs {
+        release {
+
+        }
+    }
+
+}
+
