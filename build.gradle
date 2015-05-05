@@ -1,22 +1,26 @@
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.10' 
+    gradleVersion = '2.3' 
 }
 
-apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
-        mavenCentral()
+        //mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
+    jcenter()
 }
+
+
+apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree( dir: 'libs', include:'*.jar' )
