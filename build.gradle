@@ -1,3 +1,7 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.10' 
+}
+
 apply plugin: 'com.android.application'
 
 buildscript {
