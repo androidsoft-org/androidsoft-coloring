@@ -24,6 +24,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
 public abstract class AbstractColoringActivity extends NoTitleActivity
@@ -37,12 +39,21 @@ public abstract class AbstractColoringActivity extends NoTitleActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        ScreenUtils.setFullscreen(this);
 
         WindowManager w = getWindowManager();
         Display d = w.getDefaultDisplay();
         _displayWidth = d.getWidth();
         _displayHeight = d.getHeight();
         
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            ScreenUtils.setFullscreen(this);
+        }
     }
 
     public static int getDisplayWitdh()
