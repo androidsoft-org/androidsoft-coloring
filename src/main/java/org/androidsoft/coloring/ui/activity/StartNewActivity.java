@@ -31,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import org.androidsoft.coloring.R;
+import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
 public class StartNewActivity extends NoTitleActivity implements View.OnClickListener
@@ -46,7 +47,7 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
+        ScreenUtils.setFullscreen(this);
         // Apparently this cannot be set from the style.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
@@ -55,6 +56,15 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
 
         GridView gridview = (GridView) findViewById(R.id.start_new_grid);
         gridview.setAdapter(new ImageAdapter(this));
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            ScreenUtils.setFullscreen(this);
+        }
     }
 
     public void onClick(View view)
