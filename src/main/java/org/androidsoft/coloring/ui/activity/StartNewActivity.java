@@ -78,11 +78,7 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
 
         ResourceLoader()
         {
-            // Use reflection to list resource ids of thumbnails and outline
-            // images.First, we list all the drawables starting with the proper
-            // prefixes into 2 maps.
             Map<String, Integer> outlineMap = new TreeMap<String, Integer>();
-            Map<String, Integer> thumbMap = new TreeMap<String, Integer>();
             Field[] drawables = R.drawable.class.getDeclaredFields();
             for (int i = 0; i < drawables.length; i++)
             {
@@ -94,34 +90,21 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
                         outlineMap.put(name.substring(PREFIX_OUTLINE.length()),
                                 drawables[i].getInt(null));
                     }
-                    if (name.startsWith(PREFIX_THUMB))
-                    {
-                        thumbMap.put(name.substring(PREFIX_THUMB.length()),
-                                drawables[i].getInt(null));
-                    }
                 }
                 catch (IllegalAccessException e)
                 {
                 }
             }
             Set<String> keys = outlineMap.keySet();
-            keys.retainAll(thumbMap.keySet());
             _outlineIds = new Integer[keys.size()];
-            _thumbIds = new Integer[keys.size()];
             int j = 0;
             Iterator<String> i = keys.iterator();
             while (i.hasNext())
             {
                 String key = i.next();
                 _outlineIds[j] = outlineMap.get(key);
-                _thumbIds[j] = thumbMap.get(key);
                 j++;
             }
-        }
-
-        public Integer[] getThumbIds()
-        {
-            return _thumbIds;
         }
 
         public Integer[] getOutlineIds()
@@ -134,8 +117,6 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
             return _outlineIds[new Random().nextInt(_outlineIds.length)];
         }
         private static final String PREFIX_OUTLINE = "outline";
-        private static final String PREFIX_THUMB = "thumb";
-        private Integer[] _thumbIds;
         private Integer[] _outlineIds;
     }
 
@@ -150,7 +131,7 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
 
         public int getCount()
         {
-            return _resourceLoader.getThumbIds().length;
+            return _resourceLoader.getOutlineIds().length;
         }
 
         public Object getItem(int i)
@@ -180,7 +161,7 @@ public class StartNewActivity extends NoTitleActivity implements View.OnClickLis
                 imageView = (ImageView) convertView;
             }
 
-            imageView.setImageResource(_resourceLoader.getThumbIds()[position]);
+            imageView.setImageResource(_resourceLoader.getOutlineIds()[position]);
             imageView.setId(_resourceLoader.getOutlineIds()[position]);
             return imageView;
         }
