@@ -51,9 +51,6 @@ import org.androidsoft.coloring.R;
 public class PaintActivity extends AbstractColoringActivity implements
         PaintView.LifecycleListener
 {
-
-    public static final String FILE_BACKUP = "backup";
-
     public PaintActivity()
     {
         _state = new State();
@@ -400,12 +397,6 @@ public class PaintActivity extends AbstractColoringActivity implements
         private MediaScannerConnection _connection;
         private String _path;
         private String _mimeType;
-    }
-
-    public static interface OnSavedListener
-    {
-
-        void onSaved(String filename);
     }
 
     private class BitmapSaver implements Runnable
