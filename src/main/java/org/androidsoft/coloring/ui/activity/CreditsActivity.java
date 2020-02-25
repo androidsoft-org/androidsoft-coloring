@@ -71,7 +71,7 @@ public class CreditsActivity extends BasicActivity
     private CreditsParams getCreditsParams()
     {
         CreditsParams p = new CreditsParams();
-        p.setAppNameRes(R.string.credits_app_name);
+        p.setAppNameRes(R.string.app_name);
         p.setAppVersionRes(R.string.credits_current_version);
         p.setBitmapBackgroundRes(R.drawable.background);
         p.setBitmapBackgroundLandscapeRes(R.drawable.background_land);
