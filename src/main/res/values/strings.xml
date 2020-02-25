@@ -14,7 +14,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --> 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Coloring for Kids</string>
 
     <string name="menu_new">New</string>
@@ -47,5 +47,6 @@
     \t• Minor bugs fixes (uninstall synchronization).\n
     \n\nEnjoy it and don\'t forget to rate it to support the development.
     </string>
+    <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Please click BACK again to exit</string>
 
 </resources>

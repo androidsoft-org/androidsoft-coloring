@@ -44,6 +44,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
 import java.util.List;
 import java.util.ArrayList;
 import org.androidsoft.coloring.R;
@@ -94,6 +96,29 @@ public class PaintActivity extends AbstractColoringActivity implements
                 new InitPaintView(_state._loadedResourceId);
             }
         }
+    }
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        // code for double-clicking the back button to exit the activity
+        // see https://stackoverflow.com/a/13578600/1320237
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, R.string.toast_double_click_back_button, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     @Override

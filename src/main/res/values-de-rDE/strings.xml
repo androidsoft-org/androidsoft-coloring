@@ -22,4 +22,5 @@
         </b>      \t• Kleinere Fehler wurden behoben (Synchronisation bei der Deinstallation).\n
         \n\nViel Spaß und vergiß nicht, die Entwickler zu unterstützen.     "</string>
     <string name="whats_new_dialog_title">Was ist neu bei Malen für Kinder</string>
+    <string name="toast_double_click_back_button">Drücke Zurück nochmal zum Beenden</string>
 </resources>
