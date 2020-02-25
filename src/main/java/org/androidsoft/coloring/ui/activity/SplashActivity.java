@@ -16,10 +16,13 @@ package org.androidsoft.coloring.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SubscriptionPlan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import org.androidsoft.coloring.R;
 import org.androidsoft.utils.ui.WhatsNewActivity;
 
@@ -27,7 +30,7 @@ import org.androidsoft.utils.ui.WhatsNewActivity;
  * Splash activity
  * @author Pierre Levy
  */
-public class SplashActivity extends WhatsNewActivity implements OnClickListener
+public class SplashActivity extends WhatsNewActivity
 {
 
     private Button mButtonPlay;
@@ -39,24 +42,22 @@ public class SplashActivity extends WhatsNewActivity implements OnClickListener
 
         setContentView(R.layout.splash);
 
-        mButtonPlay = (Button) findViewById(R.id.button_go);
-        mButtonPlay.setOnClickListener(this);
+        OnClickListener closeThis = new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SplashActivity.this, PaintActivity.class);
+                startActivity(intent);
+            }
+        };
+
+        mButtonPlay = findViewById(R.id.button_go);
+        mButtonPlay.setOnClickListener(closeThis);
 
         ImageView image = (ImageView) findViewById(R.id.image_splash);
         image.setImageResource(R.drawable.splash);
 
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    public void onClick(View v)
-    {
-        if (v == mButtonPlay)
-        {
-            Intent intent = new Intent(this, PaintActivity.class);
-            startActivity(intent);
-        }
+        LinearLayout splashScreen = findViewById(R.id.splash_screen);
+        splashScreen.setOnClickListener(closeThis);
     }
 
     @Override
