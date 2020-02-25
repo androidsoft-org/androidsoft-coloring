@@ -1,16 +1,12 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3' 
-}
-
-
 buildscript {
     repositories {
         //mavenCentral()
+        google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:3.4.2'
     }
 }
 
@@ -23,19 +19,22 @@ repositories {
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree( dir: 'libs', include:'*.jar' )
+    implementation fileTree( dir: 'libs', include:'*.jar' )
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 29
 
-    buildToolsVersion "19.1.0"
 
     lintOptions {
         enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
     }
 
     apply from: 'sign.gradle'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 29
+    }
 }
 
 
