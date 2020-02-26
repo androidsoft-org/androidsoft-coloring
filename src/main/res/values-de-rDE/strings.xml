@@ -17,9 +17,10 @@
     <string name="menu_save">Speichern</string>
     <string name="menu_share">Teilen</string>
     <string name="saved_image_path_prefix">/dcim/Malen für Kinder/</string>
-    <string name="whats_new_dialog_message">"Danke,  dass Du Malen für Kinder erneuert hast.\n\n
-        <b>Neu in Version 1.0.1:\n
-        </b>      \t• Kleinere Fehler wurden behoben (Synchronisation bei der Deinstallation).\n
+    <string name="whats_new_dialog_message" formatted="true">"Danke,  dass Du Malen für Kinder erneuert hast.\n\n
+        <b>Neu in Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:\n
+        </b>
+        <xliff:g example="\t• Kleinere Fehler wurden behoben.\n" id="changelog">%2$s</xliff:g>
         \n\nViel Spaß und vergiß nicht, die Entwickler zu unterstützen.     "</string>
     <string name="whats_new_dialog_title">Was ist neu bei Malen für Kinder</string>
     <string name="toast_double_click_back_button">Drücke Zurück nochmal zum Beenden</string>

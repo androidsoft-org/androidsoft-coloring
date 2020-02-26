@@ -17,8 +17,8 @@ package org.androidsoft.coloring.ui.activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.telephony.SubscriptionPlan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -28,6 +28,13 @@ import android.widget.TextView;
 
 import org.androidsoft.coloring.R;
 import org.androidsoft.utils.ui.WhatsNewActivity;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+
+import static weka.core.SerializationHelper.readAll;
 
 /**
  * Splash activity
@@ -36,6 +43,7 @@ import org.androidsoft.utils.ui.WhatsNewActivity;
 public class SplashActivity extends WhatsNewActivity
 {
 
+    private static final String CHANGELOG_FOLDER = "changelogs";
     private Button mButtonPlay;
 
     @Override
@@ -69,7 +77,7 @@ public class SplashActivity extends WhatsNewActivity
         versionText.setText(getString(R.string.credits_current_version, getVersionName()));
     }
 
-    private String getVersionName() {
+    public String getVersionName() {
         // from WhatsNewActivity
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(
@@ -77,6 +85,17 @@ public class SplashActivity extends WhatsNewActivity
             return pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             return "?";
+        }
+    }
+
+    public int getVersionCode() {
+        // from WhatsNewActivity
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(
+                    this.getPackageName(), PackageManager.GET_META_DATA);
+            return pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return -1;
         }
     }
 
@@ -102,5 +121,51 @@ public class SplashActivity extends WhatsNewActivity
     public int getWhatsNewDialogMsgRes()
     {
         return R.string.whats_new_dialog_message;
+    }
+
+    @Override
+    public String getWhatsNewDialogMsgString() {
+        // move changelog slightly by tab
+        String changelog = getChangelog().replace("\n", "\n\t");
+        return getString(getWhatsNewDialogMsgRes(), getVersionName(), changelog);
+    }
+
+    // return the changelog or null if none exists
+    private String getChangelog() {
+        int versionCode = getVersionCode();
+        // for language, see https://stackoverflow.com/a/23168383/1320237
+        String language = Locale.getDefault().getLanguage(); // "en"
+        String country = Locale.getDefault().getCountry(); // "US"
+        String[] filenames = new String[]{
+                getChangelogFileNameForLanguageAndCountry(language, country),
+                getChangelogFileNameForLanguage(language),
+                getChangelogFileNameForLanguageAndCountry(Locale.ENGLISH.getLanguage(), Locale.US.getCountry()),
+                getChangelogFileNameForLanguage(Locale.ENGLISH.getLanguage()),
+        };
+        // opening an asset
+        // see https://inducesmile.com/android-programming/how-to-read-a-file-from-assets-folder-in-android/
+        InputStream in = null;
+        AssetManager assets = getAssets();
+        for (String filename: filenames) {
+            // check if the asset exists, see https://stackoverflow.com/a/38240347/1320237
+            try {
+                in = assets.open(filename, AssetManager.ACCESS_BUFFER);
+                // read all bytes
+                // see https://stackoverflow.com/a/859076/1320237
+                byte[] content = IOUtils.toByteArray(in);
+                return new String(content, "UTF-8");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private String getChangelogFileNameForLanguage(String language) {
+        return CHANGELOG_FOLDER + "/" + language + "/" + getVersionCode() + ".txt";
+    }
+
+    private String getChangelogFileNameForLanguageAndCountry(String language, String country) {
+        return CHANGELOG_FOLDER + "/" + language + "-" + country + "/" + getVersionCode() + ".txt";
     }
 }

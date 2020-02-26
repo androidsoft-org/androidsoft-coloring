@@ -42,9 +42,9 @@
     \n\n Divirta-se!\n
     </string>
     <string name="whats_new_dialog_title">Novidades do Pintura para Crianças</string>
-    <string name="whats_new_dialog_message">Obrigado por atualizar o Pintura para Crianças\n\n
-    <b>Novidades da versão 1.0.1:</b>\n
-    \t• Pequenas correções de erros (sincronização da desinstalação).\n
+    <string name="whats_new_dialog_message" formatted="true">Obrigado por atualizar o Pintura para Crianças\n\n
+    <b>Novidades da versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:</b>\n
+        <xliff:g example="\t• Pequenas correções de erros.\n" id="changelog">%2$s</xliff:g>
     \n\nDivirta-se e não esqueça de avaliar o aplicativo para contribuir com seu desenvolvimento.
     </string>
 
