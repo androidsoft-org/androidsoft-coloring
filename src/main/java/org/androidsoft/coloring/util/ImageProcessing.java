@@ -42,6 +42,7 @@ public class ImageProcessing implements Runnable {
     private int[] centroidColors;
     private int[][] smoothedPixels;
     private Bitmap lineImage;
+    private boolean optimize = true;
 
     public interface ImagePreview {
         void setImage(Bitmap image);
@@ -76,7 +77,9 @@ public class ImageProcessing implements Runnable {
         // run cluster the colors used in the image
         try {
             classifyColors();
-            imagePreview.setImage(classifiedColors);
+            if (!optimize) {
+                imagePreview.setImage(classifiedColors);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +87,9 @@ public class ImageProcessing implements Runnable {
             return;
         }
         removeSmallAreas();
-        imagePreview.setImage(smoothedColors);
+        if (!optimize) {
+            imagePreview.setImage(smoothedColors);
+        }
         drawLinesAroundTheAreas();
         imagePreview.setImage(lineImage);
         progress.stepDone();
@@ -95,26 +100,12 @@ public class ImageProcessing implements Runnable {
         int width = smoothedPixels.length;
         int height = smoothedPixels[0].length;
 
-        lineImage = smoothedColors; //Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        // compute cosinus very fast
-
-        int[] circleRadius = new int[LINE_WIDTH_HALF];
-        int y = LINE_WIDTH_HALF;
-        for (int x = 0; x < LINE_WIDTH_HALF; x++) {
-            while (x*x + y*y > LINE_WIDTH_HALF * LINE_WIDTH_HALF) {
-                y -= 1;
-                if (y < 0) {
-                    throw new AssertionError("y should become 0 and that is it");
-                }
-            }
-            circleRadius[x] = y;
-        }
+        lineImage = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         int maxX = width -1;
         int maxY = height - 1;
         for (int x = 0; x < maxX - 1; x++) {
-            for (y = 0; y < maxY - 1; y++) {
+            for (int y = 0; y < maxY - 1; y++) {
                 int cls = smoothedPixels[x][y];
                 if (cls != smoothedPixels[x+1][y] || cls != smoothedPixels[x][y+1]) {
                     // we are at a border - draw a circle!
@@ -131,6 +122,8 @@ public class ImageProcessing implements Runnable {
                             lineImage.setPixel(kx,ky, Color.BLACK);
                         }
                     }
+                } else {
+                    lineImage.setPixel(x, y, Color.WHITE);
                 }
             }
         }
@@ -168,7 +161,9 @@ public class ImageProcessing implements Runnable {
                     }
                 }
                 smoothedPixels[x][y] = bestClass;
-                smoothedColors.setPixel(x, y, centroidColors[bestClass]);
+                if (!optimize) {
+                    smoothedColors.setPixel(x, y, centroidColors[bestClass]);
+                }
             }
         }
     }
@@ -235,9 +230,10 @@ public class ImageProcessing implements Runnable {
                 int classification = classifyThumbPixel(x, y);
                 classifiedPixels[x][y] = classification;
                 int color = centroidColors[classification];
-                classifiedColors.setPixel(x, y, color);
+                if (!optimize) {
+                    classifiedColors.setPixel(x, y, color);
+                }
             }
-            Log.d("classification", (x+1)  + "/" + width);
         }
     }
 
