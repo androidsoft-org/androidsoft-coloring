@@ -38,32 +38,39 @@ public class ImageImportActivity extends NoTitleActivity {
                 (ProgressBar)findViewById(R.id.progressBar),
                 (TextView)findViewById(R.id.progress_text));
 
-        // Get intent, action and MIME type
-        // see https://developer.android.com/training/sharing/receive
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
+        // start the receiving when the layouting is done so we know the size of what we are showing
+        // see https://stackoverflow.com/a/24035591/1320237
+        imageView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Get intent, action and MIME type
+                // see https://developer.android.com/training/sharing/receive
+                Intent intent = getIntent();
+                String action = intent.getAction();
+                String type = intent.getType();
 
-        Runnable imageProcessing = new Failure();
-        Uri imageUri = null;
+                Runnable imageProcessing = new Failure();
+                Uri imageUri = null;
 
-        if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if (type.startsWith("image/")) {
-                imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                if (Intent.ACTION_SEND.equals(action) && type != null) {
+                    if (type.startsWith("image/")) {
+                        imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
+                    }
+                } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
+                    ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+                    if (imageUris != null && imageUris.size() >= 1) {
+                        imageUri = imageUris.get(0);
+                    }
+                }
+                if (imageUri != null) {
+                    imageProcessing = new ImageProcessing(imageUri, progress, new ViewImagePreview());
+                }
+
+                Thread processor = new Thread(imageProcessing);
+                processor.start();
             }
-        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
-            ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-            if (imageUris != null && imageUris.size() >= 1) {
-                imageUri = imageUris.get(0);
-            }
-        }
-        if (imageUri != null) {
-            imageProcessing = new ImageProcessing(imageUri, progress, new ViewImagePreview());
-        }
-
-        Thread processor = new Thread(imageProcessing);
-        processor.start();
+        });
     }
 
     private class Failure implements Runnable {
@@ -103,12 +110,12 @@ public class ImageImportActivity extends NoTitleActivity {
 
         @Override
         public double getWidth() {
-            return width;
+            return width == 0 ? 640 : width;
         }
 
         @Override
         public double getHeight() {
-            return height;
+            return height == 0 ? 480 :height;
         }
 
         @Override

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.util.Log;
 
 import org.androidsoft.coloring.ui.activity.ImageImportActivity;
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
@@ -24,17 +25,19 @@ import weka.core.DistanceFunction;
 import weka.core.EuclideanDistance;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
 import weka.core.neighboursearch.PerformanceStats;
 
 // see https://developer.android.com/reference/java/lang/Thread
 public class ImageProcessing implements Runnable {
 
-    private static final int NUMBER_OF_COLORS = 10;
+    private static final int NUMBER_OF_COLORS = 9;
     private Attribute red;
     private Attribute green;
     private Attribute blue;
     private Bitmap previewThumb;
     private Bitmap classifiedColors;
+    private int[][] centroids;
 
     public interface ImagePreview {
         void setImage(Bitmap image);
@@ -87,8 +90,9 @@ public class ImageProcessing implements Runnable {
         // see https://weka.sourceforge.io/doc.dev/weka/clusterers/SimpleKMeans.html
         SimpleKMeans kmeans = new SimpleKMeans();
         // see https://weka.sourceforge.io/doc.dev/weka/core/DistanceFunction.html
-        kmeans.setDistanceFunction(new EuclideanDistance());
+        kmeans.setDistanceFunction(new ManhattanDistance()); // manhattan should speed things up
         kmeans.setPreserveInstancesOrder(false);
+        kmeans.setFastDistanceCalc(true);
         kmeans.setNumClusters(NUMBER_OF_COLORS);
         // computing the number of colors to get from the image
         // see https://medium.com/@equipintelligence/java-algorithms-the-k-nearest-neighbor-classifier-4faca7ad26b2
@@ -120,37 +124,70 @@ public class ImageProcessing implements Runnable {
         progress.stepClusteringData();
         // compute k-means
         kmeans.buildClusterer(data);
-        Instances centroids = kmeans.getClusterCentroids();
+        Instances centroidInstances = kmeans.getClusterCentroids();
+        centroids = new int[NUMBER_OF_COLORS][3];
         int[] centroidColors = new int[NUMBER_OF_COLORS];
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            Instance centroid = centroids.get(i);
-            int color = 0;
-            for (int a = 0; a < centroid.numAttributes(); a++) {
-                Attribute attribute = centroid.attribute(a);
-                int value = (int)Math.round(centroid.value(a)) & 0xff;
-                if (attribute.equals(red)) {
-                    color |= value << 16;
-                } else if (attribute.equals(green)) {
-                    color |= value << 8;
-                } else if (attribute.equals(blue)) {
-                    color |= value;
-                } else {
-                    throw new AssertionError("expected the attribute to equal a color");
-                }
-            }
-            centroidColors[i] = color;
+            Instance centroid = centroidInstances.get(i);
+            int[] color = getColorOf(centroid);
+            centroids[i] = color;
+            centroidColors[i] = 0xff000000 | color[0] << 16 | color[1] << 8 | color[2];
         }
+
         progress.stepCreateClusterPreview();
         // build a colored bitmap from the classification
-        classifiedColors = previewThumb.copy(previewThumb.getConfig(), true);
+        // see https://stackoverflow.com/a/10180908/1320237
+        classifiedColors = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                Instance pixel = getThumbPixelInstanceAt(x, y);
-                int classification = kmeans.clusterInstance(pixel);
+                int classification = classifyThumbPixel(x, y);
                 int color = centroidColors[classification];
                 classifiedColors.setPixel(x, y, color);
             }
+            Log.d("classification", (x+1)  + "/" + width);
         }
+    }
+
+    private int classifyThumbPixel(int x, int y) {
+        int color = previewThumb.getPixel(x, y);
+        int r = (color >> 16) & 0xff;
+        int g = (color >>  8) & 0xff;
+        int b = (color      ) & 0xff;
+        int minDistance = 0xffff;
+        int minCentroid = -1;
+        for (int i = 0; i < NUMBER_OF_COLORS; i++) {
+            int[] centroid = centroids[i];
+            int distanceToCentroid = // manhattan distance
+                    Math.abs(r - centroid[0]) +
+                    Math.abs(g - centroid[1]) +
+                    Math.abs(b - centroid[2]);
+            if (minDistance > distanceToCentroid) {
+                minCentroid = i;
+                minDistance = distanceToCentroid;
+            }
+        }
+        if (minCentroid == -1) {
+            throw new AssertionError("A centroid should have been chosen.");
+        }
+        return minCentroid;
+    }
+
+    private int[] getColorOf(Instance centroid) {
+        int[] color = new int[3];
+        for (int a = 0; a < centroid.numAttributes(); a++) {
+            Attribute attribute = centroid.attribute(a);
+            int value = (int)Math.round(centroid.value(a)) & 0xff;
+            if (attribute.equals(red)) {
+                color[0] = value;
+            } else if (attribute.equals(green)) {
+                color[1] = value;
+            } else if (attribute.equals(blue)) {
+                color[2] = value;
+            } else {
+                throw new AssertionError("expected the attribute to equal a color");
+            }
+        }
+        return color;
     }
 
     private Instance getThumbPixelInstanceAt(int x, int y) {
@@ -190,9 +227,9 @@ public class ImageProcessing implements Runnable {
         double imageRatio = (double)onlyBoundsOptions.outWidth / (double)onlyBoundsOptions.outHeight;
         double ratio;
         if (maxWidth / maxHeight < imageRatio) {
-            ratio = maxWidth / (double)onlyBoundsOptions.outWidth;
+            ratio = (double)onlyBoundsOptions.outWidth / maxWidth;
         } else {
-            ratio = maxHeight / (double)onlyBoundsOptions.outHeight;
+            ratio = (double)onlyBoundsOptions.outHeight / maxHeight;
         }
 
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
