@@ -2,3 +2,4 @@
 - remove preview images to make the apk smaller
 - add German and Brazilian Portuguese translations
 - add fullscreen mode
+- allow images to be shared with the app and classified
