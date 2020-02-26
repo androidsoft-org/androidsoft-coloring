@@ -17,3 +17,7 @@ If so and you need help, do not hesitate to open an [issue][issues] to ask!
 This software is open-source under the [GPLv3](LICENSE).
 
 [issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
+
+## Credits
+
+- [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
