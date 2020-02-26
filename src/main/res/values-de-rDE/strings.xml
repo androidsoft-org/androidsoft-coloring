@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Malen für Kinder</string>
     <string name="button_go">Los</string>
-    <string name="credits_current_version">Version 1.0.1</string>
+    <string name="credits_current_version" formatted="true">Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
     <string name="dialog_saving">Speichere in Bilder…</string>
     <string name="dialog_saving_error">Fehler!</string>
     <string name="dialog_saving_ok">OK!</string>

@@ -13,8 +13,8 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
---> 
-<resources>
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Pintura para Crianças</string>
 
     <string name="menu_new">New</string>
@@ -30,7 +30,7 @@
     <string name="saved_image_path_prefix">/dcim/Pintura para Crianças/</string>
     
         <!-- Credits screen -->
-    <string name="credits_current_version">Versão 1.0.1</string>
+    <string name="credits_current_version" formatted="true">Versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
     
     <string name="button_go">Ir</string>
     

@@ -49,6 +49,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/version_text_view"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10px"

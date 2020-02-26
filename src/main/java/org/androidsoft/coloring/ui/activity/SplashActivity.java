@@ -15,6 +15,8 @@
 package org.androidsoft.coloring.ui.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.SubscriptionPlan;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.androidsoft.coloring.R;
 import org.androidsoft.utils.ui.WhatsNewActivity;
@@ -58,6 +61,23 @@ public class SplashActivity extends WhatsNewActivity
 
         LinearLayout splashScreen = findViewById(R.id.splash_screen);
         splashScreen.setOnClickListener(closeThis);
+
+        TextView versionText = findViewById(R.id.version_text_view);
+        // set the version
+        // see https://developer.android.com/guide/topics/resources/string-resource#java
+        // credits to https://stackoverflow.com/a/51109685/1320237
+        versionText.setText(getString(R.string.credits_current_version, getVersionName()));
+    }
+
+    private String getVersionName() {
+        // from WhatsNewActivity
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(
+                    this.getPackageName(), PackageManager.GET_META_DATA);
+            return pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "?";
+        }
     }
 
     @Override
