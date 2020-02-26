@@ -43,6 +43,7 @@ import android.provider.MediaStore.Images;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -72,30 +73,36 @@ public class PaintActivity extends AbstractColoringActivity implements
         View pickColorsButton = findViewById(R.id.pick_color_button);
         pickColorsButton.setOnClickListener(new PickColorListener());
 
-        final Object previousState = getLastNonConfigurationInstance();
-        if (previousState == null)
-        {
-            // No previous state, this is truly a new activity.
-            // We need to make the paint view INVISIBLE (and not GONE) so that
-            // it can measure itself correctly.
-            _paintView.setVisibility(View.INVISIBLE);
-            _progressBar.setVisibility(View.GONE);
-        }
-        else
-        {
-            // We have a previous state, so this is a re-created activity.
-            // Restore the state of the activity.
-            SavedState state = (SavedState) previousState;
-            _state = state._paintActivityState;
-            _paintView.setState(state._paintViewState);
-            _colorButtonManager.setState(state._colorButtonState);
-            _paintView.setVisibility(View.VISIBLE);
-            _progressBar.setVisibility(View.GONE);
-            if (_state._loadInProgress)
-            {
-                new InitPaintView(_state._loadedResourceId);
+        _paintView.post(new Runnable() {
+            @Override
+            public void run() {
+                final Object previousState = getLastNonConfigurationInstance();
+                Bundle extras = getIntent().getExtras();
+                if (previousState == null)
+                {
+                    // No previous state, this is truly a new activity.
+                    // We need to make the paint view INVISIBLE (and not GONE) so that
+                    // it can measure itself correctly.
+                    _paintView.setVisibility(View.INVISIBLE);
+                    _progressBar.setVisibility(View.GONE);
+                }
+                else if (extras == null || !extras.containsKey(ARG_IMAGE))
+                {
+                    // We have a previous state, so this is a re-created activity.
+                    // Restore the state of the activity.
+                    SavedState state = (SavedState) previousState;
+                    _state = state._paintActivityState;
+                    _paintView.setState(state._paintViewState);
+                    _colorButtonManager.setState(state._colorButtonState);
+                    _paintView.setVisibility(View.VISIBLE);
+                    _progressBar.setVisibility(View.GONE);
+                    if (_state._loadInProgress)
+                    {
+                        new InitPaintView(_state._loadedResourceId);
+                    }
+                }
             }
-        }
+        });
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -138,7 +145,15 @@ public class PaintActivity extends AbstractColoringActivity implements
             @Override
             public void handleMessage(Message m)
             {
-                new InitPaintView(StartNewActivity.randomOutlineId());
+                Bundle extras = getIntent().getExtras();
+                if (extras != null && extras.containsKey(ARG_IMAGE)) {
+                    // we received and image and should thus paint it
+                    byte[] byteArray = extras.getByteArray(ARG_IMAGE);
+                    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    new InitPaintView(bmp);
+                } else {
+                    new InitPaintView(StartNewActivity.randomOutlineId());
+                }
             }
         }.sendEmptyMessage(0);
     }
@@ -349,8 +364,13 @@ public class PaintActivity extends AbstractColoringActivity implements
     private class InitPaintView implements Runnable
     {
 
-        public InitPaintView(int outlineResourceId)
-        {
+        public InitPaintView(int outlineResourceId) {
+            _state._loadedResourceId = outlineResourceId;
+            _originalOutlineBitmap = BitmapFactory.decodeResource(getResources(), outlineResourceId);
+            initializeFromBitmap();
+        }
+
+        private void initializeFromBitmap() {
             // Make the progress bar visible and hide the view
             _paintView.setVisibility(View.GONE);
             _progressBar.setProgress(0);
@@ -358,9 +378,6 @@ public class PaintActivity extends AbstractColoringActivity implements
             _state._savedImageUri = null;
 
             _state._loadInProgress = true;
-            _state._loadedResourceId = outlineResourceId;
-            _originalOutlineBitmap = BitmapFactory.decodeResource(getResources(),
-                    outlineResourceId);
             _handler = new Handler()
             {
 
@@ -386,6 +403,11 @@ public class PaintActivity extends AbstractColoringActivity implements
             };
 
             new Thread(this).start();
+        }
+
+        public InitPaintView(Bitmap bmp) {
+            _originalOutlineBitmap = bmp;
+            initializeFromBitmap();
         }
 
         public void run()
@@ -593,6 +615,7 @@ public class PaintActivity extends AbstractColoringActivity implements
     private static final int DIALOG_PROGRESS = 1;
     private static final int SAVE_DIALOG_WAIT_MILLIS = 1500;
     private static final String MIME_PNG = "image/png";
+    public static final String ARG_IMAGE = "image";
     // The state that we will carry over if the activity is recreated.
     private State _state;
     // Main UI elements.

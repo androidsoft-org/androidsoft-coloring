@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  Copyright (C) 2010 Peter Dornbach.
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +12,7 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
---> 
+-->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Coloring for Kids</string>
 
@@ -28,12 +27,12 @@
     <string name="dialog_share">Share image using</string>
 
     <string name="saved_image_path_prefix">/dcim/Coloring for Kids/</string>
-    
-        <!-- Credits screen -->
+
+    <!-- Credits screen -->
     <string name="credits_current_version">Version 1.0.1</string>
-    
+
     <string name="button_go">Go</string>
-    
+
     <!-- What's new dialog -->
     <string name="first_run_dialog_title">Welcome to Coloring for Kids!</string>
     <string name="first_run_dialog_message">Thanks for downloading Coloring for Kids\n\n
@@ -48,5 +47,15 @@
     \n\nEnjoy it and don\'t forget to rate it to support the development.
     </string>
     <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Please click BACK again to exit</string>
+    <string name="progress_starting" tools:ignore="MissingTranslation">starting</string>
+    <string name="progress_done" tools:ignore="MissingTranslation">done</string>
+    <string name="progress_error" tools:ignore="MissingTranslation">an error occurred</string>
+    <string name="progress_input_preview" tools:ignore="MissingTranslation">receiving image</string>
+    <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">preparing clustering</string>
+    <string name="progress_sample_data" tools:ignore="MissingTranslation">choosing colors to classify</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">finding suitible colors for the image</string>
+    <string name="progress_create_cluster_preview" tools:ignore="MissingTranslation">creating classified image for preview</string>
+    <string name="progress_counting_sizes" tools:ignore="MissingTranslation">measuring areas</string>
+    <string name="progress_removing_noise" tools:ignore="MissingTranslation">removing small areas which can not be painted</string>
 
 </resources>
