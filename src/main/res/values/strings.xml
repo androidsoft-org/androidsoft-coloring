@@ -47,15 +47,15 @@
     \n\nEnjoy it and don\'t forget to rate it to support the development.
     </string>
     <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Please click BACK again to exit</string>
-    <string name="progress_starting">starting</string>
-    <string name="progress_done">done</string>
-    <string name="progress_error">an error occurred</string>
-    <string name="progress_input_preview">receiving image</string>
-    <string name="progress_preparing_clustering">preparing clustering</string>
-    <string name="progress_sample_data">choosing colors to classify</string>
-    <string name="progress_clustering_data">finding suitible colors for the image</string>
-    <string name="progress_create_cluster_preview">creating classified image for preview</string>
-    <string name="progress_counting_sizes">measuring areas</string>
-    <string name="progress_removing_noise">removing small areas which can not be painted</string>
+    <string name="progress_starting" tools:ignore="MissingTranslation">starting</string>
+    <string name="progress_done" tools:ignore="MissingTranslation">done</string>
+    <string name="progress_error" tools:ignore="MissingTranslation">an error occurred</string>
+    <string name="progress_input_preview" tools:ignore="MissingTranslation">receiving image</string>
+    <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">preparing clustering</string>
+    <string name="progress_sample_data" tools:ignore="MissingTranslation">choosing colors to classify</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">finding suitible colors for the image</string>
+    <string name="progress_create_cluster_preview" tools:ignore="MissingTranslation">creating classified image for preview</string>
+    <string name="progress_counting_sizes" tools:ignore="MissingTranslation">measuring areas</string>
+    <string name="progress_removing_noise" tools:ignore="MissingTranslation">removing small areas which can not be painted</string>
 
 </resources>
