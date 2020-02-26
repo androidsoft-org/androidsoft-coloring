@@ -20,7 +20,8 @@ repositories {
 apply plugin: 'com.android.application'
 
 dependencies {
-    implementation fileTree( dir: 'libs', include:'*.jar' )
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
 android {
@@ -37,5 +38,3 @@ android {
         targetSdkVersion 29
     }
 }
-
-
