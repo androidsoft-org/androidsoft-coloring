@@ -66,4 +66,13 @@ public class LoadImageProgress {
     public void stepCreateClusterPreview() {
         step(5, R.string.progress_create_cluster_preview);
     }
+
+    public void stepRemovingNoise() {
+        step(6, R.string.progress_removing_noise);
+    }
+
+    public void stepCountingSizes() {
+        step(7, R.string.progress_counting_sizes);
+    }
+
 }

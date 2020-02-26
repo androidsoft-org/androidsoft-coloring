@@ -593,6 +593,7 @@ public class PaintActivity extends AbstractColoringActivity implements
     private static final int DIALOG_PROGRESS = 1;
     private static final int SAVE_DIALOG_WAIT_MILLIS = 1500;
     private static final String MIME_PNG = "image/png";
+    public static final String ARG_IMAGE = "image";
     // The state that we will carry over if the activity is recreated.
     private State _state;
     // Main UI elements.

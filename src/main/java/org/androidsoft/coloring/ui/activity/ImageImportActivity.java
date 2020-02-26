@@ -4,6 +4,7 @@ package org.androidsoft.coloring.ui.activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,9 +17,12 @@ import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.androidsoft.coloring.util.ImageProcessing;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_IMAGE;
 
 /* Activity to receive shared images and pass them to the paint activity
  * see https://developer.android.com/training/sharing/receive
@@ -121,6 +125,21 @@ public class ImageImportActivity extends NoTitleActivity {
         @Override
         public InputStream openInputStream(Uri uri) throws FileNotFoundException {
             return contentResolver.openInputStream(uri);
+        }
+
+        @Override
+        public void done(Bitmap bitmap) {
+            // send a bitmap to an activity
+            // see https://stackoverflow.com/a/11519855/1320237
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+
+            Intent intent = new Intent(ImageImportActivity.this, PaintActivity.class);
+            intent.putExtra(ARG_IMAGE, byteArray);
+            startActivity(intent);
+
+            finish();
         }
     }
 }

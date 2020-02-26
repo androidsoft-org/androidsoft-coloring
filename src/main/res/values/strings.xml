@@ -55,5 +55,7 @@
     <string name="progress_sample_data">choosing colors to classify</string>
     <string name="progress_clustering_data">finding suitible colors for the image</string>
     <string name="progress_create_cluster_preview">creating classified image for preview</string>
+    <string name="progress_counting_sizes">measuring areas</string>
+    <string name="progress_removing_noise">removing small areas which can not be painted</string>
 
 </resources>
