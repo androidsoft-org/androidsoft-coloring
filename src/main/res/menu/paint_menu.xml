@@ -20,12 +20,7 @@
         android:icon="@drawable/outline005_house"
         android:showAsAction="ifRoom|withText"
         android:title="@string/menu_new" />
-    
-    <item android:id="@+id/about"
-          android:title="@string/menu_about"
-          android:showAsAction="ifRoom|withText"
-          android:icon="@android:drawable/ic_menu_info_details" />
-    
+
     <item android:id="@+id/save"
           android:title="@string/menu_save"
           android:showAsAction="ifRoom|withText"
@@ -35,11 +30,10 @@
           android:title="@string/menu_share"
           android:showAsAction="never|withText"
           android:icon="@android:drawable/ic_menu_share" />
-          
-
-    <item android:id="@+id/open_existing"
-          android:icon="@android:drawable/ic_menu_gallery"
-          android:showAsAction="ifRoom|withText"
-          android:visible="false"/>
+    <item
+        android:id="@+id/about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:showAsAction="never|withText"
+        android:title="@string/menu_about" />
 
 </menu>
