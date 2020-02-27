@@ -8,7 +8,7 @@ import org.androidsoft.coloring.R;
 
 public class LoadImageProgress {
 
-    private static final int STEPS = 7; // do not forget to change when you add steps
+    private static final int STEPS = 11; // do not forget to change when you add steps
 
     private final ProgressBar progressBar;
     private TextView textView;
@@ -63,16 +63,23 @@ public class LoadImageProgress {
         step(4, R.string.progress_clustering_data);
     }
 
-    public void stepCreateClusterPreview() {
-        step(5, R.string.progress_create_cluster_preview);
+    public void stepCreateClusterImage() {
+        step(5, R.string.progress_create_cluster);
+    }
+
+    public void stepShowClusterImage() {
+        step(6, R.string.progress_show_cluster);
     }
 
     public void stepRemovingNoise() {
-        step(6, R.string.progress_removing_noise);
+        step(7, R.string.progress_removing_noise);
     }
 
-    public void stepCountingSizes() {
-        step(7, R.string.progress_counting_sizes);
+    public void stepShowSmoothedImage() {
+        step(8, R.string.progress_show_smoothed_image);
     }
 
+    public void stepDrawLinesAround() {
+        step(9, R.string.progress_draw_lines);
+    }
 }

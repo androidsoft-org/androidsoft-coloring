@@ -20,16 +20,21 @@ import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.ManhattanDistance;
+import weka.core.logging.ConsoleLogger;
 
 // see https://developer.android.com/reference/java/lang/Thread
 public class ImageProcessing implements Runnable {
 
     private static final int NUMBER_OF_COLORS = 9;
     private static final int LINE_WIDTH = 10;
-    private static final int AREA_RADIUS = 16;
+    private static final int AREA_RADIUS = 10;
 
-    private static final int LINE_WIDTH_HALF = LINE_WIDTH / 2 + LINE_WIDTH & 1;
+    private static final int LINE_WIDTH_HALF = LINE_WIDTH / 2 + LINE_WIDTH % 2;
     private static final int LINE_WIDTH_HALF_SQUARED = LINE_WIDTH_HALF * LINE_WIDTH_HALF;
+    private static final int NOT_TRANSPARENT = 0xff000000;
+
+    private static final int COLOR_LINE = Color.BLACK;
+    private static final int COLOR_BACKGROUND = Color.WHITE;
 
     private Attribute red;
     private Attribute green;
@@ -42,7 +47,6 @@ public class ImageProcessing implements Runnable {
     private int[] centroidColors;
     private int[][] smoothedPixels;
     private Bitmap lineImage;
-    private boolean optimize = true;
 
     public interface ImagePreview {
         void setImage(Bitmap image);
@@ -77,9 +81,7 @@ public class ImageProcessing implements Runnable {
         // run cluster the colors used in the image
         try {
             classifyColors();
-            if (!optimize) {
-                imagePreview.setImage(classifiedColors);
-            }
+            imagePreview.setImage(classifiedColors);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,9 +89,7 @@ public class ImageProcessing implements Runnable {
             return;
         }
         removeSmallAreas();
-        if (!optimize) {
-            imagePreview.setImage(smoothedColors);
-        }
+        imagePreview.setImage(smoothedColors);
         drawLinesAroundTheAreas();
         imagePreview.setImage(lineImage);
         progress.stepDone();
@@ -97,6 +97,7 @@ public class ImageProcessing implements Runnable {
     }
 
     private void drawLinesAroundTheAreas() {
+        progress.stepDrawLinesAround();
         int width = smoothedPixels.length;
         int height = smoothedPixels[0].length;
 
@@ -111,19 +112,24 @@ public class ImageProcessing implements Runnable {
                     // we are at a border - draw a circle!
                     for (int dx = -LINE_WIDTH_HALF; dx <= LINE_WIDTH_HALF; dx++) {
                         for (int dy = -LINE_WIDTH_HALF; dy <= LINE_WIDTH_HALF; dy++) {
+                            // check that we paint a dot
+                            if (dx*dx + dy*dy > LINE_WIDTH_HALF_SQUARED) {
+                                continue;
+                            }
+                            // check bounds
                             int kx = x + dx;
                             if (kx < 0 || kx >= width) {
                                 continue;
                             }
                             int ky = y + dy;
-                            if (ky < 0 || ky >= height || dx*dx + dy*dy > LINE_WIDTH_HALF_SQUARED) {
+                            if (ky < 0 || ky >= height) {
                                 continue;
                             }
-                            lineImage.setPixel(kx,ky, Color.BLACK);
+                            lineImage.setPixel(kx,ky, COLOR_LINE);
                         }
                     }
-                } else {
-                    lineImage.setPixel(x, y, Color.WHITE);
+                } else if (lineImage.getPixel(x, y) != COLOR_LINE) {
+                    lineImage.setPixel(x, y, COLOR_BACKGROUND);
                 }
             }
         }
@@ -139,17 +145,35 @@ public class ImageProcessing implements Runnable {
 
         smoothedPixels = new int[width][height];
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        int resultColorsIndex = 0;
+        int[] resultColors = new int[width * height];
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 int[] surroundingCls = new int[NUMBER_OF_COLORS];
                 int kx_min = Math.max(x - AREA_RADIUS, 0);
                 int ky_min = Math.max(y - AREA_RADIUS, 0);
-                int kx_max = Math.min(x + AREA_RADIUS, width);
-                int ky_max = Math.min(y + AREA_RADIUS, height);
+                int kx_max = Math.min(x + AREA_RADIUS + 1, width);
+                int ky_max = Math.min(y + AREA_RADIUS + 1, height);
+                // use a kernel like this
+                // +--+--+
+                // |  |  |
+                // +--+--+
+                // |  |  |
+                // +--+--+
+                for (int ky = ky_min; ky < ky_max; ky++) {
+                    if (ky_min <= ky && ky < ky_max) {
+                        for (int kx = kx_min; kx < kx_max; kx += AREA_RADIUS) {
+                            int cls = classifiedPixels[kx][ky];
+                            surroundingCls[cls]++;
+                        }
+                    }
+                }
                 for (int kx = kx_min; kx < kx_max; kx++) {
-                    for (int ky = ky_min; ky < ky_max; ky++) {
-                        int cls = classifiedPixels[kx][ky];
-                        surroundingCls[cls]++;
+                    if (kx_min <= kx && kx < kx_max) {
+                        for (int ky = ky_min; ky < ky_max; ky += AREA_RADIUS) {
+                            int cls = classifiedPixels[kx][ky];
+                            surroundingCls[cls]++;
+                        }
                     }
                 }
                 int maxValue = surroundingCls[0];
@@ -161,11 +185,14 @@ public class ImageProcessing implements Runnable {
                     }
                 }
                 smoothedPixels[x][y] = bestClass;
-                if (!optimize) {
-                    smoothedColors.setPixel(x, y, centroidColors[bestClass]);
-                }
+                int color = centroidColors[bestClass];
+                resultColors[resultColorsIndex] = color;
+                resultColorsIndex++;
             }
         }
+        progress.stepShowSmoothedImage();
+        smoothedColors.setPixels(resultColors, 0, width, 0, 0, width, height);
+
     }
 
     private void classifyColors() throws Exception {
@@ -217,24 +244,27 @@ public class ImageProcessing implements Runnable {
             Instance centroid = centroidInstances.get(i);
             int[] color = getColorOf(centroid);
             centroids[i] = color;
-            centroidColors[i] = 0xff000000 | color[0] << 16 | color[1] << 8 | color[2];
+            centroidColors[i] = NOT_TRANSPARENT | color[0] << 16 | color[1] << 8 | color[2];
         }
 
-        progress.stepCreateClusterPreview();
+        progress.stepCreateClusterImage();
         // build a colored bitmap from the classification
         // see https://stackoverflow.com/a/10180908/1320237
         classifiedColors = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        int[] resultColors = new int[width * height];
+        int resultColorsIndex = 0;
         classifiedPixels = new int[width][height];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 int classification = classifyThumbPixel(x, y);
                 classifiedPixels[x][y] = classification;
                 int color = centroidColors[classification];
-                if (!optimize) {
-                    classifiedColors.setPixel(x, y, color);
-                }
+                resultColors[resultColorsIndex] = color;
+                resultColorsIndex++;
             }
         }
+        progress.stepShowClusterImage();
+        classifiedColors.setPixels(resultColors, 0, width, 0, 0, width, height);
     }
 
     private int classifyThumbPixel(int x, int y) {
