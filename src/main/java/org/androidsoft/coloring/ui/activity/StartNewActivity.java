@@ -30,9 +30,10 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import org.androidsoft.coloring.R;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.ui.NoTitleActivity;
+
+import eu.quelltext.coloring.R;
 
 public class StartNewActivity extends NoTitleActivity implements View.OnClickListener
 {

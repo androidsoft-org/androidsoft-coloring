@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.androidsoft.coloring.R;
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.androidsoft.coloring.util.ImageProcessing;
 import org.androidsoft.utils.ui.NoTitleActivity;
@@ -21,6 +20,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import eu.quelltext.coloring.R;
 
 import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_IMAGE;
 

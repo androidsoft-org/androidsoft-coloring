@@ -17,11 +17,11 @@ package org.androidsoft.coloring.ui.activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import org.androidsoft.coloring.R;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.credits.CreditsParams;
 import org.androidsoft.utils.credits.CreditsView;
 import org.androidsoft.utils.ui.BasicActivity;
+import eu.quelltext.coloring.R;
 
 /**
  * Credits activity

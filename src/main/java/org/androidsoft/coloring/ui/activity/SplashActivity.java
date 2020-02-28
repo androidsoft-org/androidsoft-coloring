@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidsoft.coloring.R;
+
 import org.androidsoft.utils.ui.WhatsNewActivity;
 import org.apache.commons.io.IOUtils;
 
@@ -34,7 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
-import static weka.core.SerializationHelper.readAll;
+import eu.quelltext.coloring.R;
+
 
 /**
  * Splash activity

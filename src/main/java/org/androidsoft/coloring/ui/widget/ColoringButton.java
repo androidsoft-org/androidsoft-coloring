@@ -19,8 +19,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import org.androidsoft.coloring.R;
 import org.androidsoft.coloring.ui.activity.AbstractColoringActivity;
+
+import eu.quelltext.coloring.R;
 
 // A button that is proportional to the screen size.
 public class ColoringButton extends View

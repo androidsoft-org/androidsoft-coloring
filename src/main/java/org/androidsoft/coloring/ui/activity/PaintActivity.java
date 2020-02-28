@@ -49,7 +49,8 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.androidsoft.coloring.R;
+
+import eu.quelltext.coloring.R;
 
 public class PaintActivity extends AbstractColoringActivity implements
         PaintView.LifecycleListener

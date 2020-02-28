@@ -3,8 +3,7 @@ package org.androidsoft.coloring.ui.widget;
 import android.os.Handler;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.androidsoft.coloring.R;
+import eu.quelltext.coloring.R;
 
 public class LoadImageProgress {
 
