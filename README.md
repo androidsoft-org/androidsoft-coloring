@@ -14,12 +14,14 @@ If so and you need help, do not hesitate to open an [issue][issues] to ask!
 
 ## How To
 
-Add more pictures to paint:
+**Add more pictures to paint**:
+
 1. Open Android Studio
 2. Click right on `res` > `drawable`
 3. Click right > `New` > `Image Asset`
 4. Make sure to name your image asset starting with `outline` followed by the
     number, underscore and name.
+    Also, we do need PNG images of size 600x480, so the app stays small.
 
 Translate the app: 
 
