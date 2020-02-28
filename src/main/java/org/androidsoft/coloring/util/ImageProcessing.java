@@ -312,12 +312,24 @@ public class ImageProcessing implements Runnable {
     private Instance getThumbPixelInstanceAt(int x, int y) {
         // get color as int, see https://stackoverflow.com/a/40498362/1320237
         int color = previewThumb.getPixel(x, y);
+        int red = (color >> 16) & 0xff;
+        int green = (color >> 8) & 0xff;
+        int blue = color & 0xff;
+        // use HSV to remove the brightness of the color
+        // see https://en.wikipedia.org/wiki/HSL_and_HSV
+        float[] hsv = new float[3];
+        Color.RGBToHSV(red, green, blue, hsv);
+        hsv[2] = 1; // value
+        color = Color.HSVToColor(hsv);
+        red = (color >> 16) & 0xff;
+        green = (color >> 8) & 0xff;
+        blue = color & 0xff;
         // for instances
         // see https://weka.sourceforge.io/doc.dev/weka/core/DenseInstance.html
         Instance pixel = new DenseInstance(3);
-        pixel.setValue(red, (color >> 16) & 0xff);
-        pixel.setValue(green, (color >> 8) & 0xff);
-        pixel.setValue(blue, color & 0xff);
+        pixel.setValue(this.red, red);
+        pixel.setValue(this.green, green);
+        pixel.setValue(this.blue, blue);
         return pixel;
     }
 
