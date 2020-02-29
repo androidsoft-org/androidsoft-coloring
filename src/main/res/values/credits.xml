@@ -17,7 +17,7 @@
 -->
 
 <resources>
-    <array name="credits">
+    <string-array name="credits">
         <item>*by Nicco Kunzmann</item>
         <item>*</item>
         <item>*</item>
@@ -75,6 +75,6 @@
         <item>*This project is using the Weka library.</item>
         <item>*https://www.cs.waikato.ac.nz/ml/weka/</item>
         <item>*</item>
-    </array>
+    </string-array>
 </resources>
 
