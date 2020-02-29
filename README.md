@@ -31,6 +31,7 @@ This software is open-source under the [GPLv3](LICENSE).
 
 ## Credits
 
+- see the app's credits/about page
 - [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
 
 [issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
