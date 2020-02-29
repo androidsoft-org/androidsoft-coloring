@@ -66,7 +66,7 @@ public class SplashActivity extends WhatsNewActivity
         mButtonPlay.setOnClickListener(closeThis);
 
         ImageView image = (ImageView) findViewById(R.id.image_splash);
-        image.setImageResource(R.drawable.splash);
+        image.setImageResource(R.drawable.ic_logo);
 
         LinearLayout splashScreen = findViewById(R.id.splash_screen);
         splashScreen.setOnClickListener(closeThis);

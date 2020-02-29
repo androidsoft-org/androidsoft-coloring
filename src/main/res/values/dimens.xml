@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_text">16dp</dimen>
+    <dimen name="margin_splash_image">30dp</dimen>
 </resources>

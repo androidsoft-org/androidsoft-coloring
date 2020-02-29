@@ -26,22 +26,20 @@
     <string name="dialog_saving_error">Erro!</string>
     <string name="dialog_share">Compartilhar imagem usando</string>
 
-    <string name="saved_image_path_prefix">/dcim/Pintura para Crianças/</string>
-
     <!-- Credits screen -->
     <string name="credits_current_version" formatted="true">Versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
 
     <string name="button_go">Ir</string>
 
     <!-- What's new dialog -->
-    <string name="first_run_dialog_title">Bem-vindo ao Pintura para Crianças!</string>
-    <string name="first_run_dialog_message">Obrigado por baixar o aplicativo Pintura para Crianças\n\n
+    <string name="first_run_dialog_title">Bem-vindo ao Livro para Colorir!</string>
+    <string name="first_run_dialog_message">Obrigado por baixar o aplicativo Livro para Colorir\n\n
     Instruções rápidas :\n
     \t• Selecione a cor e pinte com seu dedo.\n
     \n\n Divirta-se!\n
     </string>
-    <string name="whats_new_dialog_title">Novidades do Pintura para Crianças</string>
-    <string name="whats_new_dialog_message" formatted="true">Obrigado por atualizar o Pintura para Crianças\n\n
+    <string name="whats_new_dialog_title">Novidades do Livro para Colorir</string>
+    <string name="whats_new_dialog_message" formatted="true">Obrigado por atualizar o Livro para Colorir\n\n
     <b>Novidades da versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:</b>\n
         <xliff:g example="\t• Pequenas correções de erros.\n" id="changelog">%2$s</xliff:g>
     \n\nDivirta-se e não esqueça de avaliar o aplicativo para contribuir com seu desenvolvimento.

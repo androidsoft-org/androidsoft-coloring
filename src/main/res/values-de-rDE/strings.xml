@@ -26,21 +26,19 @@
     <string name="dialog_saving_error">Fehler!</string>
     <string name="dialog_share">Teile das Bild mit</string>
 
-    <string name="saved_image_path_prefix">/dcim/Malen für Kinder/</string>
-
     <!-- Credits screen -->
     <string name="credits_current_version" formatted="true">Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
 
     <string name="button_go">Los</string>
 
     <!-- What's new dialog -->
-    <string name="first_run_dialog_title">Willkommen zu Malen für Kinder!</string>
-    <string name="first_run_dialog_message">"Schön, dass Du Malen für Kinder runtergeladen hast!\n\n
+    <string name="first_run_dialog_title">Willkommen im Malbuch!</string>
+    <string name="first_run_dialog_message">"Schön, dass Dudas malbuch runtergeladen hast!\n\n
         Kurze Einführung:\n
         \t• Wähle eine Farbe und bemale das Bild mit dem Finger.\n
         Viel Spaß!\n"</string>
-    <string name="whats_new_dialog_title">Was ist neu bei Malen für Kinder</string>
-    <string name="whats_new_dialog_message" formatted="true">"Danke,  dass Du Malen für Kinder erneuert hast.\n\n
+    <string name="whats_new_dialog_title">Was ist neu im Malbuch</string>
+    <string name="whats_new_dialog_message" formatted="true">"Danke,  dass Du das Malbuch erneuert hast.\n\n
         <b>Neu in Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:\n
         </b>
         <xliff:g example="\t• Kleinere Fehler wurden behoben.\n" id="changelog">%2$s</xliff:g>

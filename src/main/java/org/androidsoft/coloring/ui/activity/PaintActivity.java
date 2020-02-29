@@ -52,6 +52,8 @@ import java.util.ArrayList;
 
 import eu.quelltext.coloring.R;
 
+import static android.os.Environment.DIRECTORY_PICTURES;
+
 public class PaintActivity extends AbstractColoringActivity implements
         PaintView.LifecycleListener
 {
@@ -517,8 +519,10 @@ public class PaintActivity extends AbstractColoringActivity implements
         {
             // Get a filename.
             _fileName = newImageFileName();
-            _file = new File(Environment.getExternalStorageDirectory(),
-                    getString(R.string.saved_image_path_prefix) + _fileName + ".png");
+            //
+            _file = new File(
+                    Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES),
+                    getString(R.string.app_name));
 
             // Save the bitmap to a file.
             _paintView.saveToFile(_file, _originalOutlineBitmap, _progressHandler);

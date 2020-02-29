@@ -8,9 +8,10 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/ic_logo"
+        android:roundIcon="@drawable/ic_logo_round"
         android:label="@string/app_name"
-        android:logo="@drawable/icon">
+        android:logo="@drawable/ic_logo">
         <activity android:name="org.androidsoft.coloring.ui.activity.ImageImportActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
