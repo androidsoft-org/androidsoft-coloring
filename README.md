@@ -6,7 +6,7 @@
 This app is developed using Android Studio.
 
 You are welcome to contribute!
-- Translate the app.
+- Translate the app - [read the Documentation]
 - Add features, see HowTo.
 - Solve [issues].
 
