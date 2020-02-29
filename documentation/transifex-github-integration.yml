@@ -14,6 +14,11 @@ filters:
     source_language: en-US
     source_file: src/main/res/values/strings.xml
     translation_files_expression: 'src/main/res/values-<lang>/strings.xml'
+  - filter_type: file
+    file_format: ANDROID
+    source_language: en-US
+    source_file: src/main/res/values/credits.xml
+    translation_files_expression: 'src/main/res/values-<lang>/credits.xml'
   - filter_type: dir
     file_format: GITHUBMARKDOWN
     source_file_extension: txt
