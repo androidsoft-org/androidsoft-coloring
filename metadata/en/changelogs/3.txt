@@ -3,4 +3,3 @@
 - add German and Brazilian Portuguese translations
 - add fullscreen mode
 - allow images to be shared with the app and classified
-- use HSV color spectrum to reduce influence of light source location

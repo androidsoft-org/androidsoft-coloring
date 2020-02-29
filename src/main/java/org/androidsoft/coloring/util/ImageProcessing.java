@@ -317,13 +317,13 @@ public class ImageProcessing implements Runnable {
         int blue = color & 0xff;
         // use HSV to remove the brightness of the color
         // see https://en.wikipedia.org/wiki/HSL_and_HSV
-        float[] hsv = new float[3];
+        /*float[] hsv = new float[3];
         Color.RGBToHSV(red, green, blue, hsv);
-        hsv[2] = 1; // value
+        hsv[2] = hsv[2] > 0.5f ? 1 : 0; // value
         color = Color.HSVToColor(hsv);
         red = (color >> 16) & 0xff;
         green = (color >> 8) & 0xff;
-        blue = color & 0xff;
+        blue = color & 0xff;*/
         // for instances
         // see https://weka.sourceforge.io/doc.dev/weka/core/DenseInstance.html
         Instance pixel = new DenseInstance(3);
