@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  Copyright (C) 2010 Peter Dornbach.
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Livro para Colorir</string>
 
     <string name="menu_new">New</string>
@@ -28,12 +27,12 @@
     <string name="dialog_share">Compartilhar imagem usando</string>
 
     <string name="saved_image_path_prefix">/dcim/Pintura para Crianças/</string>
-    
-        <!-- Credits screen -->
+
+    <!-- Credits screen -->
     <string name="credits_current_version" formatted="true">Versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
-    
+
     <string name="button_go">Ir</string>
-    
+
     <!-- What's new dialog -->
     <string name="first_run_dialog_title">Bem-vindo ao Pintura para Crianças!</string>
     <string name="first_run_dialog_message">Obrigado por baixar o aplicativo Pintura para Crianças\n\n
@@ -47,5 +46,4 @@
         <xliff:g example="\t• Pequenas correções de erros.\n" id="changelog">%2$s</xliff:g>
     \n\nDivirta-se e não esqueça de avaliar o aplicativo para contribuir com seu desenvolvimento.
     </string>
-
-</resources>
+    </resources>
