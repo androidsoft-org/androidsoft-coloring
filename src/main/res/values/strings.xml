@@ -21,7 +21,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_about">About</string>
 
-    <string name="dialog_saving">Saving to Pictures&#8230; </string>
+    <string name="dialog_saving">Saving to Pictures…</string>
     <string name="dialog_saving_ok">OK!</string>
     <string name="dialog_saving_error">Error!</string>
     <string name="dialog_share">Share image using</string>
