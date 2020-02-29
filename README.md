@@ -23,14 +23,16 @@ If so and you need help, do not hesitate to open an [issue][issues] to ask!
     number, underscore and name.
     Also, we do need PNG images of size 600x480, so the app stays small.
 
-Translate the app: 
+Translate the app: Go to [Transifex].
 
 ## License
 
 This software is open-source under the [GPLv3](LICENSE).
 
-[issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
-
 ## Credits
 
 - [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
+
+[issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
+[Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
+

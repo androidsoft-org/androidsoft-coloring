@@ -1,0 +1,31 @@
+filters:
+  - filter_type: file
+    file_format: TXT
+    source_language: en-US
+    source_file: metadata/en/short_description.txt
+    translation_files_expression: 'metadata/<lang>/short_description.txt'
+  - filter_type: file
+    file_format: GITHUBMARKDOWN
+    source_language: en-US
+    source_file: metadata/en/full_description.txt
+    translation_files_expression: 'metadata/<lang>/full_description.txt'
+  - filter_type: file
+    file_format: ANDROID
+    source_language: en-US
+    source_file: src/main/res/values/strings.xml
+    translation_files_expression: 'src/main/res/values-<lang>/strings.xml'
+  - filter_type: dir
+    file_format: GITHUBMARKDOWN
+    source_file_extension: txt
+    source_language: en-US
+    source_file_dir: metadata/en/changelogs/
+    translation_files_expression: 'metadata/<lang>/changelogs/'
+settings:
+    language_mapping:
+        en: en-rUS
+        de: de-rDE
+        jp: jp-rJP
+        pl: pl-rPL
+        es: es-rES
+        pt: pt-rBR
+        ru: ru-rRU
