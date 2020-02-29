@@ -18,7 +18,7 @@
 
 <resources>
     <array name="credits">
-        <item>*by androidsoft.org</item>
+        <item>*by Nicco Kunzmann</item>
         <item>*</item>
         <item>*</item>
         <item>*</item>
@@ -33,6 +33,9 @@
         <item>*Foundation, either version 3 </item>
         <item>*of the License, or (at your option)</item>
         <item>*any later version.</item>
+        <item>*</item>
+        <item>*The prior version Coloring for Kids</item>
+        <item>*was published by androidsoft.org</item>
         <item>*</item>
         <item>*The original version was published</item>
         <item>*by Peter Dornbach</item>
@@ -59,12 +62,19 @@
         <item>*/* GNU version contributor */</item>
         <item>*</item>
         <item>*Pierre Levy</item>
+        <item>*Nicco Kunzmann</item>
         <item>*</item>
         <item>*</item>
         <item>*</item>
         <item>*</item>
-        <item>*http://www.androidsoft.org</item>
         <item>*Copyright (c) 2010-2011 P. Dornbach, P. Levy</item>
+        <item>*Copyright (c) 2020 Nicco Kunzmann</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*This project is using the Weka library.</item>
+        <item>*https://www.cs.waikato.ac.nz/ml/weka/</item>
+        <item>*</item>
     </array>
 </resources>
 

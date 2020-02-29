@@ -57,5 +57,6 @@
     <string name="progress_show_cluster" tools:ignore="MissingTranslation">showing the classified image</string>
     <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">showing the image with bigger paintable areas</string>
     <string name="progress_draw_lines" tools:ignore="MissingTranslation">drawing lines around the areas</string>
+    <string name="empty" translatable="false" />
 
 </resources>
