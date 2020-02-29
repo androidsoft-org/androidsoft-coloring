@@ -33,6 +33,7 @@ This software is open-source under the [GPLv3](LICENSE).
 
 - see the app's credits/about page
 - [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
+- [comic clustering](https://github.com/niccokunzmann/comic-cluster)
 
 [issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
 [Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
