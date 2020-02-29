@@ -23,7 +23,7 @@ If so and you need help, do not hesitate to open an [issue][issues] to ask!
     number, underscore and name.
     Also, we do need PNG images of size 600x480, so the app stays small.
 
-Translate the app: Go to [Transifex].
+**Translate the app**: Go to [Transifex].
 
 ## License
 
