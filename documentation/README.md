@@ -24,5 +24,16 @@ To release new versions, do the following:
 3. commit the changes with `version <versionName>` and push the commit
 4. create a tag `git tag v<versionName>` and push the tag
 
+## Images
+
+See the documentation
+- [Google for resolution](https://support.google.com/googleplay/android-developer/answer/1078870?hl=en)
+- [fastlane for naming](https://docs.fastlane.tools/actions/upload_to_play_store/#images-and-screenshots)
+- [Fdroid for location](https://fdroid.gitlab.io/fdroid-website/docs/All_About_Descriptions_Graphics_and_Screenshots/)
+
+
+
+
+
 
 [Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
