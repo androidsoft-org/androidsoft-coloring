@@ -13,7 +13,16 @@ If you do not manage to translate 100% but want to have it included
 in the next release, please open an issue.
 We can pull the translations then.
 
+## Releasing new Versions
 
+To release new versions, do the following:
+1. Increase the `versionCode` and `versionName` in the `AndroidManifest.xml`
+2. Make sure the changelog file in `metadata/en/changelogs` of the corresponding `versionCode` includes the relevant changes
+    - added/removed/improved features
+    - changes in language
+    - changes in permissions
+3. commit the changes with `version <versionName>` and push the commit
+4. create a tag `git tag v<versionName>` and push the tag
 
 
 [Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
