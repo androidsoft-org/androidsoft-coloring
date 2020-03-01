@@ -5,6 +5,11 @@ filters:
     source_file: metadata/en/short_description.txt
     translation_files_expression: 'metadata/<lang>/short_description.txt'
   - filter_type: file
+    file_format: TXT
+    source_language: en-US
+    source_file: metadata/en/title.txt
+    translation_files_expression: 'metadata/<lang>/title.txt'
+  - filter_type: file
     file_format: GITHUBMARKDOWN
     source_language: en-US
     source_file: metadata/en/full_description.txt
@@ -28,4 +33,3 @@ filters:
 settings:
     language_mapping:
         pt-BR: pt-rBR
-
