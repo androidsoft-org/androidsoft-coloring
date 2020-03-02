@@ -1,0 +1,5 @@
+- Duplo clique para sair da atividade de pintura
+- remove as imagens em miniatura para diminuir o tamanho do apk
+- Adicione a tradução Alemã e Portuguesa do Brasil
+- Adicione o modo tela cheia
+- permite que imagens sejam classificadas e compartilhadas com o aplicativo
