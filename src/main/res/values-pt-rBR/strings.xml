@@ -16,16 +16,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Livro para Colorir</string>
 
-    <string name="menu_new">New</string>
+    <string name="menu_new">Novo</string>
     <string name="menu_save">Salvar</string>
     <string name="menu_share">Compartilhar</string>
     <string name="menu_about">Sobre</string>
 
-    <string name="dialog_saving">Salvando em Imagens&#8230; </string>
+    <string name="dialog_saving">Salvando como imagens...</string>
     <string name="dialog_saving_ok">OK!</string>
     <string name="dialog_saving_error">Erro!</string>
     <string name="dialog_share">Compartilhar imagem usando</string>
-
     <!-- Credits screen -->
     <string name="credits_current_version" formatted="true">Versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
 
@@ -44,4 +43,18 @@
         <xliff:g example="\t• Pequenas correções de erros.\n" id="changelog">%2$s</xliff:g>
     \n\nDivirta-se e não esqueça de avaliar o aplicativo para contribuir com seu desenvolvimento.
     </string>
+    <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Clique em VOLTAR novamente para sair</string>
+    <string name="progress_starting" tools:ignore="MissingTranslation">Iniciando</string>
+    <string name="progress_done" tools:ignore="MissingTranslation">Concluído</string>
+    <string name="progress_error" tools:ignore="MissingTranslation">Ocorreu um erro</string>
+    <string name="progress_input_preview" tools:ignore="MissingTranslation">Recebendo imagem</string>
+    <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">Preparando agrupamento</string>
+    <string name="progress_sample_data" tools:ignore="MissingTranslation">Escolhendo as cores para classificar</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">Procurando as cores adequadas para a imagem</string>
+    <string name="progress_create_cluster" tools:ignore="MissingTranslation">Criando imagem classisficada</string>
+    <string name="progress_counting_sizes" tools:ignore="MissingTranslation">Medindo áreas</string>
+    <string name="progress_removing_noise" tools:ignore="MissingTranslation">Removendo as áreas pequenas que não podem ser pintadas</string>
+    <string name="progress_show_cluster" tools:ignore="MissingTranslation">Mostrando a imagem classificada</string>
+    <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">Mostrando a imagem com áreas maiores que podem ser pintadas</string>
+    <string name="progress_draw_lines" tools:ignore="MissingTranslation">Desenhando linhas em volta das áreas</string>
     </resources>
