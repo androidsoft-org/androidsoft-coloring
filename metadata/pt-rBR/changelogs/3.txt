@@ -2,4 +2,4 @@
 - Remove as imagens em miniatura para diminuir o tamanho do apk
 - Adiciona as traduções para Alemão e Português do Brasil
 - Adiciona o modo tela inteira
-- permite que imagens sejam classificadas e compartilhadas com o aplicativo
+- Permite que as imagens sejam classificadas e compartilhadas com o aplicativo
