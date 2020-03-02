@@ -37,7 +37,7 @@
     \t• Selecione a cor e pinte com seu dedo.\n
     \n\n Divirta-se!\n
     </string>
-    <string name="whats_new_dialog_title">Novidades do Livro para Colorir</string>
+    <string name="whats_new_dialog_title">O que há de novo nesta versão do Livro para Colorir</string>
     <string name="whats_new_dialog_message" formatted="true">Obrigado por atualizar o Livro para Colorir\n\n
     <b>Novidades da versão <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:</b>\n
         <xliff:g example="\t• Pequenas correções de erros.\n" id="changelog">%2$s</xliff:g>
