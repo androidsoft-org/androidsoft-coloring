@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -30,6 +31,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import java.io.FileOutputStream;
@@ -139,8 +141,9 @@ public class PaintView extends View
         progressHandler.sendEmptyMessage(Progress.MESSAGE_DONE_OK);
     }
 
+    @SuppressLint("WrongThread")
     public synchronized void saveToFile(File file, Bitmap originalOutlineBitmap,
-            Handler progressHandler)
+                                        Handler progressHandler)
     {
         // Proportion of progress in various places.
         // The sum of all progress should be 100.
@@ -149,6 +152,8 @@ public class PaintView extends View
         final int PROGRESS_SCAN_OUTLINE = 45;
         final int PROGRESS_DRAW_OUTLINE = 10;
         final int PROGRESS_SAVE = 15;
+
+        Log.d("PaintView", "saveToFile " + file.toString());
 
         // First, get a copy of the painted bitmap. After that we do not have
         // to deal with class instance any more.
@@ -265,6 +270,7 @@ public class PaintView extends View
         }
         catch (IOException e)
         {
+            e.printStackTrace();
             progressHandler.sendEmptyMessage(Progress.MESSAGE_DONE_ERROR);
             return;
         }

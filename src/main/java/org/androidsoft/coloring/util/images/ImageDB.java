@@ -11,6 +11,6 @@ public interface ImageDB {
     interface Image extends Parcelable {
         Bitmap asPreviewImage(Context context, int maxWidth);
         boolean isVisible();
-        int getResourceId(); // temporary until the PaintView can load arbitrary bitmaps
+        Bitmap getImage(Context context);
     }
 }

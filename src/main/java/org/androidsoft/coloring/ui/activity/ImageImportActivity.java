@@ -4,7 +4,6 @@ package org.androidsoft.coloring.ui.activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 
 import eu.quelltext.coloring.R;
 
-import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_IMAGE;
+import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_BITMAP;
 
 /* Activity to receive shared images and pass them to the paint activity
  * see https://developer.android.com/training/sharing/receive
@@ -137,7 +136,7 @@ public class ImageImportActivity extends NoTitleActivity {
             byte[] byteArray = stream.toByteArray();
 
             Intent intent = new Intent(ImageImportActivity.this, PaintActivity.class);
-            intent.putExtra(ARG_IMAGE, byteArray);
+            intent.putExtra(ARG_BITMAP, byteArray);
             startActivity(intent);
 
             finish();

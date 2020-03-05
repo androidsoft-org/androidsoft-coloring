@@ -2,6 +2,7 @@ package org.androidsoft.coloring.util.images;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 
 import eu.quelltext.coloring.R;
@@ -18,8 +19,8 @@ class NullImage implements ImageDB.Image {
     }
 
     @Override
-    public int getResourceId() {
-        return R.drawable.ic_logo;
+    public Bitmap getImage(Context context) {
+        return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_logo);
     }
 
     @Override

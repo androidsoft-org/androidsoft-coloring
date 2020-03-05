@@ -14,11 +14,16 @@
  */
 package org.androidsoft.coloring.ui.activity;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -45,6 +50,7 @@ public class SplashActivity extends WhatsNewActivity
 {
 
     private static final String CHANGELOG_FOLDER = "changelogs";
+    private static final int PERMISSION_REQUEST = 0;
     private Button mButtonPlay;
 
     @Override
@@ -168,5 +174,53 @@ public class SplashActivity extends WhatsNewActivity
 
     private String getChangelogFileNameForLanguageAndCountry(String language, String country) {
         return CHANGELOG_FOLDER + "/" + language + "-" + country + "/" + getVersionCode() + ".txt";
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, R.string.permission_read_external_storage);
+        checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.permission_write_external_storage);
+    }
+
+    public void checkForPermission(final String permissionName, int explanationResourceId) {
+        // check for permissions
+        // see https://developer.android.com/training/permissions/requesting#java
+        if (ContextCompat.checkSelfPermission(this, permissionName) != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissionName)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                // see https://stackoverflow.com/a/2115770
+                new AlertDialog.Builder(this)
+                        .setMessage(explanationResourceId)
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Continue with delete operation
+                                ActivityCompat.requestPermissions(SplashActivity.this,
+                                        new String[]{permissionName},
+                                        PERMISSION_REQUEST);
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permissionName},
+                        PERMISSION_REQUEST);
+            }
+        } else {
+            // Permission has already been granted
+        }
     }
 }

@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Parcel;
 
+import eu.quelltext.coloring.R;
+
 class DrawableResourceImage implements ImageDB.Image {
     private final int resourceId;
     private Bitmap previewImage = null;
@@ -28,8 +30,8 @@ class DrawableResourceImage implements ImageDB.Image {
     }
 
     @Override
-    public int getResourceId() {
-        return resourceId;
+    public Bitmap getImage(Context context) {
+        return BitmapFactory.decodeResource(context.getResources(), resourceId);
     }
 
     @Override

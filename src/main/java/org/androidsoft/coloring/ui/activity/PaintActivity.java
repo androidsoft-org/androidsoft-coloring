@@ -54,6 +54,7 @@ import java.util.ArrayList;
 
 import eu.quelltext.coloring.R;
 
+import static android.os.Environment.DIRECTORY_DCIM;
 import static android.os.Environment.DIRECTORY_PICTURES;
 
 public class PaintActivity extends AbstractColoringActivity implements
@@ -91,7 +92,7 @@ public class PaintActivity extends AbstractColoringActivity implements
                     _paintView.setVisibility(View.INVISIBLE);
                     _progressBar.setVisibility(View.GONE);
                 }
-                else if (extras == null || !extras.containsKey(ARG_IMAGE))
+                else if (extras == null || !extras.containsKey(ARG_BITMAP))
                 {
                     // We have a previous state, so this is a re-created activity.
                     // Restore the state of the activity.
@@ -103,7 +104,7 @@ public class PaintActivity extends AbstractColoringActivity implements
                     _progressBar.setVisibility(View.GONE);
                     if (_state._loadInProgress)
                     {
-                        new InitPaintView(_state._loadedResourceId);
+                        new InitPaintView(_state._loadedBitmap);
                     }
                 }
             }
@@ -151,13 +152,13 @@ public class PaintActivity extends AbstractColoringActivity implements
             public void handleMessage(Message m)
             {
                 Bundle extras = getIntent().getExtras();
-                if (extras != null && extras.containsKey(ARG_IMAGE)) {
+                if (extras != null && extras.containsKey(ARG_BITMAP)) {
                     // we received and image and should thus paint it
-                    byte[] byteArray = extras.getByteArray(ARG_IMAGE);
+                    byte[] byteArray = extras.getByteArray(ARG_BITMAP);
                     Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     new InitPaintView(bmp);
                 } else {
-                    new InitPaintView(new ResourceImageDB().randomImage().getResourceId());
+                    new InitPaintView(new ResourceImageDB().randomImage().getImage(PaintActivity.this));
                 }
             }
         }.sendEmptyMessage(0);
@@ -204,7 +205,7 @@ public class PaintActivity extends AbstractColoringActivity implements
                 if (resultCode != RESULT_CANCELED)
                 {
                     ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
-                    new InitPaintView(image.getResourceId());
+                    new InitPaintView(image.getImage(PaintActivity.this));
                 }
                 break;
             case REQUEST_PICK_COLOR:
@@ -369,14 +370,9 @@ public class PaintActivity extends AbstractColoringActivity implements
 
     private class InitPaintView implements Runnable
     {
-
-        public InitPaintView(int outlineResourceId) {
-            _state._loadedResourceId = outlineResourceId;
-            _originalOutlineBitmap = BitmapFactory.decodeResource(getResources(), outlineResourceId);
-            initializeFromBitmap();
-        }
-
-        private void initializeFromBitmap() {
+        public InitPaintView(Bitmap bmp) {
+            _originalOutlineBitmap = bmp;
+            _state._loadedBitmap = bmp;
             // Make the progress bar visible and hide the view
             _paintView.setVisibility(View.GONE);
             _progressBar.setProgress(0);
@@ -409,11 +405,6 @@ public class PaintActivity extends AbstractColoringActivity implements
             };
 
             new Thread(this).start();
-        }
-
-        public InitPaintView(Bitmap bmp) {
-            _originalOutlineBitmap = bmp;
-            initializeFromBitmap();
         }
 
         public void run()
@@ -491,11 +482,11 @@ public class PaintActivity extends AbstractColoringActivity implements
                             String title = getString(R.string.dialog_saving);
                             if (m.what == Progress.MESSAGE_DONE_OK)
                             {
-                                title += getString(R.string.dialog_saving_ok);
+                                title = getString(R.string.dialog_saving_ok);
                             }
                             else
                             {
-                                title += getString(R.string.dialog_saving_error);
+                                title = getString(R.string.dialog_saving_error);
                             }
                             _progressDialog.setTitle(title);
                             new DelayHandler().sendEmptyMessageDelayed(0,
@@ -511,8 +502,7 @@ public class PaintActivity extends AbstractColoringActivity implements
                 showDialog(DIALOG_PROGRESS);
                 _progressDialog.setTitle(R.string.dialog_saving);
                 _progressDialog.setProgress(0);
-                _originalOutlineBitmap = BitmapFactory.decodeResource(getResources(),
-                        _state._loadedResourceId);
+                _originalOutlineBitmap = _state._loadedBitmap;
                 _progressHandler = new ProgressHandler();
                 new Thread(this).start();
             }
@@ -522,10 +512,10 @@ public class PaintActivity extends AbstractColoringActivity implements
         {
             // Get a filename.
             _fileName = newImageFileName();
-            //
-            _file = new File(
-                    Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES),
+            File directory = new File(
+                    Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM),
                     getString(R.string.app_name));
+            _file = new File(directory, _fileName);
 
             // Save the bitmap to a file.
             _paintView.saveToFile(_file, _originalOutlineBitmap, _progressHandler);
@@ -565,7 +555,7 @@ public class PaintActivity extends AbstractColoringActivity implements
         private String newImageFileName()
         {
             final DateFormat fmt = new SimpleDateFormat("yyyyMMdd-HHmmss");
-            return fmt.format(new Date());
+            return fmt.format(new Date()) + ".png";
         }
         private Bitmap _originalOutlineBitmap;
         private String _fileName;
@@ -613,7 +603,7 @@ public class PaintActivity extends AbstractColoringActivity implements
 
         public boolean _loadInProgress;
         // The resource ID of the outline we are coloring.
-        public int _loadedResourceId;
+        public Bitmap _loadedBitmap;
         // If we have already saved a copy of the image, we store the URI here
         // so that we can delete the previous version when saved again.
         public Uri _savedImageUri;
@@ -623,7 +613,7 @@ public class PaintActivity extends AbstractColoringActivity implements
     private static final int DIALOG_PROGRESS = 1;
     private static final int SAVE_DIALOG_WAIT_MILLIS = 1500;
     private static final String MIME_PNG = "image/png";
-    public static final String ARG_IMAGE = "image";
+    public static final String ARG_BITMAP = "image";
     // The state that we will carry over if the activity is recreated.
     private State _state;
     // Main UI elements.

@@ -58,5 +58,7 @@
     <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">showing the image with bigger paintable areas</string>
     <string name="progress_draw_lines" tools:ignore="MissingTranslation">drawing lines around the areas</string>
     <string name="empty" translatable="false" />
+    <string name="permission_read_external_storage">The app needs permission to read the external storage so you can continue painting pictures.</string>
+    <string name="permission_write_external_storage">The app needs permission to save painted pictures.</string>
 
 </resources>
