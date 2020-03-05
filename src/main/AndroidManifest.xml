@@ -38,7 +38,7 @@
             android:name="org.androidsoft.coloring.ui.activity.PaintActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" />
-        <activity android:name="org.androidsoft.coloring.ui.activity.StartNewActivity">
+        <activity android:name="org.androidsoft.coloring.ui.activity.ChoosePictureActivity">
 
             <!-- android:theme="@style/Theme.Transparent" -->
             <intent-filter>

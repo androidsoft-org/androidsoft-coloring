@@ -2,4 +2,5 @@
 <resources>
     <dimen name="margin_text">16dp</dimen>
     <dimen name="margin_splash_image">30dp</dimen>
+    <dimen name="margin_picture_list_image">10dp</dimen>
 </resources>

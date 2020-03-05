@@ -18,6 +18,9 @@ package org.androidsoft.coloring.ui.activity;
 import org.androidsoft.coloring.ui.widget.PaintView;
 import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.ui.widget.Progress;
+import org.androidsoft.coloring.util.images.ImageDB;
+import org.androidsoft.coloring.util.images.ResourceImageDB;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,7 +46,6 @@ import android.provider.MediaStore.Images;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -155,7 +157,7 @@ public class PaintActivity extends AbstractColoringActivity implements
                     Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     new InitPaintView(bmp);
                 } else {
-                    new InitPaintView(StartNewActivity.randomOutlineId());
+                    new InitPaintView(new ResourceImageDB().randomImage().getResourceId());
                 }
             }
         }.sendEmptyMessage(0);
@@ -167,7 +169,7 @@ public class PaintActivity extends AbstractColoringActivity implements
         switch (item.getItemId())
         {
             case R.id.open_new:
-                startActivityForResult(new Intent(INTENT_START_NEW), REQUEST_START_NEW);
+                startActivityForResult(new Intent(INTENT_START_NEW), REQUEST_CHOOSE_PICTURE);
                 return true;
             case R.id.save:
                 new BitmapSaver();
@@ -198,14 +200,15 @@ public class PaintActivity extends AbstractColoringActivity implements
     {
         switch (requestCode)
         {
-            case REQUEST_START_NEW:
-                if (resultCode != 0)
+            case REQUEST_CHOOSE_PICTURE:
+                if (resultCode != RESULT_CANCELED)
                 {
-                    new InitPaintView(resultCode);
+                    ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
+                    new InitPaintView(image.getResourceId());
                 }
                 break;
             case REQUEST_PICK_COLOR:
-                if (resultCode != 0)
+                if (resultCode != RESULT_CANCELED)
                 {
                     _colorButtonManager.selectColor(resultCode);
                 }
@@ -615,7 +618,7 @@ public class PaintActivity extends AbstractColoringActivity implements
         // so that we can delete the previous version when saved again.
         public Uri _savedImageUri;
     }
-    private static final int REQUEST_START_NEW = 0;
+    private static final int REQUEST_CHOOSE_PICTURE = 0;
     private static final int REQUEST_PICK_COLOR = 1;
     private static final int DIALOG_PROGRESS = 1;
     private static final int SAVE_DIALOG_WAIT_MILLIS = 1500;
