@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.androidsoft.coloring.util.ImageProcessing;
+import org.androidsoft.coloring.util.images.BitmapImage;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 
 import eu.quelltext.coloring.R;
 
-import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_BITMAP;
+import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_IMAGE;
 
 /* Activity to receive shared images and pass them to the paint activity
  * see https://developer.android.com/training/sharing/receive
@@ -129,16 +130,10 @@ public class ImageImportActivity extends NoTitleActivity {
 
         @Override
         public void done(Bitmap bitmap) {
-            // send a bitmap to an activity
-            // see https://stackoverflow.com/a/11519855/1320237
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-
+            BitmapImage image = new BitmapImage(bitmap);
             Intent intent = new Intent(ImageImportActivity.this, PaintActivity.class);
-            intent.putExtra(ARG_BITMAP, byteArray);
+            intent.putExtra(ARG_IMAGE, image);
             startActivity(intent);
-
             finish();
         }
     }

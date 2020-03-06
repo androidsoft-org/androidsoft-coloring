@@ -241,7 +241,8 @@ public class ImageProcessing implements Runnable {
         centroids = new int[NUMBER_OF_COLORS][3];
         centroidColors = new int[NUMBER_OF_COLORS];
         for (int i = 0; i < NUMBER_OF_COLORS; i++) {
-            Instance centroid = centroidInstances.get(i);
+            Instance centroid = centroidInstances.size() > i ?
+                    centroidInstances.get(i) : centroidInstances.firstInstance();
             int[] color = getColorOf(centroid);
             centroids[i] = color;
             centroidColors[i] = NOT_TRANSPARENT | color[0] << 16 | color[1] << 8 | color[2];

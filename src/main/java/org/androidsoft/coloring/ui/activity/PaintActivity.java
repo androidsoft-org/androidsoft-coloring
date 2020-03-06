@@ -53,7 +53,7 @@ public class PaintActivity extends AbstractColoringActivity
     private static final int REQUEST_CHOOSE_PICTURE = 0;
     private static final int REQUEST_PICK_COLOR = 1;
     private static final int DIALOG_PROGRESS = 1;
-    public static final String ARG_BITMAP = "bitmap";
+    public static final String ARG_IMAGE = "bitmap";
     // The state that we will carry over if the activity is recreated.
     private State _state;
     // Main UI elements.
@@ -89,15 +89,14 @@ public class PaintActivity extends AbstractColoringActivity
 
     private void loadFromArguments() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(ARG_BITMAP)) {
+        ImageDB.Image image;
+        if (extras != null && extras.containsKey(ARG_IMAGE)) {
             // we received and image and should thus paint it
-            byte[] byteArray = extras.getByteArray(ARG_BITMAP);
-            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            paintArea.setImageBitmap(bmp);
+            image = extras.getParcelable(ARG_IMAGE);
         } else {
-            Bitmap randomImage = new ResourceImageDB().randomImage().getImage(PaintActivity.this);
-            paintArea.setImageBitmap(randomImage);
+            image = new ResourceImageDB().randomImage();
         }
+        paintArea.setImageBitmap(image.getImage(PaintActivity.this));
     }
 
 
@@ -138,13 +137,13 @@ public class PaintActivity extends AbstractColoringActivity
                 openPictureChoice();
                 return true;
             case R.id.save:
-                new BitmapSaver(this, paintArea.getBitmap());
+                new BitmapSaver(this, paintArea.getBitmap()).start();
                 return true;
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
                 return true;
             case R.id.share:
-                new BitmapSharer(this, paintArea.getBitmap());
+                new BitmapSharer(this, paintArea.getBitmap()).start();
                 return true;
         }
         return false;
