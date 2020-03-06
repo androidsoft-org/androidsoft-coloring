@@ -21,6 +21,7 @@ import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.NullImage;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -70,8 +71,10 @@ public class PaintArea {
     {
         if (e.getAction() == MotionEvent.ACTION_DOWN)
         {
-            int x = (int) e.getX();
-            int y = (int) e.getY();
+            int x = (int)(e.getX() * bitmap.getWidth() / view.getWidth());
+            int y = (int)(e.getY() * bitmap.getHeight() / view.getHeight());
+            Log.d("touch", "(" + e.getRawX() + ") " + e.getX() + " -> " + x);
+            Log.d("touch", "(" + e.getRawY() + ") " + e.getY() + " -> " + y);
             Bitmap newBitmap = FloodFill.fill(bitmap, x, y, paintColor);
             setImageBitmap(newBitmap);
         }
