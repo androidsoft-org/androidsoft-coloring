@@ -54,8 +54,6 @@ public class PaintActivity extends AbstractColoringActivity
     private static final int REQUEST_PICK_COLOR = 1;
     private static final int DIALOG_PROGRESS = 1;
     public static final String ARG_IMAGE = "bitmap";
-    // The state that we will carry over if the activity is recreated.
-    private State _state;
     // Main UI elements.
     private PaintArea paintArea;
     private ProgressBar _progressBar;
@@ -298,27 +296,4 @@ public class PaintActivity extends AbstractColoringActivity
         private LinkedList<ColorButton> _usedColorButtons = new LinkedList<ColorButton>();
         private ColorButton _selectedColorButton;
     }
-
-    // The state of the whole drawing. This is used to transfer the state if
-    // the activity is re-created (e.g. due to orientation change).
-    private static class SavedState
-    {
-
-        public State _paintActivityState;
-        public Object _colorButtonState;
-        public Object _paintViewState;
-    }
-
-    private static class State
-    {
-        // Are we just loading a new outline?
-
-        public boolean _loadInProgress;
-        // The resource ID of the outline we are coloring.
-        public Bitmap _loadedBitmap;
-        // If we have already saved a copy of the image, we store the URI here
-        // so that we can delete the previous version when saved again.
-        public Uri _savedImageUri;
-    }
-
 }
