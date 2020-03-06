@@ -1,6 +1,8 @@
 # Coloring Book
 [![Android CI](https://github.com/niccokunzmann/androidsoft-coloring/workflows/Android%20CI/badge.svg)](https://github.com/niccokunzmann/androidsoft-coloring/actions?query=workflow%3A%22Android+CI%22)
 
+<img src="metadata/en/images/phoneScreenshots/02choose.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/03colors.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/05classify.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/06paint.png" width="24%">
+
 ## Development
 
 This app is developed using Android Studio.
