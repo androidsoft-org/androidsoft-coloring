@@ -32,6 +32,7 @@ android {
 
     lintOptions {
         enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
+        disable 'MissingTranslation' // see https://stackoverflow.com/a/32676398
     }
 
     apply from: 'sign.gradle'
