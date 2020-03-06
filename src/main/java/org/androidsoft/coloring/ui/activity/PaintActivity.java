@@ -255,29 +255,6 @@ public class PaintActivity extends AbstractColoringActivity
             setPaintViewColor();
         }
 
-        public Object getState()
-        {
-            int[] result = new int[_colorButtons.size() + 1];
-            int n = _colorButtons.size();
-            for (int i = 0; i < n; i++)
-            {
-                result[i] = _colorButtons.get(i).getColor();
-            }
-            result[n] = _selectedColorButton.getColor();
-            return result;
-        }
-
-        public void setState(Object o)
-        {
-            int[] state = (int[]) o;
-            int n = _colorButtons.size();
-            for (int i = 0; i < n; i++)
-            {
-                _colorButtons.get(i).setColor(state[i]);
-            }
-            selectColor(state[n]);
-        }
-
         // Select the given button.
         private void selectButton(ColorButton button)
         {
