@@ -19,12 +19,12 @@
 <resources>
     <string-array name="credits">
         <item>*by Nicco Kunzmann</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
         <item>License</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*This program is free software:</item>
         <item>*you can redistribute it and/or </item>
         <item>*modify it under the terms of the </item>
@@ -33,48 +33,48 @@
         <item>*Foundation, either version 3 </item>
         <item>*of the License, or (at your option)</item>
         <item>*any later version.</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*The prior version Coloring for Kids</item>
         <item>*was published by androidsoft.org</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*The original version was published</item>
         <item>*by Peter Dornbach</item>
         <item>*under Apache License 2.0</item>
         <item>*for more information see</item>
         <item>*http://www.zebra4me.com/</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*Icons are published</item>
         <item>*by Everaldo Coelho</item>
         <item>*under the terms of the GNU</item>
         <item>*Lesser General Public License.</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*Drawings provided by kind </item>
         <item>*courtesy of Peter Dornbach</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
         <item>Credits</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*/* Main developer */</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*Peter Dornbach</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*/* GNU version contributor */</item>
-        <item>*</item>
+        <item translatable="false">*</item>
         <item>*Pierre Levy</item>
         <item>*Nicco Kunzmann</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
         <item>*Copyright (c) 2010-2011 P. Dornbach, P. Levy</item>
         <item>*Copyright (c) 2020 Nicco Kunzmann</item>
-        <item>*</item>
-        <item>*</item>
-        <item>*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
+        <item translatable="false">*</item>
         <item>*This project is using the Weka library.</item>
         <item>*https://www.cs.waikato.ac.nz/ml/weka/</item>
-        <item>*</item>
+        <item translatable="false">*</item>
     </string-array>
 </resources>
 
