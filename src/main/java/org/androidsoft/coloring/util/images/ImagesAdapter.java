@@ -3,17 +3,14 @@ package org.androidsoft.coloring.util.images;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.ImageDecoder;
-import android.media.Image;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import eu.quelltext.coloring.R;
 
 public class ImagesAdapter extends RecyclerView.Adapter {
     private static final int MAX_WIDTH = 100;
