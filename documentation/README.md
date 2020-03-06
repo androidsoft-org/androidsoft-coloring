@@ -17,13 +17,15 @@ We can pull the translations then.
 ## Releasing new Versions
 
 To release new versions, do the following:
-1. Increase the `versionCode` and `versionName` in the `AndroidManifest.xml`
-2. Make sure the changelog file in `metadata/en/changelogs` of the corresponding `versionCode` includes the relevant changes
+
+1. Check that the tests are running. [![Android CI](https://github.com/niccokunzmann/androidsoft-coloring/workflows/Android%20CI/badge.svg)](https://github.com/niccokunzmann/androidsoft-coloring/actions?query=workflow%3A%22Android+CI%22)
+2. Increase the `versionCode` and `versionName` in the `AndroidManifest.xml`
+3. Make sure the changelog file in `metadata/en/changelogs` of the corresponding `versionCode` includes the relevant changes
     - added/removed/improved features
     - changes in language
     - changes in permissions
-3. commit the changes with `version <versionName>` and push the commit
-4. create a tag `git tag v<versionName>` and push the tag
+4. commit the changes with `version <versionName>` and push the commit
+5. create a tag `git tag v<versionName>` and push the tag
 
 ## Images
 
