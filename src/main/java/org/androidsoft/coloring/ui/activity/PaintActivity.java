@@ -80,7 +80,8 @@ public class PaintActivity extends AbstractColoringActivity
         pickColorsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(INTENT_PICK_COLOR), REQUEST_PICK_COLOR);
+                Intent intent = new Intent(PaintActivity.this, PickColorActivity.class);
+                startActivityForResult(intent, REQUEST_PICK_COLOR);
             }
         });
 
