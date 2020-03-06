@@ -16,108 +16,90 @@
 
 package org.androidsoft.coloring.util;
 
-import java.util.Arrays;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class FloodFill {
-	public interface PixelMatcher {
-		// Return true if the pixel at x,y should be filled. It must be prepared
-		// to handle x < 0, y < 0. It must return false for a pixel already set.
-		boolean match(int x, int y);
+	public static final int BACKGROUND_COLOR = Color.WHITE;
+	private static final int BINARY_COLOR_THRESHOLD = 3 * 0xff / 2;
+	public static int BORDER_COLOR = Color.BLACK;
+	private final int width;
+	private final int color;
+	private final Queue<Pixel> queue = new LinkedList<>();
+	private final int height;
+	private final int[] pixels;
+
+	public FloodFill(Bitmap bitmap, int color) {
+		// fill a pixel in a bitmap https://stackoverflow.com/a/5916506
+		width = bitmap.getWidth();
+		height = bitmap.getHeight();
+		pixels = new int[width * height];
+		bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+		this.color = color;
 	}
 
-	public interface PixelSetter {
-		// Set the a row of pixels from x1 until x2 in row y.
-		// x1 included, x2 excluded.
-		void set(int x1, int x2, int y);
+	public static Bitmap fill(Bitmap bitmap, int x, int y, int color) {
+		FloodFill fill = new FloodFill(bitmap, color);
+		fill.fillAt(x, y);
+		return fill.createBitmap();
 	}
 
-	// The "nice" fill that works with any PixelMatcher and PixelSetter.
-	public static void fill(int x, int y, PixelMatcher matcher, PixelSetter setter) {
-		Queue<Pixel> queue = new LinkedList<Pixel>();
-		queue.add(new Pixel(x, y));
+	private Bitmap createBitmap() {
+		// create a new bitmap
+		// see https://stackoverflow.com/a/10180908
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+		return bitmap;
+	}
+
+	private void fillAt(int x, int y) {
+		fillPixel(x, y);
 		while (!queue.isEmpty()) {
 			Pixel p = queue.remove();
-			int px1 = p._x;
-			int px2 = p._x;
-			int py = p._y;
-			if (matcher.match(px1, py)) {
-				while (matcher.match(px1, py))
-					px1--;
-				px1++;
-				while (matcher.match(px2, py))
-					px2++;
-				boolean prevMatchUp = false;
-				boolean prevMatchDn = false;
-				setter.set(px1, px2, py);
-				for (int px = px1; px < px2; px++) {
-					boolean matchUp = matcher.match(px, py - 1);
-					if (matchUp && !prevMatchUp)
-						queue.add(new Pixel(px, py - 1));
-					boolean matchDn = matcher.match(px, py + 1);
-					if (matchDn && !prevMatchDn)
-						queue.add(new Pixel(px, py + 1));
-					prevMatchUp = matchUp;
-					prevMatchDn = matchDn;
-				}
-			}
+			fillPixel(p.x + 1, p.y);
+			fillPixel(p.x - 1, p.y);
+			fillPixel(p.x, p.y + 1);
+			fillPixel(p.x, p.y - 1);
 		}
 	}
 
-	// The plain dumb ugly fill - but because it's fast we use this one.
-	// @param mask 1 if the pixel can be filled, 0 if it cannot. Must contain
-	//             exactly width * height pixels.
-	// @param pixels the array where we fill matching pixels with color.
-	// @param x, y we start the fill here.
-	public static void fillRaw(int x, int y, int width, int height, byte[] mask,
-			int[] pixels, int color) {
-		Queue<Pixel> queue = new LinkedList<Pixel>();
-		queue.add(new Pixel(x, y));
-		while (!queue.isEmpty()) {
-			Pixel p = queue.remove();
-			int px1 = p._x;
-			int px2 = p._x;
-			int py = p._y;
-			int pp = py * width;
-
-			if (mask[pp + px1] != 0) {
-				while (px1 >= 0 && mask[pp + px1] != 0)
-					px1--;
-				px1++;
-				while (px2 < width && mask[pp + px2] != 0)
-					px2++;
-				Arrays.fill(pixels, pp + px1, pp + px2, color);
-				Arrays.fill(mask, pp + px1, pp + px2, (byte) 0);
-				boolean prevMatchUp = false;
-				boolean prevMatchDn = false;
-				int ppUp = pp - width;
-				int ppDn = pp + width;
-				for (int px = px1; px < px2; px++) {
-					if (py > 0) {
-						boolean matchUp = mask[ppUp + px] != 0;
-						if (matchUp && !prevMatchUp)
-							queue.add(new Pixel(px, py - 1));
-						prevMatchUp = matchUp;
-					}
-					if (py + 1 < height) {
-						boolean matchDn = mask[ppDn + px] != 0;
-						if (matchDn && !prevMatchDn)
-							queue.add(new Pixel(px, py + 1));
-						prevMatchDn = matchDn;
-					}
-				}
-			}
+	private void fillPixel(int x, int y) {
+		if (x < 0 || x >= width || y < 0 || y >= height) {
+			return;
 		}
+		int pixelColor = pixels[x + y * width];
+		if (pixelColor == color || pixelColor == BORDER_COLOR) {
+			return;
+		}
+		queue.add(new Pixel(x, y));
+		pixels[x + y * width] = color;
 	}
+
 
 	private static class Pixel {
 		public Pixel(int x, int y) {
-			_x = x;
-			_y = y;
+			this.x = x;
+			this.y = y;
 		}
 
-		public int _x;
-		public int _y;
+		public int x;
+		public int y;
+	}
+
+	public static Bitmap binarize(Bitmap bitmap) {
+		FloodFill fill = new FloodFill(bitmap, BACKGROUND_COLOR);
+		fill.binarize();
+		return fill.createBitmap();
+	}
+
+	private void binarize() {
+		for (int i = 0; i < pixels.length; i++) {
+			int pixel = pixels[i];
+			int brightness = (pixel & 0xff) + ((pixel >> 8) & 0xff) + ((pixel >> 16) & 0xff);
+			pixels[i] = brightness > BINARY_COLOR_THRESHOLD ? color : BORDER_COLOR;
+		}
 	}
 }

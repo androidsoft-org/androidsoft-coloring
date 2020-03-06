@@ -15,37 +15,30 @@
  */
 package org.androidsoft.coloring.ui.activity;
 
-import org.androidsoft.coloring.ui.widget.PaintView;
+import org.androidsoft.coloring.ui.widget.PaintArea;
 import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.ui.widget.Progress;
+import org.androidsoft.coloring.util.BitmapSaver;
+import org.androidsoft.coloring.util.BitmapSharer;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
-import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore.Images;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -54,16 +47,26 @@ import java.util.ArrayList;
 
 import eu.quelltext.coloring.R;
 
-import static android.os.Environment.DIRECTORY_DCIM;
-import static android.os.Environment.DIRECTORY_PICTURES;
-
-public class PaintActivity extends AbstractColoringActivity implements
-        PaintView.LifecycleListener
+public class PaintActivity extends AbstractColoringActivity
 {
-    public PaintActivity()
-    {
-        _state = new State();
-    }
+
+    private static final int REQUEST_CHOOSE_PICTURE = 0;
+    private static final int REQUEST_PICK_COLOR = 1;
+    private static final int DIALOG_PROGRESS = 1;
+    public static final String ARG_BITMAP = "bitmap";
+    // The state that we will carry over if the activity is recreated.
+    private State _state;
+    // Main UI elements.
+    private PaintArea paintArea;
+    private ProgressBar _progressBar;
+    private ProgressDialog _progressDialog;
+    // The ColorButtonManager makes sure the state of the ColorButtons visible
+    // on this activity is in sync.
+    private ColorButtonManager colorButtonManager;
+    // Is there a save in progress?
+    private boolean _saveInProgress;
+    boolean doubleBackToExitPressedOnce = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -71,47 +74,32 @@ public class PaintActivity extends AbstractColoringActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.paint);
-        _paintView = (PaintView) findViewById(R.id.paint_view);
-        _paintView.setLifecycleListener(this);
-        _progressBar = (ProgressBar) findViewById(R.id.paint_progress);
-        _progressBar.setMax(Progress.MAX);
-        _colorButtonManager = new ColorButtonManager();
+        paintArea = new PaintArea((ImageView) findViewById(R.id.paint_view));
+        colorButtonManager = new ColorButtonManager();
         View pickColorsButton = findViewById(R.id.pick_color_button);
-        pickColorsButton.setOnClickListener(new PickColorListener());
-
-        _paintView.post(new Runnable() {
+        pickColorsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                final Object previousState = getLastNonConfigurationInstance();
-                Bundle extras = getIntent().getExtras();
-                if (previousState == null)
-                {
-                    // No previous state, this is truly a new activity.
-                    // We need to make the paint view INVISIBLE (and not GONE) so that
-                    // it can measure itself correctly.
-                    _paintView.setVisibility(View.INVISIBLE);
-                    _progressBar.setVisibility(View.GONE);
-                }
-                else if (extras == null || !extras.containsKey(ARG_BITMAP))
-                {
-                    // We have a previous state, so this is a re-created activity.
-                    // Restore the state of the activity.
-                    SavedState state = (SavedState) previousState;
-                    _state = state._paintActivityState;
-                    _paintView.setState(state._paintViewState);
-                    _colorButtonManager.setState(state._colorButtonState);
-                    _paintView.setVisibility(View.VISIBLE);
-                    _progressBar.setVisibility(View.GONE);
-                    if (_state._loadInProgress)
-                    {
-                        new InitPaintView(_state._loadedBitmap);
-                    }
-                }
+            public void onClick(View view) {
+                startActivityForResult(new Intent(INTENT_PICK_COLOR), REQUEST_PICK_COLOR);
             }
         });
+
+        loadFromArguments();
     }
 
-    boolean doubleBackToExitPressedOnce = false;
+    private void loadFromArguments() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(ARG_BITMAP)) {
+            // we received and image and should thus paint it
+            byte[] byteArray = extras.getByteArray(ARG_BITMAP);
+            Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            paintArea.setImageBitmap(bmp);
+        } else {
+            Bitmap randomImage = new ResourceImageDB().randomImage().getImage(PaintActivity.this);
+            paintArea.setImageBitmap(randomImage);
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -141,29 +129,6 @@ public class PaintActivity extends AbstractColoringActivity implements
         return true;
     }
 
-    public void onPreparedToLoad()
-    {
-        // We need to invoke InitPaintView in a callback otherwise
-        // the visibility changes do not seem to be effective.
-        new Handler()
-        {
-
-            @Override
-            public void handleMessage(Message m)
-            {
-                Bundle extras = getIntent().getExtras();
-                if (extras != null && extras.containsKey(ARG_BITMAP)) {
-                    // we received and image and should thus paint it
-                    byte[] byteArray = extras.getByteArray(ARG_BITMAP);
-                    Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                    new InitPaintView(bmp);
-                } else {
-                    new InitPaintView(new ResourceImageDB().randomImage().getImage(PaintActivity.this));
-                }
-            }
-        }.sendEmptyMessage(0);
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -173,13 +138,13 @@ public class PaintActivity extends AbstractColoringActivity implements
                 openPictureChoice();
                 return true;
             case R.id.save:
-                new BitmapSaver();
+                new BitmapSaver(this, paintArea.getBitmap());
                 return true;
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
                 return true;
             case R.id.share:
-                new BitmapSharer();
+                new BitmapSharer(this, paintArea.getBitmap());
                 return true;
         }
         return false;
@@ -189,20 +154,9 @@ public class PaintActivity extends AbstractColoringActivity implements
         // how to start a new activity
         // see https://stackoverflow.com/a/4186097
         Intent intent = new Intent(this, ChoosePictureActivity.class);
-        ImageDB.Image image = _paintView.getImage();
+        ImageDB.Image image = paintArea.getImage();
         intent.putExtra(ChoosePictureActivity.ARG_IMAGE, image);
         startActivityForResult(intent, REQUEST_CHOOSE_PICTURE);
-    }
-
-
-    @Override
-    public Object onRetainNonConfigurationInstance()
-    {
-        SavedState state = new SavedState();
-        state._paintActivityState = _state;
-        state._paintViewState = _paintView.getState();
-        state._colorButtonState = _colorButtonManager.getState();
-        return state;
     }
 
     @Override
@@ -211,16 +165,16 @@ public class PaintActivity extends AbstractColoringActivity implements
         switch (requestCode)
         {
             case REQUEST_CHOOSE_PICTURE:
-                if (resultCode != RESULT_CANCELED)
+                if (resultCode == RESULT_OK)
                 {
                     ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
-                    new InitPaintView(image.getImage(PaintActivity.this));
+                    paintArea.setImageBitmap(image.getImage(this));
                 }
                 break;
             case REQUEST_PICK_COLOR:
                 if (resultCode != RESULT_CANCELED)
                 {
-                    _colorButtonManager.selectColor(resultCode);
+                    colorButtonManager.selectColor(resultCode);
                 }
                 break;
         }
@@ -258,15 +212,6 @@ public class PaintActivity extends AbstractColoringActivity implements
                 return _progressDialog;
         }
         return null;
-    }
-
-    private class PickColorListener implements View.OnClickListener
-    {
-
-        public void onClick(View view)
-        {
-            startActivityForResult(new Intent(INTENT_PICK_COLOR), REQUEST_PICK_COLOR);
-        }
     }
 
     private class ColorButtonManager implements View.OnClickListener
@@ -344,7 +289,7 @@ public class PaintActivity extends AbstractColoringActivity implements
         // Set the currently selected color in the paint view.
         private void setPaintViewColor()
         {
-            _paintView.setPaintColor(_selectedColorButton.getColor());
+            paintArea.setPaintColor(_selectedColorButton.getColor());
         }
 
         // Finds the button with the color. If found, sets it to selected,
@@ -377,225 +322,6 @@ public class PaintActivity extends AbstractColoringActivity implements
         private ColorButton _selectedColorButton;
     }
 
-    private class InitPaintView implements Runnable
-    {
-        public InitPaintView(Bitmap bmp) {
-            _originalOutlineBitmap = bmp;
-            _state._loadedBitmap = bmp;
-            // Make the progress bar visible and hide the view
-            _paintView.setVisibility(View.GONE);
-            _progressBar.setProgress(0);
-            _progressBar.setVisibility(View.VISIBLE);
-            _state._savedImageUri = null;
-
-            _state._loadInProgress = true;
-            _handler = new Handler()
-            {
-
-                @Override
-                public void handleMessage(Message m)
-                {
-                    switch (m.what)
-                    {
-                        case Progress.MESSAGE_INCREMENT_PROGRESS:
-                            // Update progress bar.
-                            _progressBar.incrementProgressBy(m.arg1);
-                            break;
-                        case Progress.MESSAGE_DONE_OK:
-                        case Progress.MESSAGE_DONE_ERROR:
-                            // We are done, hide the progress bar and turn 
-                            // the paint view back on.
-                            _state._loadInProgress = false;
-                            _paintView.setVisibility(View.VISIBLE);
-                            _progressBar.setVisibility(View.GONE);
-                            break;
-                    }
-                }
-            };
-
-            new Thread(this).start();
-        }
-
-        public void run()
-        {
-            _paintView.loadFromBitmap(_originalOutlineBitmap, _handler);
-        }
-        private Bitmap _originalOutlineBitmap;
-        private Handler _handler;
-    }
-
-    // Class needed to work-around gallery crash bug. If we do not have this
-    // scanner then the save succeeds but the Pictures app will crash when
-    // trying to open.
-    private class MediaScannerNotifier implements MediaScannerConnectionClient
-    {
-
-        public MediaScannerNotifier(Context context, String path, String mimeType)
-        {
-            _path = path;
-            _mimeType = mimeType;
-            _connection = new MediaScannerConnection(context, this);
-            _connection.connect();
-        }
-
-        public void onMediaScannerConnected()
-        {
-            _connection.scanFile(_path, _mimeType);
-        }
-
-        public void onScanCompleted(String path, final Uri uri)
-        {
-            _connection.disconnect();
-        }
-        private MediaScannerConnection _connection;
-        private String _path;
-        private String _mimeType;
-    }
-
-    private class BitmapSaver implements Runnable
-    {
-
-        public BitmapSaver()
-        {
-            class DelayHandler extends Handler
-            {
-
-                @Override
-                public void handleMessage(Message m)
-                {
-                    // We are done, hide the progress bar and turn 
-                    // the paint view back on.
-                    _saveInProgress = false;
-                    _progressDialog.dismiss();
-                }
-            }
-
-            class ProgressHandler extends Handler
-            {
-
-                @Override
-                public void handleMessage(Message m)
-                {
-                    switch (m.what)
-                    {
-                        case Progress.MESSAGE_INCREMENT_PROGRESS:
-                            // Update progress bar.
-                            _progressDialog.incrementProgressBy(m.arg1);
-                            break;
-                        case Progress.MESSAGE_DONE_OK:
-                        case Progress.MESSAGE_DONE_ERROR:
-                            if (m.what == Progress.MESSAGE_DONE_OK)
-                            {
-                                finishSaving();
-                            }
-                            String title = getString(R.string.dialog_saving);
-                            if (m.what == Progress.MESSAGE_DONE_OK)
-                            {
-                                title = getString(R.string.dialog_saving_ok);
-                            }
-                            else
-                            {
-                                title = getString(R.string.dialog_saving_error);
-                            }
-                            _progressDialog.setTitle(title);
-                            new DelayHandler().sendEmptyMessageDelayed(0,
-                                    SAVE_DIALOG_WAIT_MILLIS);
-                            break;
-                    }
-                }
-            }
-
-            if (_paintView.isInitialized())
-            {
-                _saveInProgress = true;
-                showDialog(DIALOG_PROGRESS);
-                _progressDialog.setTitle(R.string.dialog_saving);
-                _progressDialog.setProgress(0);
-                _originalOutlineBitmap = _state._loadedBitmap;
-                _progressHandler = new ProgressHandler();
-                new Thread(this).start();
-            }
-        }
-
-        public void run()
-        {
-            // Get a filename.
-            _fileName = newImageFileName();
-            File directory = new File(
-                    Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM),
-                    getString(R.string.app_name));
-            _file = new File(directory, _fileName);
-
-            // Save the bitmap to a file.
-            _paintView.saveToFile(_file, _originalOutlineBitmap, _progressHandler);
-        }
-
-        protected void finishSaving()
-        {
-            // Save it to the MediaStore.
-            ContentValues values = new ContentValues();
-            values.put(Images.Media.TITLE, _fileName);
-            values.put(Images.Media.DISPLAY_NAME, _fileName);
-            values.put(Images.Media.MIME_TYPE, MIME_PNG);
-            values.put(Images.Media.DATE_TAKEN, System.currentTimeMillis());
-            values.put(Images.Media.DATA, _file.toString());
-            File parentFile = _file.getParentFile();
-            values.put(Images.Media.BUCKET_ID,
-                    parentFile.toString().toLowerCase().hashCode());
-            values.put(Images.Media.BUCKET_DISPLAY_NAME,
-                    parentFile.getName().toLowerCase());
-            _newImageUri = getContentResolver().insert(
-                    Images.Media.EXTERNAL_CONTENT_URI, values);
-
-            // Delete the old version, if we have any.
-            if (_state._savedImageUri != null)
-            {
-                getContentResolver().delete(_state._savedImageUri, null, null);
-            }
-            _state._savedImageUri = _newImageUri;
-
-            // Scan the file so that it appears in the system as it should.
-            if (_newImageUri != null)
-            {
-                new MediaScannerNotifier(PaintActivity.this, _file.toString(), MIME_PNG);
-            }
-        }
-
-        private String newImageFileName()
-        {
-            final DateFormat fmt = new SimpleDateFormat("yyyyMMdd-HHmmss");
-            return fmt.format(new Date()) + ".png";
-        }
-        private Bitmap _originalOutlineBitmap;
-        private String _fileName;
-        private File _file;
-        private Handler _progressHandler;
-        protected Uri _newImageUri;
-    }
-
-    private class BitmapSharer extends BitmapSaver
-    {
-
-        public BitmapSharer()
-        {
-            super();
-        }
-
-        @Override
-        protected void finishSaving()
-        {
-            super.finishSaving();
-
-            if (_newImageUri != null)
-            {
-                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                sharingIntent.setType("image/png");
-                sharingIntent.putExtra(Intent.EXTRA_STREAM, _newImageUri);
-                startActivity(Intent.createChooser(sharingIntent, getString( R.string.dialog_share )));
-            }
-        }
-    }
-
     // The state of the whole drawing. This is used to transfer the state if
     // the activity is re-created (e.g. due to orientation change).
     private static class SavedState
@@ -617,21 +343,5 @@ public class PaintActivity extends AbstractColoringActivity implements
         // so that we can delete the previous version when saved again.
         public Uri _savedImageUri;
     }
-    private static final int REQUEST_CHOOSE_PICTURE = 0;
-    private static final int REQUEST_PICK_COLOR = 1;
-    private static final int DIALOG_PROGRESS = 1;
-    private static final int SAVE_DIALOG_WAIT_MILLIS = 1500;
-    private static final String MIME_PNG = "image/png";
-    public static final String ARG_BITMAP = "image";
-    // The state that we will carry over if the activity is recreated.
-    private State _state;
-    // Main UI elements.
-    private PaintView _paintView;
-    private ProgressBar _progressBar;
-    private ProgressDialog _progressDialog;
-    // The ColorButtonManager makes sure the state of the ColorButtons visible
-    // on this activity is in sync.
-    private ColorButtonManager _colorButtonManager;
-    // Is there a save in progress?
-    private boolean _saveInProgress;
+
 }

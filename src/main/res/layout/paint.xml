@@ -60,8 +60,8 @@
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent"
                   android:gravity="center" >
-	    <org.androidsoft.coloring.ui.widget.PaintView android:id="@+id/paint_view"
-	                                   android:layout_width="fill_parent" 
+	    <ImageView android:id="@+id/paint_view"
+	                                   android:layout_width="wrap_content"
 	                                   android:layout_height="fill_parent" />
 	    <ProgressBar android:id="@+id/paint_progress"
 	                 style="?android:attr/progressBarStyleHorizontal"
