@@ -170,7 +170,7 @@ public class PaintActivity extends AbstractColoringActivity implements
         switch (item.getItemId())
         {
             case R.id.open_new:
-                startActivityForResult(new Intent(INTENT_START_NEW), REQUEST_CHOOSE_PICTURE);
+                openPictureChoice();
                 return true;
             case R.id.save:
                 new BitmapSaver();
@@ -183,6 +183,15 @@ public class PaintActivity extends AbstractColoringActivity implements
                 return true;
         }
         return false;
+    }
+
+    private void openPictureChoice() {
+        // how to start a new activity
+        // see https://stackoverflow.com/a/4186097
+        Intent intent = new Intent(this, ChoosePictureActivity.class);
+        ImageDB.Image image = _paintView.getImage();
+        intent.putExtra(ChoosePictureActivity.ARG_IMAGE, image);
+        startActivityForResult(intent, REQUEST_CHOOSE_PICTURE);
     }
 
 

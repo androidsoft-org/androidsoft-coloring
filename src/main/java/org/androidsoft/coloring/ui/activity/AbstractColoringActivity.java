@@ -31,7 +31,6 @@ import org.androidsoft.utils.ui.NoTitleActivity;
 public abstract class AbstractColoringActivity extends NoTitleActivity
 {
 
-    public static final String INTENT_START_NEW = "org.androidsoft.coloring.paint.START_NEW";
     public static final String INTENT_PICK_COLOR = "org.androidsoft.coloring.paint.PICK_COLOR";
     public static final String INTENT_ABOUT = "org.androidsoft.coloring.paint.ABOUT";
 

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.WindowManager;
 
 import org.androidsoft.coloring.util.ScreenUtils;
+import org.androidsoft.coloring.util.images.JoinedImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ImageListener;
@@ -34,6 +35,7 @@ public class ChoosePictureActivity extends NoTitleActivity
 {
 
     public static final String RESULT_IMAGE = "image";
+    public static final String ARG_IMAGE = "image";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -55,8 +57,19 @@ public class ChoosePictureActivity extends NoTitleActivity
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         imagesView.setLayoutManager(layoutManager);
 
-        // set adapter
-        ImageDB imageDB = new ResourceImageDB();
+        // create a database with all the images
+        JoinedImageDB imageDB = new JoinedImageDB();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null && extras.containsKey(ARG_IMAGE)) {
+            ImageDB.Image image = extras.getParcelable(ARG_IMAGE);
+            if (image.isVisible()) {
+                imageDB.add(image);
+            }
+        }
+        imageDB.add(new ResourceImageDB());
+
+        // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(
                 imageDB, R.layout.choose_picture_line,
                 new int[]{R.id.image1, R.id.image2});

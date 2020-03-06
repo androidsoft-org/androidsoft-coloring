@@ -17,6 +17,10 @@ package org.androidsoft.coloring.ui.widget;
 
 import org.androidsoft.coloring.util.FloodFill;
 import org.androidsoft.coloring.util.DrawUtils;
+import org.androidsoft.coloring.util.images.BitmapImage;
+import org.androidsoft.coloring.util.images.ImageDB;
+import org.androidsoft.coloring.util.images.NullImage;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,6 +42,15 @@ import java.io.FileOutputStream;
 
 public class PaintView extends View
 {
+
+    public ImageDB.Image getImage() {
+        if (_state._outlineBitmap != null) {
+            return new BitmapImage(_state._outlineBitmap);
+        } else if (_state._paintedBitmap != null) {
+            return new BitmapImage(_state._paintedBitmap);
+        }
+        return new NullImage();
+    }
 
     public interface LifecycleListener
     {
@@ -335,6 +348,10 @@ public class PaintView extends View
 
     private synchronized void paint(int x, int y)
     {
+        if (_state._paintMask == null || _state._workingMask == null || _state._paintedBitmap == null) {
+            // the paint view was clicked before it was loaded
+            return;
+        }
         // Copy the original mask to the working mask because it will be
         // modified.
         System.arraycopy(_state._paintMask, 0, _state._workingMask, 0,

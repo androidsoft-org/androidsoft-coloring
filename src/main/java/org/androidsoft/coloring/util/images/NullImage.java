@@ -7,7 +7,7 @@ import android.os.Parcel;
 
 import eu.quelltext.coloring.R;
 
-class NullImage implements ImageDB.Image {
+public class NullImage implements ImageDB.Image {
     @Override
     public Bitmap asPreviewImage(Context context, int maxWidth) {
         return null;
