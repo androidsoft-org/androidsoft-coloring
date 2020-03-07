@@ -28,7 +28,7 @@ import weka.core.ManhattanDistance;
 public class ImageProcessing implements Runnable {
 
     private static final int NUMBER_OF_COLORS = 9;
-    private static final int LINE_WIDTH = 10;
+    private static final int LINE_WIDTH = 7;
     private static final int AREA_RADIUS = 10;
 
     private static final int LINE_WIDTH_HALF = LINE_WIDTH / 2 + LINE_WIDTH % 2;
@@ -37,7 +37,7 @@ public class ImageProcessing implements Runnable {
 
     private static final int COLOR_LINE = Color.BLACK;
     private static final int COLOR_BACKGROUND = Color.WHITE;
-    private static final int NUMBER_OF_AREAS = 30;
+    private static final int NUMBER_OF_AREAS = 19;
 
 
     private Attribute red;
@@ -95,7 +95,6 @@ public class ImageProcessing implements Runnable {
         removeSmallAreasByKernel();
         imagePreview.setImage(smoothedColors);
         removeSmallAreasByConnectedComponents();
-        imagePreview.setImage(smoothedColors);
         drawLinesAroundTheAreas();
         imagePreview.setImage(lineImage);
         progress.stepDone();
@@ -152,6 +151,7 @@ public class ImageProcessing implements Runnable {
             measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
         }
         smoothedPixels = Util.unflatten(measurement.computeArea(), classifiedPixels.length);
+
     }
 
     private void removeSmallAreasByKernel() {
@@ -173,6 +173,7 @@ public class ImageProcessing implements Runnable {
                 int ky_min = Math.max(y - AREA_RADIUS, 0);
                 int kx_max = Math.min(x + AREA_RADIUS + 1, width);
                 int ky_max = Math.min(y + AREA_RADIUS + 1, height);
+
                 // use a kernel like this
                 // +--+--+
                 // |  |  |
@@ -194,6 +195,24 @@ public class ImageProcessing implements Runnable {
                             surroundingCls[cls]++;
                         }
                     }
+                }
+                // use a kernel like this
+                // \|/
+                // -+-
+                // /|\
+                for (int k = 0; k <= AREA_RADIUS; k++) {
+                    int kyMin = Math.max(y - k, ky_min);
+                    int kyMax = Math.min(y + k, ky_max - 1);
+                    int kxMin = Math.max(x - k, kx_min);
+                    int kxMax = Math.min(x + k, kx_max - 1);
+                    //surroundingCls[classifiedPixels[kxMin][y]]++;
+                    //surroundingCls[classifiedPixels[kxMax][y]]++;
+                    //surroundingCls[classifiedPixels[ x   ][kyMin]]++;
+                    surroundingCls[classifiedPixels[kxMin][kyMin]]++;
+                    surroundingCls[classifiedPixels[kxMax][kyMin]]++;
+                    //surroundingCls[classifiedPixels[ x   ][kyMax]]++;
+                    surroundingCls[classifiedPixels[kxMin][kyMax]]++;
+                    surroundingCls[classifiedPixels[kxMax][kyMax]]++;
                 }
                 int maxValue = surroundingCls[0];
                 int bestClass = 0;
