@@ -58,6 +58,24 @@ public class ConnectedComponentTest {
         );
     }
 
+    @Test
+    public void testBig() {
+        assertComponentComputed(
+                new int[]{
+                        1, 1, 1, 1, 2, 2,
+                        1, 0, 0, 1, 0, 1,
+                        0, 0, 1, 0, 0, 1,
+                },
+                new int[]{
+                        0, 0, 0, 0, 1, 1,
+                        0, 2, 2, 0, 3, 4,
+                        2, 2, 5, 3, 3, 4,
+                },
+                6, 3
+        );
+    }
+
+
     private void assertComponentComputed(int[] classifiedArray, int[] expectedArray, int width, int height) {
         ConnectedComponents connectedComponents = new ConnectedComponents(classifiedArray, width, height);
         ConnectedComponents.Result result = connectedComponents.compute();
