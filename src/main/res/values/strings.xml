@@ -60,5 +60,7 @@
     <string name="empty" translatable="false" />
     <string name="permission_read_external_storage">The app needs permission to read the external storage so you can continue painting pictures.</string>
     <string name="permission_write_external_storage">The app needs permission to save painted pictures.</string>
+    <string name="progress_connecting_components">finding connected areas</string>
+    <string name="progress_measuring_areas">measuring areas</string>
 
 </resources>

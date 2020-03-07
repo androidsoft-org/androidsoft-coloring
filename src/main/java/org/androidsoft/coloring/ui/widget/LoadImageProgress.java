@@ -7,7 +7,7 @@ import eu.quelltext.coloring.R;
 
 public class LoadImageProgress {
 
-    private static final int STEPS = 11; // do not forget to change when you add steps
+    private static final int STEPS = 15; // do not forget to change when you add steps
 
     private final ProgressBar progressBar;
     private TextView textView;
@@ -73,12 +73,19 @@ public class LoadImageProgress {
     public void stepRemovingNoise() {
         step(7, R.string.progress_removing_noise);
     }
+    public void stepConnectingComponents() {
+        step(7, R.string.progress_connecting_components);
+    }
+    public void stepMeasuringAreas() {
+        step(8, R.string.progress_measuring_areas);
+    }
 
     public void stepShowSmoothedImage() {
-        step(8, R.string.progress_show_smoothed_image);
+        step(9, R.string.progress_show_smoothed_image);
     }
 
     public void stepDrawLinesAround() {
-        step(9, R.string.progress_draw_lines);
+        step(10, R.string.progress_draw_lines);
     }
+
 }
