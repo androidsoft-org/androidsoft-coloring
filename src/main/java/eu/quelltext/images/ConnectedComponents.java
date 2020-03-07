@@ -1,6 +1,4 @@
-package eu.quelltext.clustering;
-
-import android.util.ArrayMap;
+package eu.quelltext.images;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +72,14 @@ public class ConnectedComponents {
         return new Result(area, width, height, minLabels);
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
     public static class Result {
         private boolean isFinal;
         private int[] area;
@@ -111,6 +117,18 @@ public class ConnectedComponents {
             this.area = result;
             isFinal = true;
             return result;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public Measurement computeMeasurement() {
+            return new Measurement(computeArray(), width, height);
         }
     }
 }

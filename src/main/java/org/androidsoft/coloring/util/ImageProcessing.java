@@ -146,85 +146,8 @@ public class ImageProcessing implements Runnable {
 
     private void removeSmallAreasByConnectedComponents() {
         progress.stepConnectingComponents();
-        int width = classifiedPixels.length;
-        int height = classifiedPixels[0].length;
 
-        int[][] area = new int[width][height];
-        List<Set<Integer>> labels = new ArrayList<>();
 
-        // first pass: label
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int thisValue = classifiedPixels[x][y];
-                if (x > 0 && classifiedPixels[x-1][y] == thisValue) {
-                    if (y > 0 && classifiedPixels[x][y-1] == thisValue) {
-                        /* pixel is equal to left and top */
-                        int leftLabel = area[x-1][y];
-                        int topLabel = area[x][y-1];
-                        area[x][y] = leftLabel;
-                        if (leftLabel == topLabel) {
-                            /* both labels are equivalent */
-                        } else {
-                            /* record equivalence */
-                            Set<Integer> set = labels.get(leftLabel);
-                            set.addAll(labels.get(topLabel));
-                            labels.set(topLabel, set);
-                        }
-                    } else {
-                        /* pixel is equal to left only */
-                        area[x][y] = area[x-1][y];
-                    }
-                } else if (y > 0 && classifiedPixels[x][y-1] == thisValue) {
-                    /* pixel is equal to top only */
-                    area[x][y] = area[x][y-1];
-                } else {
-                    /* pixel is different from top and left */
-                    /* create new label */
-                    int newLabel = labels.size();
-                    CopyOnWriteArraySet<Integer> set = new CopyOnWriteArraySet<Integer>();
-                    set.add(newLabel);
-                    labels.add(set);
-                    area[x][y] = newLabel;
-                }
-            }
-        }
-        progress.stepMeasuringAreas();
-        // second pass components
-        int COLLECTED_COMPONENT = width * height + 1;
-        int[] minLabels = new int[labels.size()]; /* this is the lowest recorded equivalent label */
-        int[] labelSizes = new int[labels.size()];
-        for (int i = 0; i < labels.size(); i++) {
-            int minLabel = i;
-            for (int label : labels.get(i)) {
-                if (label < minLabel) {
-                    minLabel = label;
-                }
-            }
-            minLabels[i] = minLabel;
-        }
-        int [][] surfaceArea = new int[labels.size()][labels.size()];
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                int i = area[x][y] = minLabels[area[x][y]]; // record equivalence
-                labelSizes[i]++; // record size of label
-            }
-        }
-        for (int pass = 0; pass < minLabels.length - NUMBER_OF_AREAS; pass++) {
-            // find minimum area
-            int minSize = labelSizes[0];
-            int minLabelIndex = 0;
-            for (int i = 1; i < labelSizes.length; i++) {
-                if (labelSizes[i] < minSize) {
-                    minSize = labelSizes[i];
-                    minLabelIndex = i;
-                }
-            }
-            if (minSize == 0) {
-                // this is a label which was merged into another label
-                labelSizes[minLabelIndex] = COLLECTED_COMPONENT;
-                continue;
-            }
-        }
     }
 
     private void removeSmallAreasByKernel() {
