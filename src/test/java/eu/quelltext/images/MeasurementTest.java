@@ -1,15 +1,22 @@
-package eu.quelltext.coloring;
+package eu.quelltext.images;
 
 import org.junit.Test;
-import eu.quelltext.images.Measurement;
 
-import static eu.quelltext.coloring.ConnectedComponentTest.assert2DArrayEquals;
+import static eu.quelltext.images.Assertions.assert2DArrayEquals;
 import static junit.framework.TestCase.assertEquals;
 
 public class MeasurementTest {
     private Measurement measurement = null;
 
     @Test
+    public void testNothingToMeasure() {
+        createMeasurement(new int[]{}, 0, 0);
+        assertHasComponents(0);
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertHasComponents(0);
+    }
+
+        @Test
     public void testEmptyArea() {
         createMeasurement(new int[]{
                 0, 0, 0,
@@ -80,6 +87,48 @@ public class MeasurementTest {
                 0, 0, 0, 3, 3, 3, 3, 3, 6, 6, 6,
                 0, 0, 0, 3, 3, 3, 3, 3, 6, 6, 6,
         });
+    }
+
+    @Test
+    public void  testMergingIntoEachother() {
+        createMeasurement(new int[]{
+                1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+                1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+        }, 15, 2);
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertAreaEquals(new int[]{
+                2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+                2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+        });
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertAreaEquals(new int[]{
+                3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+                3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4,
+        });
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertAreaEquals(new int[]{
+                4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+                4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+        });
+    }
+
+    @Test
+    public void  testMergeIntoRemovedArea() {
+        createMeasurement(new int[]{
+                1, 1, 1, 1,
+                1, 1, 1, 3,
+                0, 0, 0, 3,
+                3, 3, 3, 3,
+        }, 4, 4);
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertAreaEquals(new int[]{
+                1, 1, 1, 1,
+                1, 1, 1, 3,
+                3, 3, 3, 3,
+                3, 3, 3, 3,
+        });
+        measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        assertHasComponents(1);
     }
 
     private void assertAreaEquals(int[] expectedArea) {

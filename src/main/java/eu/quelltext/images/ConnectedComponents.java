@@ -18,6 +18,12 @@ public class ConnectedComponents {
         this.height = height;
     }
 
+    public ConnectedComponents(int[][] classified) {
+        this.classified = Util.flatten(classified);
+        this.height = classified.length;
+        this.width = height == 0 ? 0 : classified[0].length;
+    }
+
     public Result compute() {
         int[] area = new int[width * height];
         List<Set<Integer>> labels = new ArrayList<>();

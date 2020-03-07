@@ -1,8 +1,6 @@
-package eu.quelltext.coloring;
+package eu.quelltext.images;
 
 import org.junit.Test;
-
-import eu.quelltext.images.ConnectedComponents;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -79,27 +77,8 @@ public class ConnectedComponentTest {
         ConnectedComponents connectedComponents = new ConnectedComponents(classifiedArray, width, height);
         ConnectedComponents.Result result = connectedComponents.compute();
         int[] resultArray = result.computeArray();
-        assert2DArrayEquals(expectedArray, resultArray, width, height);
+        Assertions.assert2DArrayEquals(expectedArray, resultArray, width, height);
 
     }
 
-    public static void assert2DArrayEquals(int[] expectedArray, int[] array, int width, int height) {
-        assertEquals("result should be of length " + expectedArray.length + " and not " + array.length,
-                expectedArray.length, array.length);
-        String message = "";
-        int i = 0;
-        for (int y = 0; y < height; y++) {
-            String line1 = "";
-            String line2 = "";
-            for (int x = 0; x < width; x++) {
-                line1 += expectedArray[i] + ",\t";
-                line2 += array[i] + ",\t";
-                i++;
-            }
-            message += "\n" + line1 + "==\t" + line2;
-        }
-        for (i = 0; i < expectedArray.length; i++) {
-            assertEquals(message, expectedArray[i], array[i]);
-        }
-    }
 }

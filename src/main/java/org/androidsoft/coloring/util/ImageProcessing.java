@@ -12,18 +12,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 
+import eu.quelltext.images.ConnectedComponents;
+import eu.quelltext.images.Measurement;
+import eu.quelltext.images.Util;
 import weka.clusterers.SimpleKMeans;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.ManhattanDistance;
-import weka.core.logging.ConsoleLogger;
 
 // see https://developer.android.com/reference/java/lang/Thread
 public class ImageProcessing implements Runnable {
@@ -93,7 +92,9 @@ public class ImageProcessing implements Runnable {
             progress.stepFail();
             return;
         }
-        removeSmallAreas();
+        removeSmallAreasByKernel();
+        imagePreview.setImage(smoothedColors);
+        removeSmallAreasByConnectedComponents();
         imagePreview.setImage(smoothedColors);
         drawLinesAroundTheAreas();
         imagePreview.setImage(lineImage);
@@ -140,14 +141,17 @@ public class ImageProcessing implements Runnable {
         }
     }
 
-    private void removeSmallAreas() {
-        removeSmallAreasByConnectedComponents();
-    }
-
     private void removeSmallAreasByConnectedComponents() {
         progress.stepConnectingComponents();
-
-
+        ConnectedComponents connectedComponents = new ConnectedComponents(
+                smoothedPixels == null ? classifiedPixels : smoothedPixels);
+        ConnectedComponents.Result result = connectedComponents.compute();
+        progress.stepMeasuringAreas();
+        Measurement measurement = result.computeMeasurement();
+        while (measurement.getNumberOfComponents() > NUMBER_OF_AREAS) {
+            measurement.mergeSmallestAreaIntoItsBiggestNeighbor();
+        }
+        smoothedPixels = Util.unflatten(measurement.computeArea(), classifiedPixels.length);
     }
 
     private void removeSmallAreasByKernel() {

@@ -9,6 +9,7 @@ import java.util.Map;
 public class Measurement {
     private final Map<Integer, Map<Integer, Integer>> neighborCount = new HashMap<>();
     private final Map<Integer, ArrayList<XY>> positions = new HashMap<>();
+    private final Map<Integer, Integer> equalityLookup = new HashMap<>();
     private final int width;
     private final int height;
 
@@ -23,6 +24,7 @@ public class Measurement {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++, i++) {
                 int label = classified[i];
+                equalityLookup.put(label, label);
                 if (!positions.containsKey(label)) {
                     positions.put(label, new ArrayList<XY>());
                     neighborCount.put(label, new HashMap<Integer, Integer>());
@@ -79,7 +81,7 @@ public class Measurement {
             }
         }
         int biggestNeighborSize = 0;
-        int biggestNeighborLabel = 0;
+        int biggestNeighborLabel = -1;
         for (Map.Entry<Integer, Integer> neigbor : neighborCount.get(smallestLabel).entrySet()) {
             if (biggestNeighborSize < neigbor.getValue()) {
                 biggestNeighborLabel = neigbor.getKey();
@@ -89,7 +91,15 @@ public class Measurement {
         if (smallestLabel == biggestNeighborLabel) {
             throw new AssertionError("A label can not be neighbor of itself.");
         }
-        positions.get(biggestNeighborLabel).addAll(positions.get(smallestLabel));
+        if (biggestNeighborLabel == -1) {
+            throw new AssertionError("The label " + smallestLabel + " has no neighbors.");
+        }
+        ArrayList<XY> biggestNeighborPositions = null;
+        while(biggestNeighborPositions == null) {
+            biggestNeighborLabel = equalityLookup.get(biggestNeighborLabel);
+            biggestNeighborPositions = positions.get(biggestNeighborLabel);
+        }
+        biggestNeighborPositions.addAll(positions.get(smallestLabel));
         positions.remove(smallestLabel);
         Map<Integer, Integer> biggestNeighborsNeighbors = neighborCount.get(biggestNeighborLabel);
         for (Map.Entry<Integer, Integer> neighbor : neighborCount.get(smallestLabel).entrySet()) {
@@ -104,6 +114,7 @@ public class Measurement {
         neighborCount.remove(smallestLabel);
         biggestNeighborsNeighbors.remove(smallestLabel);
         biggestNeighborsNeighbors.remove(biggestNeighborLabel);
+        equalityLookup.put(smallestLabel, biggestNeighborLabel);
     }
 
     public int[] computeArea() {

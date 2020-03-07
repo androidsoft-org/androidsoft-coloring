@@ -1,6 +1,7 @@
 package org.androidsoft.coloring.ui.widget;
 
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import eu.quelltext.coloring.R;
@@ -10,6 +11,7 @@ public class LoadImageProgress {
     private static final int STEPS = 15; // do not forget to change when you add steps
 
     private final ProgressBar progressBar;
+    private long lastStep;
     private TextView textView;
     private final Handler handler;
 
@@ -19,6 +21,7 @@ public class LoadImageProgress {
         progressBar.setIndeterminate(false);
         progressBar.setMax(STEPS);
         handler = new Handler();
+        lastStep = System.nanoTime();
         stepStart();
 
     }
@@ -32,6 +35,9 @@ public class LoadImageProgress {
                 textView.setText(textId);
             }
         });
+        long newStep = System.nanoTime();
+        Log.d("progress", "step " + step + ": " + (newStep - lastStep) / 1000000 + "ms");
+        lastStep = newStep;
     }
 
     public void stepStart() {
@@ -73,19 +79,21 @@ public class LoadImageProgress {
     public void stepRemovingNoise() {
         step(7, R.string.progress_removing_noise);
     }
-    public void stepConnectingComponents() {
-        step(7, R.string.progress_connecting_components);
-    }
-    public void stepMeasuringAreas() {
-        step(8, R.string.progress_measuring_areas);
-    }
 
     public void stepShowSmoothedImage() {
-        step(9, R.string.progress_show_smoothed_image);
+        step(8, R.string.progress_show_smoothed_image);
+    }
+
+    public void stepConnectingComponents() {
+        step(9, R.string.progress_connecting_components);
+    }
+
+    public void stepMeasuringAreas() {
+        step(10, R.string.progress_measuring_areas);
     }
 
     public void stepDrawLinesAround() {
-        step(10, R.string.progress_draw_lines);
+        step(11, R.string.progress_draw_lines);
     }
 
 }
