@@ -31,7 +31,7 @@ public class ConnectedComponents {
                 if (x > 0 && classified[x-1 + y * width] == thisValue) {
                     if (y > 0 && classified[x + (y-1) * width] == thisValue) {
                         /* pixel is equal to left and top */
-                        int leftLabel = area[x + y * width];
+                        int leftLabel = area[x-1 + y * width];
                         int topLabel = area[x + (y-1) * width];
                         area[x + y * width] = leftLabel;
                         if (leftLabel == topLabel) {
