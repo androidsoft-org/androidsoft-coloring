@@ -8,8 +8,6 @@ import eu.quelltext.coloring.R;
 
 public class LoadImageProgress {
 
-    private static final int STEPS = 15; // do not forget to change when you add steps
-
     private final ProgressBar progressBar;
     private long lastStep;
     private TextView textView;
@@ -92,8 +90,14 @@ public class LoadImageProgress {
         step(10, R.string.progress_measuring_areas);
     }
 
-    public void stepDrawLinesAround() {
-        step(11, R.string.progress_draw_lines);
+    public void stepShowComponents() {
+            step(11, R.string.progress_show_components);
     }
+
+    public void stepDrawLinesAround() {
+        step(12, R.string.progress_draw_lines);
+    }
+
+    private static final int STEPS = 15; // do not forget to change when you add steps
 
 }

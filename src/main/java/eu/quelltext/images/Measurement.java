@@ -72,14 +72,7 @@ public class Measurement {
         if (positions.size() <= 1) {
             return;
         }
-        int smallestLabel = -1;
-        int smallestLabelSize = width * height + 1;
-        for (Map.Entry<Integer, ArrayList<XY>> label: positions.entrySet()) {
-            if (smallestLabelSize > label.getValue().size()) {
-                smallestLabel = label.getKey();
-                smallestLabelSize = label.getValue().size();
-            }
-        }
+        int smallestLabel = getSmallestLabel();
         int biggestNeighborSize = 0;
         int biggestNeighborLabel = -1;
         for (Map.Entry<Integer, Integer> neigbor : neighborCount.get(smallestLabel).entrySet()) {
@@ -117,6 +110,18 @@ public class Measurement {
         equalityLookup.put(smallestLabel, biggestNeighborLabel);
     }
 
+    private int getSmallestLabel() {
+        int smallestLabel = -1;
+        int smallestLabelSize = width * height + 1;
+        for (Map.Entry<Integer, ArrayList<XY>> label: positions.entrySet()) {
+            if (smallestLabelSize > label.getValue().size()) {
+                smallestLabel = label.getKey();
+                smallestLabelSize = label.getValue().size();
+            }
+        }
+        return smallestLabel;
+    }
+
     public int[] computeArea() {
         int[] area = new int[width * height];
         for (Map.Entry<Integer, ArrayList<XY>> labelPositions : positions.entrySet()) {
@@ -134,6 +139,11 @@ public class Measurement {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getSmallestComponentSize() {
+        int smallestLabel = getSmallestLabel();
+        return positions.get(smallestLabel).size();
     }
 
     private static class XY {

@@ -2,6 +2,7 @@ package eu.quelltext.images;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 
 public class Util {
