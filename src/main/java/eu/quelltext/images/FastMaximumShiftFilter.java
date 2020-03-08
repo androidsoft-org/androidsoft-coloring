@@ -18,7 +18,7 @@ public class FastMaximumShiftFilter implements MaximumShiftFilter {
 
     @Override
     public int[] compute(int radius) {
-        System.out.println("-------------------------------");
+        //System.out.println("-------------------------------");
         int[] result = new int[array.length];
         OccurrenceCounter startCounter = new OccurrenceCounter();
         // initialize counter
