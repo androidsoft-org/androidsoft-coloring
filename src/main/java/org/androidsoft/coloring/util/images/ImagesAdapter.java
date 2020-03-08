@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import eu.quelltext.coloring.R;
+
 public class ImagesAdapter extends RecyclerView.Adapter {
-    private static final int MAX_WIDTH = 100;
     private final ImageDB imageDB;
     private final int layoutId;
     private final int[] imageViewIds;
@@ -61,10 +62,12 @@ public class ImagesAdapter extends RecyclerView.Adapter {
 
     private class ViewHolder extends RecyclerView.ViewHolder {
         private final View root;
+        private final int maxWidth;
 
         public ViewHolder(@NonNull View root) {
             super(root);
             this.root = root;
+            maxWidth = root.getContext().getResources().getDimensionPixelSize(R.dimen.maximum_image_preview_size);
         }
 
         public void display(ImageDB.Image[] images) {
@@ -72,12 +75,12 @@ public class ImagesAdapter extends RecyclerView.Adapter {
                 ImageView imageView = root.findViewById(imageViewIds[i]);
                 final ImageDB.Image image = images[i];
                 if (image.isVisible()) {
-                    int maxWidth = imageView.getWidth();
-                    maxWidth = maxWidth == 0 ? getScreenWidth() / numberOfImagesPerRow : maxWidth;
-                    if (maxWidth > MAX_WIDTH) {
-                        maxWidth = MAX_WIDTH;
+                    int width = imageView.getWidth();
+                    width = width == 0 ? getScreenWidth() / numberOfImagesPerRow : width;
+                    if (width > maxWidth) {
+                        width = maxWidth;
                     }
-                    Bitmap bitmap = image.asPreviewImage(root.getContext(), maxWidth);
+                    Bitmap bitmap = image.asPreviewImage(root.getContext(), width);
                     imageView.setImageBitmap(bitmap);
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
