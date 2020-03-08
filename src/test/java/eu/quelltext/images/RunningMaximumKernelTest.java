@@ -23,6 +23,12 @@ public class RunningMaximumKernelTest {
                 public MaximumShiftFilter create(int[] array, int width, int height) {
                     return new SimpleMaximumShiftFilter(array, width, height);
                 }
+            },
+            new FilterCreator() {
+                @Override
+                public MaximumShiftFilter create(int[] array, int width, int height) {
+                    return new FastMaximumShiftFilter(array, width, height);
+                }
             }
     };
 
@@ -42,14 +48,14 @@ public class RunningMaximumKernelTest {
     @Theory
     public void testSomeNoise(FilterCreator creator) {
         assertFilteredEquals(new int[]{
-                1, 0, 1, 2, 2,
-                1, 1, 0, 1, 1,
-                3, 1, 1, 3, 0,
+                1, 0, 1, 2, 2, 1,
+                1, 1, 0, 1, 1, 1,
+                3, 1, 1, 3, 0, 2,
         }, new int[]{
-                1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1,
-                1, 1, 1, 1, 1,
-        },  5, 3, 1, creator);
+                1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1,
+                1, 1, 1, 1, 1, 1,
+        },  6, 3, 1, creator);
     }
 
     @Theory

@@ -5,13 +5,13 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class OccurenceCounterTest {
+public class OccurrenceCounterTest {
 
-    private OccurenceCounter counter;
+    private OccurrenceCounter counter;
 
     @Before
     public void setUpCounter() {
-        counter = new OccurenceCounter();
+        counter = new OccurrenceCounter();
     }
 
     @Test
