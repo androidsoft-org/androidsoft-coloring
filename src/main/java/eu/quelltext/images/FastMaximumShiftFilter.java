@@ -28,7 +28,7 @@ public class FastMaximumShiftFilter implements MaximumShiftFilter {
             }
         }
         for (int y = 0; y < height; y++) {
-            System.out.println("new line " + y);
+            //System.out.println("new line " + y);
             int minY = y - radius - 1; // index to remove line, not in range
             int maxY = y + radius;     // index to add line, in range
             if (minY >= 0) {
@@ -49,7 +49,7 @@ public class FastMaximumShiftFilter implements MaximumShiftFilter {
             minY = Math.max(minY + 1, 0);          // out of range
             maxY = Math.min(maxY, height - 1); // in range
             for (int x = 1; x < width; x++) {
-                System.out.println("pixel " + x + "," + y);
+                //System.out.println("pixel " + x + "," + y);
                 int minX = x - radius - 1; // index to remove line
                 int maxX = x + radius;     // index to add line
                 // remove the line we leave

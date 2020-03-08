@@ -19,12 +19,12 @@ public class OccurrenceCounter {
 
     public void increase(int label) {
         increaseBy(label, 1);
-        System.out.println("\tcounter" + "+" + label);
+        //System.out.println("\tcounter" + "+" + label);
     }
 
     public void decrease(int label) {
         increaseBy(label, -1);
-        System.out.println("\tcounter" + "-" + label);
+        //System.out.println("\tcounter" + "-" + label);
     }
 
     private void increaseBy(int label, int difference) {
