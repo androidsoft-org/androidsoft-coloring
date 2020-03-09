@@ -10,3 +10,4 @@
 - new: cannot save image twice
 - new: save image before replacing it with image from photo
 - new: show saved images in the list of choosable images
+- new: change color behind the buttons
