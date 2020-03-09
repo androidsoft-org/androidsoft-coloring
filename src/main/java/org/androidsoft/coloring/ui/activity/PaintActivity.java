@@ -29,9 +29,6 @@ import java.util.LinkedList;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -83,11 +80,11 @@ public class PaintActivity extends AbstractColoringActivity
             }
         });
 
-        loadFromArguments();
+        loadFromIntent(getIntent());
     }
 
-    private void loadFromArguments() {
-        Bundle extras = getIntent().getExtras();
+    private void loadFromIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
         ImageDB.Image image;
         if (extras != null && extras.containsKey(ARG_IMAGE)) {
             // we received and image and should thus paint it
@@ -98,6 +95,14 @@ public class PaintActivity extends AbstractColoringActivity
         paintArea.setImageBitmap(image.getImage(PaintActivity.this));
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // capture the new intent
+        // see https://developer.android.com/guide/components/activities/tasks-and-back-stack
+        // see https://developer.android.com/reference/android/app/Activity#onNewIntent(android.content.Intent)
+        super.onNewIntent(intent);
+        loadFromIntent(intent);
+    }
 
     @Override
     public void onBackPressed() {
