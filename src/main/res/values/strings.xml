@@ -63,5 +63,11 @@
     <string name="progress_connecting_components">finding connected areas - this may take several minutes</string>
     <string name="progress_measuring_areas">measuring areas and removing small areas</string>
     <string name="progress_show_components">creating picture with components</string>
+    <!-- PaintActivity: Toast when the saving button is pressed. -->
+    <string name="toast_save_file">Saving as <xliff:g example="20200305-200938.png" id="fileName">%1$s</xliff:g></string>
+    <!-- PaintActivity: Toast when the saving button is pressed. -->
+    <string name="toast_save_file_running">Still saving as <xliff:g example="/DCIM/Coloring Book/20200305-200938.png" id="fileName">%1$s</xliff:g></string>
+    <!-- PaintActivity: Toast when the saving button is pressed. -->
+    <string name="toast_save_file_again">Already saved as <xliff:g example="/DCIM/Coloring Book/20200305-200938.png" id="fileName">%1$s</xliff:g></string>
 
 </resources>

@@ -29,19 +29,23 @@ public class BitmapSaver implements Runnable
     public static final String MIME_PNG = "image/png";
 
     protected final Context context;
+    private final File file;
     private Bitmap bitmap;
+    private Thread thread = null;
 
     public BitmapSaver(Context context, Bitmap bitmap)
     {
         this.context = context;
         this.bitmap = bitmap;
+        file = newFileName();
+        thread = new Thread(this);
     }
 
     public void start() {
-        new Thread(this).start();
+        thread.start();
     }
 
-    public File getFile() {
+    public File newFileName() {
         // Get a filename.
         String filename = newImageFileName();
         File directory = new File(
@@ -50,8 +54,11 @@ public class BitmapSaver implements Runnable
         return new File(directory, filename);
     }
 
-    public void run() {
+    public File getFile() {
+        return file;
+    }
 
+    public void run() {
         File file = getFile();
         // save the bitmap, see https://stackoverflow.com/a/673014
         FileOutputStream out = null;
@@ -94,5 +101,13 @@ public class BitmapSaver implements Runnable
     {
         final DateFormat fmt = new SimpleDateFormat("yyyyMMdd-HHmmss");
         return fmt.format(new Date()) + ".png";
+    }
+
+    public boolean isRunning() {
+        return thread.isAlive();
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

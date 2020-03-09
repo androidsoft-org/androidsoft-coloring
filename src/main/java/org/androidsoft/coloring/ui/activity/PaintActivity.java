@@ -20,6 +20,7 @@ import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.ui.widget.Progress;
 import org.androidsoft.coloring.util.BitmapSaver;
 import org.androidsoft.coloring.util.BitmapSharer;
+import org.androidsoft.coloring.util.images.BitmapHash;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
 
@@ -57,6 +58,8 @@ public class PaintActivity extends AbstractColoringActivity
     // on this activity is in sync.
     private ColorButtonManager colorButtonManager;
     boolean doubleBackToExitPressedOnce = false;
+    private BitmapSaver bitmapSaver = null;
+    private int lastSavedHash; // the hash value of the last saved bitmap
 
 
     @Override
@@ -137,16 +140,44 @@ public class PaintActivity extends AbstractColoringActivity
                 openPictureChoice();
                 return true;
             case R.id.save:
-                new BitmapSaver(this, paintArea.getBitmap()).start();
+                saveBitmap(new BitmapSaver(this, paintArea.getBitmap()));
                 return true;
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
                 return true;
             case R.id.share:
-                new BitmapSharer(this, paintArea.getBitmap()).start();
+                saveBitmap(new BitmapSharer(this, paintArea.getBitmap()));
                 return true;
         }
         return false;
+    }
+
+    private void saveBitmap(BitmapSaver newBitmapSaver) {
+        int duration = Toast.LENGTH_SHORT;
+        int message;
+        String path;
+        int newHash = BitmapHash.hash(newBitmapSaver.getBitmap());
+        if (bitmapSaver != null && bitmapSaver.isRunning()) {
+            // pressing save while in progress
+            message = R.string.toast_save_file_running;
+            path = bitmapSaver.getFile().getPath();
+        } else if (lastSavedHash == newHash) {
+            // image is already saved
+            message = R.string.toast_save_file_again;
+            path = bitmapSaver.getFile().getPath();        } else {
+            // image is not saved
+            bitmapSaver = newBitmapSaver;
+            bitmapSaver.start();
+            message = R.string.toast_save_file;
+            path = bitmapSaver.getFile().getName();
+            lastSavedHash = BitmapHash.hash(newBitmapSaver.getBitmap());
+        }
+        // create a toast
+        // see https://developer.android.com/guide/topics/ui/notifiers/toasts#java
+        String text = getString(message, path);
+        Toast toast = Toast.makeText(this, text, duration);
+        toast.show();
+
     }
 
     private void openPictureChoice() {
@@ -178,7 +209,7 @@ public class PaintActivity extends AbstractColoringActivity
                 break;
         }
     }
-    
+
     private class ColorButtonManager implements View.OnClickListener
     {
 
