@@ -277,7 +277,15 @@ public class PaintActivity extends AbstractColoringActivity
         // Set the currently selected color in the paint view.
         private void setPaintViewColor()
         {
-            paintArea.setPaintColor(_selectedColorButton.getColor());
+            int selectedColor = _selectedColorButton.getColor();
+            paintArea.setPaintColor(selectedColor);
+            setBackgroundColorOfButtons(selectedColor);
+        }
+
+        private void setBackgroundColorOfButtons(int color) {
+            int backgroundColor = (color & 0xffffff) | 0x70000000;
+            View buttonHolder = findViewById(R.id.color_buttons_container);
+            buttonHolder.setBackgroundColor(backgroundColor);
         }
 
         // Finds the button with the color. If found, sets it to selected,

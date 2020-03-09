@@ -20,10 +20,11 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent" >
 
-    <LinearLayout android:orientation="vertical"
-                  android:layout_width="wrap_content"
-                  android:layout_height="fill_parent"
-                  >
+    <LinearLayout
+        android:id="@+id/color_buttons_container"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" >
                   
         <!-- The colors used here should match one of the colors in pick_color.xml -->
         <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
