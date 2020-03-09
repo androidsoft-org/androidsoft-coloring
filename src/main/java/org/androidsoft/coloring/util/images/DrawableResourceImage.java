@@ -8,8 +8,6 @@ import android.os.Parcel;
 
 import org.androidsoft.coloring.util.FloodFill;
 
-import eu.quelltext.coloring.R;
-
 class DrawableResourceImage implements ImageDB.Image {
     private final int resourceId;
     private Bitmap previewImage = null;
@@ -34,7 +32,7 @@ class DrawableResourceImage implements ImageDB.Image {
     @Override
     public Bitmap getImage(Context context) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
-        return FloodFill.binarize(bitmap);
+        return FloodFill.asBlackAndWhite(bitmap);
     }
 
     @Override
