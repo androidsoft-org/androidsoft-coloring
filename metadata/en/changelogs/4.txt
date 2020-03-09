@@ -1,2 +1,9 @@
-- request permission to write to save and load images
+- new: request permission to write to save and load images
+- fix bug: open shared image even if image was painted before
+- fix bug: show painted image in list of new images in full size
+- new: speed up removing color noise
+- new: add connected components to remove areas which can not be drawn
+- change: replace old paint view with new one, making development easier
+- fix bug: saved images are now not cut off but in the size they were painted
+- new: use AndroidX 
 
