@@ -100,6 +100,7 @@ public class PaintActivity extends AbstractColoringActivity
         // see https://developer.android.com/guide/components/activities/tasks-and-back-stack
         // see https://developer.android.com/reference/android/app/Activity#onNewIntent(android.content.Intent)
         super.onNewIntent(intent);
+        saveBitmap();
         loadFromIntent(intent);
     }
 
@@ -140,7 +141,7 @@ public class PaintActivity extends AbstractColoringActivity
                 openPictureChoice();
                 return true;
             case R.id.save:
-                saveBitmap(new BitmapSaver(this, paintArea.getBitmap()));
+                saveBitmap();
                 return true;
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
@@ -150,6 +151,10 @@ public class PaintActivity extends AbstractColoringActivity
                 return true;
         }
         return false;
+    }
+
+    private void saveBitmap() {
+        saveBitmap(new BitmapSaver(this, paintArea.getBitmap()));
     }
 
     private void saveBitmap(BitmapSaver newBitmapSaver) {
