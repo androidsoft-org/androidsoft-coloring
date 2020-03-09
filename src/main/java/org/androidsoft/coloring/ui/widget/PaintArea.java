@@ -84,4 +84,8 @@ public class PaintArea {
     public Bitmap getBitmap() {
         return bitmap;
     }
+
+    public int getPaintColor() {
+        return paintColor;
+    }
 }

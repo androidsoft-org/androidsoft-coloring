@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -76,6 +77,15 @@ public class PaintActivity extends AbstractColoringActivity
             public void onClick(View view) {
                 Intent intent = new Intent(PaintActivity.this, PickColorActivity.class);
                 startActivityForResult(intent, REQUEST_PICK_COLOR);
+            }
+        });
+
+        // make the background area clickable
+        final LinearLayout bg = findViewById(R.id.paint_view_background);
+        bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bg.setBackgroundColor(paintArea.getPaintColor());
             }
         });
 
