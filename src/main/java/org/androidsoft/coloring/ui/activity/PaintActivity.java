@@ -51,15 +51,11 @@ public class PaintActivity extends AbstractColoringActivity
     private static final int REQUEST_PICK_COLOR = 1;
     private static final int DIALOG_PROGRESS = 1;
     public static final String ARG_IMAGE = "bitmap";
-    // Main UI elements.
     private PaintArea paintArea;
-    private ProgressBar _progressBar;
     private ProgressDialog _progressDialog;
     // The ColorButtonManager makes sure the state of the ColorButtons visible
     // on this activity is in sync.
     private ColorButtonManager colorButtonManager;
-    // Is there a save in progress?
-    private boolean _saveInProgress;
     boolean doubleBackToExitPressedOnce = false;
 
 
@@ -182,41 +178,7 @@ public class PaintActivity extends AbstractColoringActivity
                 break;
         }
     }
-
-    // @Override
-    @Override
-    protected Dialog onCreateDialog(int id)
-    {
-        switch (id)
-        {
-            case DIALOG_PROGRESS:
-                _progressDialog = new ProgressDialog(PaintActivity.this);
-                _progressDialog.setCancelable(false);
-                _progressDialog.setIcon(android.R.drawable.ic_dialog_info);
-                _progressDialog.setTitle(R.string.dialog_saving);
-                _progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                _progressDialog.setMax(Progress.MAX);
-                if (!_saveInProgress)
-                {
-                    // This means that the view hierarchy was recreated but there
-                    // is no actual save in progress (in this hierarchy), so let's
-                    // dismiss the dialog.
-                    new Handler()
-                    {
-
-                        @Override
-                        public void handleMessage(Message m)
-                        {
-                            _progressDialog.dismiss();
-                        }
-                    }.sendEmptyMessage(0);
-                }
-
-                return _progressDialog;
-        }
-        return null;
-    }
-
+    
     private class ColorButtonManager implements View.OnClickListener
     {
 
