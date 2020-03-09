@@ -6,4 +6,5 @@
 - change: replace old paint view with new one, making development easier
 - fix bug: saved images are now not cut off but in the size they were painted
 - new: use AndroidX 
-
+- new: replace saving image progress bar with toast
+- new: cannot save image twice
