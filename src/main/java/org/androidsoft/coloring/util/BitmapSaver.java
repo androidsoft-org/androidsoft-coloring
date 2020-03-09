@@ -48,10 +48,14 @@ public class BitmapSaver implements Runnable
     public File newFileName() {
         // Get a filename.
         String filename = newImageFileName();
-        File directory = new File(
+        File directory = getSavedImagesDirectory(context);
+        return new File(directory, filename);
+    }
+
+    public static File getSavedImagesDirectory(Context context) {
+        return new File(
                 Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM),
                 context.getString(R.string.app_name));
-        return new File(directory, filename);
     }
 
     public File getFile() {

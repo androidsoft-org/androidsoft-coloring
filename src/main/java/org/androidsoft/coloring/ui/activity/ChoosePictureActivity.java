@@ -27,6 +27,7 @@ import org.androidsoft.coloring.util.images.ResourceImageDB;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ImageListener;
 import org.androidsoft.coloring.util.images.ImagesAdapter;
+import org.androidsoft.coloring.util.images.DirectoryImageDB;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
 import eu.quelltext.coloring.R;
@@ -68,6 +69,7 @@ public class ChoosePictureActivity extends NoTitleActivity
             }
         }
         imageDB.add(new ResourceImageDB());
+        imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
 
         // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(
