@@ -100,4 +100,7 @@ public class LoadImageProgress {
 
     private static final int STEPS = 15; // do not forget to change when you add steps
 
+    public void stepConvertingToBinaryImage() {
+        step(4, R.string.progress_convert_binary);
+    }
 }

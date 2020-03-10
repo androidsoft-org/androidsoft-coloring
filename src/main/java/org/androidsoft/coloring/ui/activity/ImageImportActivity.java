@@ -12,11 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.ConvertingImageImport;
 import org.androidsoft.coloring.util.ImageProcessing;
+import org.androidsoft.coloring.util.CopyImageToLibrary;
 import org.androidsoft.coloring.util.images.BitmapImage;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -69,7 +70,12 @@ public class ImageImportActivity extends NoTitleActivity {
                     }
                 }
                 if (imageUri != null) {
-                    imageProcessing = new ImageProcessing(imageUri, progress, new ViewImagePreview());
+                    if (imageUri.toString().toLowerCase().endsWith(".png")) {
+                        // import png images directly
+                        imageProcessing = new CopyImageToLibrary(imageUri, progress, new ViewImagePreview());
+                    } else {
+                        imageProcessing = new ConvertingImageImport(imageUri, progress, new ViewImagePreview());
+                    }
                 }
 
                 Thread processor = new Thread(imageProcessing);

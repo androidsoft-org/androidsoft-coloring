@@ -8,7 +8,7 @@ import android.os.Parcel;
 
 import java.io.File;
 
-class FileImage implements ImageDB.Image {
+public class FileImage implements ImageDB.Image {
     private final File file;
     private Bitmap previewImage = null;
 
