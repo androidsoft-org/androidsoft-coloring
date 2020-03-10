@@ -15,7 +15,8 @@ public class BlackAndWhiteConversion {
     public void toBlackAndWhite(int[] pixels) {
         for (int i = 0; i < pixels.length; i++) {
             int pixel = pixels[i];
-            int brightness = (pixel & 0xff) + ((pixel >> 8) & 0xff) + ((pixel >> 16) & 0xff);
+            int brightness = (pixel & 0xff) + ((pixel >> 8) & 0xff) + ((pixel >> 16) & 0xff) +
+                    (3 * (0xff - (0xff & (pixel >> 24)))); // transparency, see https://github.com/niccokunzmann/coloring-book/issues/86
             pixels[i] = brightness > BINARY_COLOR_THRESHOLD ? colorBright : colorDark;
         }
     }
