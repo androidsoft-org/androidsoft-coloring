@@ -16,12 +16,14 @@
 package org.androidsoft.coloring.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.WindowManager;
 
 import org.androidsoft.coloring.util.ScreenUtils;
+import org.androidsoft.coloring.util.images.DrawableResourceImage;
 import org.androidsoft.coloring.util.images.JoinedImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -37,6 +39,9 @@ public class ChoosePictureActivity extends NoTitleActivity
 
     public static final String RESULT_IMAGE = "image";
     public static final String ARG_IMAGE = "image";
+    private ImageDB.Image openGalleryImage;
+    // TODO: put gallery link in settings
+    private static final String GALLERY_URL = "https://gallery.quelltext.eu";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -70,6 +75,8 @@ public class ChoosePictureActivity extends NoTitleActivity
         }
         imageDB.add(new ResourceImageDB());
         imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
+        openGalleryImage = new DrawableResourceImage(R.drawable.download);
+        imageDB.add(openGalleryImage);
 
         // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(
@@ -78,13 +85,28 @@ public class ChoosePictureActivity extends NoTitleActivity
         adapter.setImageListener(new ImageListener() {
             @Override
             public void onImageChosen(ImageDB.Image image) {
-                Intent intent = new Intent();
-                intent.putExtra(RESULT_IMAGE, image);
-                setResult(RESULT_OK, intent);
-                finish();
+                if (image.equals(openGalleryImage)) {
+                    openGallery();
+                } else {
+                    returnImageToParent(image);
+                }
             }
+
         });
         imagesView.setAdapter(adapter);
+    }
+
+    private void openGallery() {
+        // open url in browser, see https://stackoverflow.com/a/2201999/1320237
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GALLERY_URL));
+        startActivity(browserIntent);
+    }
+
+    private void returnImageToParent(ImageDB.Image image) {
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_IMAGE, image);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

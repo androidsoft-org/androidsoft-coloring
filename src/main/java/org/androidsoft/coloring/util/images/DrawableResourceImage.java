@@ -8,7 +8,7 @@ import android.os.Parcel;
 
 import org.androidsoft.coloring.util.FloodFill;
 
-class DrawableResourceImage implements ImageDB.Image {
+public class DrawableResourceImage implements ImageDB.Image {
     private final int resourceId;
     private Bitmap previewImage = null;
 
