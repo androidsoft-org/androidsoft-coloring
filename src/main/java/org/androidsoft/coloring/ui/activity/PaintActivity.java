@@ -20,6 +20,7 @@ import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.ui.widget.Progress;
 import org.androidsoft.coloring.util.BitmapSaver;
 import org.androidsoft.coloring.util.BitmapSharer;
+import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.images.BitmapHash;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
@@ -67,6 +68,7 @@ public class PaintActivity extends AbstractColoringActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        ScreenUtils.setFullscreen(this);
 
         setContentView(R.layout.paint);
         paintArea = new PaintArea((ImageView) findViewById(R.id.paint_view));
