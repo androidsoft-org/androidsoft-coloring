@@ -11,3 +11,4 @@
 - new: save image before replacing it with image from photo
 - new: show saved images in the list of choosable images
 - new: change color behind the buttons
+- new: rotate images so they best fit the drawing area
