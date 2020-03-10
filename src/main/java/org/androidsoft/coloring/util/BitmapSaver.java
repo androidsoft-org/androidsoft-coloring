@@ -54,9 +54,11 @@ public class BitmapSaver implements Runnable
     }
 
     public static File getSavedImagesDirectory(Context context) {
-        return new File(
+        File directory = new File(
                 Environment.getExternalStoragePublicDirectory(DIRECTORY_DCIM),
                 context.getString(R.string.app_name));
+        directory.mkdirs();
+        return directory;
     }
 
     public File getFile() {
@@ -71,8 +73,14 @@ public class BitmapSaver implements Runnable
             out = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            return;
         }
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+        try {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+        } catch (NullPointerException e) { // if the directory is removed
+            e.printStackTrace();
+            return;
+        }
         saveToURI();
     }
 

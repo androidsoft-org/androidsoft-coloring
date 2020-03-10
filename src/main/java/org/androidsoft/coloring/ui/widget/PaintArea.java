@@ -25,13 +25,15 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 public class PaintArea {
 
+    private final ViewGroup.LayoutParams layoutParams;
     private Bitmap bitmap = null;
     private int paintColor;
-    private ImageView view;
+    private final ImageView view;
 
     public PaintArea(ImageView view) {
         this.view = view;
@@ -41,6 +43,7 @@ public class PaintArea {
                 return onTouchEvent(motionEvent);
             }
         });
+        layoutParams = view.getLayoutParams();
     }
 
 
@@ -57,6 +60,9 @@ public class PaintArea {
 
     public void setImageBitmap(final Bitmap bm) {
         setImageBitmapWithSameSize(bm);
+        layoutParams.width = layoutParams.WRAP_CONTENT;
+        layoutParams.height = layoutParams.MATCH_PARENT;
+        view.setLayoutParams(layoutParams);
         view.setScaleX(1);
         view.setScaleY(1);
         view.setRotation(0);
@@ -87,6 +93,25 @@ public class PaintArea {
                     }
                     view.setScaleX(scale);
                     view.setScaleY(scale);
+                } else {
+                    float scale1 = maxHeight / (float)bmHeight;
+                    float scale2 = maxWidth / (float)bmWidth;
+                    if (scale1 < scale2) {
+                        // height determines size
+                        // test this is the case with the default image
+
+                    } else {
+                        // width determines size
+                        // test with an image which is very wide
+                        int viewHeight = (int)(maxWidth / (float)bmWidth * bmHeight);
+                        // set width and height of view
+                        // see https://stackoverflow.com/a/17066696/1320237
+                        // see https://stackoverflow.com/a/5042326/1320237
+                        ViewGroup.LayoutParams params = view.getLayoutParams();
+                        layoutParams.width = layoutParams.MATCH_PARENT;
+                        layoutParams.height = layoutParams.WRAP_CONTENT;
+                        view.setLayoutParams(params);
+                    }
                 }
             }
         });
