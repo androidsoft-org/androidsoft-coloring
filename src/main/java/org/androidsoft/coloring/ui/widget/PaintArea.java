@@ -72,15 +72,16 @@ public class PaintArea {
     {
         if (e.getAction() == MotionEvent.ACTION_DOWN)
         {
+            // play default click sound
+            // see https://stackoverflow.com/a/10987791/1320237
+            view.playSoundEffect(SoundEffectConstants.CLICK);
+            // set the position
             int x = (int)(e.getX() * bitmap.getWidth() / view.getWidth());
             int y = (int)(e.getY() * bitmap.getHeight() / view.getHeight());
             Log.d("touch", "(" + e.getRawX() + ") " + e.getX() + " -> " + x);
             Log.d("touch", "(" + e.getRawY() + ") " + e.getY() + " -> " + y);
             Bitmap newBitmap = FloodFill.fill(bitmap, x, y, paintColor);
             setImageBitmap(newBitmap);
-            // play default click sound
-            // see https://stackoverflow.com/a/10987791/1320237
-            view.playSoundEffect(SoundEffectConstants.CLICK);
         }
         return true;
     }
