@@ -54,6 +54,7 @@ public class ImageImportActivity extends NoTitleActivity {
                 Intent intent = getIntent();
                 String action = intent.getAction();
                 String type = intent.getType();
+                Uri linkData = intent.getData();
 
                 Runnable imageProcessing = new Failure();
                 Uri imageUri = null;
@@ -68,7 +69,10 @@ public class ImageImportActivity extends NoTitleActivity {
                     if (imageUris != null && imageUris.size() >= 1) {
                         imageUri = imageUris.get(0);
                     }
+                } else if (Intent.ACTION_VIEW.equals(action) && linkData != null) {
+                    imageUri = linkData;
                 }
+
                 if (imageUri != null) {
                     if (imageUri.toString().toLowerCase().endsWith(".png")) {
                         // import png images directly

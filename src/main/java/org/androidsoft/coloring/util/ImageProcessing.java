@@ -5,13 +5,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.apache.commons.io.IOUtils;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 // see https://developer.android.com/reference/java/lang/Thread
 public class ImageProcessing implements Runnable {
+
+    private byte[] rawBytesFromTheSource = null;
 
     public interface ImagePreview {
         void setImage(Bitmap image);
@@ -45,6 +50,8 @@ public class ImageProcessing implements Runnable {
             progress.stepFail();
             return;
         }
+        rawBytesFromTheSource = null; // clean up
+        // set attributes
         width = image.getWidth();
         height = image.getHeight();
         runWithBitmap(image);
@@ -55,8 +62,7 @@ public class ImageProcessing implements Runnable {
     }
 
     private Bitmap getThumbnail(Uri uri, double maxWidth, double maxHeight) throws IOException {
-        // from https://stackoverflow.com/a/6228188/1320237
-        InputStream input = imagePreview.openInputStream(uri);
+        InputStream input = getInputStream(uri);
 
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
         onlyBoundsOptions.inJustDecodeBounds = true;
@@ -88,10 +94,25 @@ public class ImageProcessing implements Runnable {
         bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
         bitmapOptions.inDither = true; //optional
         bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
-        input = imagePreview.openInputStream(uri);
+        input = getInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
         input.close();
         return bitmap;
+    }
+
+    private InputStream getInputStream(Uri uri) throws IOException {
+        if (rawBytesFromTheSource != null) {
+            return new ByteArrayInputStream(rawBytesFromTheSource);
+        }
+        if (uri.getScheme().startsWith("http")) {
+            // download file, see https://stackoverflow.com/a/51271706/1320237
+            InputStream stream = new URL(uri.toString()).openStream();
+            rawBytesFromTheSource = IOUtils.toByteArray(stream);
+            return new ByteArrayInputStream(rawBytesFromTheSource);
+        } else {
+            // from https://stackoverflow.com/a/6228188/1320237
+            return imagePreview.openInputStream(uri);
+        }
     }
 
     private int getPowerOfTwoForSampleRatio(double ratio){
