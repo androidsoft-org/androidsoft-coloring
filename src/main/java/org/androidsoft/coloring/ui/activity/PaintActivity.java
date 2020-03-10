@@ -179,7 +179,9 @@ public class PaintActivity extends AbstractColoringActivity
         } else if (lastSavedHash == newHash) {
             // image is already saved
             message = R.string.toast_save_file_again;
-            path = bitmapSaver.getFile().getPath();        } else {
+            path = bitmapSaver.getFile().getPath();
+            newBitmapSaver.alreadySaved(bitmapSaver);
+        } else {
             // image is not saved
             bitmapSaver = newBitmapSaver;
             bitmapSaver.start();

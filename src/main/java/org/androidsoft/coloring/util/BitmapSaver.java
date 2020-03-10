@@ -29,9 +29,10 @@ public class BitmapSaver implements Runnable
     public static final String MIME_PNG = "image/png";
 
     protected final Context context;
-    private final File file;
+    private File file;
     private Bitmap bitmap;
     private Thread thread = null;
+    private Uri imageUri;
 
     public BitmapSaver(Context context, Bitmap bitmap)
     {
@@ -75,7 +76,7 @@ public class BitmapSaver implements Runnable
         saveToURI();
     }
 
-    protected Uri saveToURI() {
+    protected void saveToURI() {
         File file = getFile();
         String filename = file.getName();
         // Save it to the MediaStore.
@@ -90,15 +91,18 @@ public class BitmapSaver implements Runnable
                 parentFile.toString().toLowerCase().hashCode());
         values.put(MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
                 parentFile.getName().toLowerCase());
-        Uri newImageUri = context.getContentResolver().insert(
+        imageUri = context.getContentResolver().insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         // Scan the file so that it appears in the system as it should.
-        if (newImageUri != null)
+        if (imageUri != null)
         {
             new MediaScannerNotifier(context, file.toString(), MIME_PNG);
         }
-        return newImageUri;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
     }
 
     private String newImageFileName()
@@ -113,5 +117,9 @@ public class BitmapSaver implements Runnable
 
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public void alreadySaved(BitmapSaver bitmapSaver) {
+
     }
 }

@@ -17,10 +17,14 @@ public class BitmapSharer extends BitmapSaver
     }
 
     @Override
-    protected Uri saveToURI()
+    protected void saveToURI()
     {
-        Uri uri = super.saveToURI();
+        super.saveToURI();
+        Uri uri = getImageUri();
+        shareUri(uri);
+    }
 
+    private void shareUri(Uri uri) {
         if (uri != null)
         {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -28,6 +32,12 @@ public class BitmapSharer extends BitmapSaver
             sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
             context.startActivity(Intent.createChooser(sharingIntent, context.getString( R.string.dialog_share )));
         }
-        return uri;
+    }
+
+    @Override
+    public void alreadySaved(BitmapSaver bitmapSaver) {
+        super.alreadySaved(bitmapSaver);
+        Uri uri = bitmapSaver.getImageUri();
+        shareUri(uri);
     }
 }
