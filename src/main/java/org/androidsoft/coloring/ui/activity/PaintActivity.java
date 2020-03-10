@@ -17,7 +17,6 @@ package org.androidsoft.coloring.ui.activity;
 
 import org.androidsoft.coloring.ui.widget.PaintArea;
 import org.androidsoft.coloring.ui.widget.ColorButton;
-import org.androidsoft.coloring.ui.widget.Progress;
 import org.androidsoft.coloring.util.BitmapSaver;
 import org.androidsoft.coloring.util.BitmapSharer;
 import org.androidsoft.coloring.util.ScreenUtils;
@@ -28,18 +27,15 @@ import org.androidsoft.coloring.util.images.ResourceImageDB;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -62,16 +58,17 @@ public class PaintActivity extends AbstractColoringActivity
     boolean doubleBackToExitPressedOnce = false;
     private BitmapSaver bitmapSaver = null;
     private int lastSavedHash; // the hash value of the last saved bitmap
+    private ImageView paintView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        ScreenUtils.setFullscreen(this);
 
         setContentView(R.layout.paint);
-        paintArea = new PaintArea((ImageView) findViewById(R.id.paint_view));
+        paintView = (ImageView) findViewById(R.id.paint_view);
+        paintArea = new PaintArea(paintView);
         colorButtonManager = new ColorButtonManager();
         View pickColorsButton = findViewById(R.id.pick_color_button);
         pickColorsButton.setOnClickListener(new View.OnClickListener() {
@@ -91,10 +88,10 @@ public class PaintActivity extends AbstractColoringActivity
             }
         });
 
-        loadFromIntent(getIntent());
+        loadImageFromIntent(getIntent());
     }
 
-    private void loadFromIntent(Intent intent) {
+    private void loadImageFromIntent(Intent intent) {
         Bundle extras = intent.getExtras();
         ImageDB.Image image;
         if (extras != null && extras.containsKey(ARG_IMAGE)) {
@@ -107,13 +104,19 @@ public class PaintActivity extends AbstractColoringActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        ScreenUtils.setFullscreen(this);
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         // capture the new intent
         // see https://developer.android.com/guide/components/activities/tasks-and-back-stack
         // see https://developer.android.com/reference/android/app/Activity#onNewIntent(android.content.Intent)
         super.onNewIntent(intent);
         saveBitmap();
-        loadFromIntent(intent);
+        loadImageFromIntent(intent);
     }
 
     @Override
@@ -216,8 +219,8 @@ public class PaintActivity extends AbstractColoringActivity
             case REQUEST_CHOOSE_PICTURE:
                 if (resultCode == RESULT_OK)
                 {
-                    ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
-                    paintArea.setImageBitmap(image.getImage(this));
+                    final ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
+                    paintArea.setImageBitmap(image.getImage(PaintActivity.this));
                 }
                 break;
             case REQUEST_PICK_COLOR:

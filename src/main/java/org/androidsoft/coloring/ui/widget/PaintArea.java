@@ -55,9 +55,46 @@ public class PaintArea {
         return new NullImage();
     }
 
-    public void setImageBitmap(Bitmap bm) {
-        view.setImageBitmap(bm);
-        bitmap = bm;
+    public void setImageBitmap(final Bitmap bm) {
+        setImageBitmapWithSameSize(bm);
+        view.setScaleX(1);
+        view.setScaleY(1);
+        view.setRotation(0);
+        // use post to defer execution until the size of the view is determined
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                int bmHeight = bm.getHeight();
+                int bmWidth = bm.getWidth();
+                int maxWidth = ((View)view.getParent()).getWidth();
+                int maxHeight = ((View)view.getParent()).getHeight();
+                if ((bmHeight < bmWidth) != (maxHeight < maxWidth)) {
+                    // the image would best be rotated
+                    // scale it so it fits the maximum bounds
+                    view.setRotation(-90); // bottom to bottom
+                    float scale1 = maxHeight / (float)bmWidth;
+                    float scale2 = maxWidth / (float)bmHeight;
+                    float scale;
+                    if (scale1 < scale2) {
+                        // height determines size
+                        // test with image which is longer than wide but does not fit in maxWidth
+                        scale = bmHeight / (float)bmWidth;
+                    } else {
+                        // width determines size
+                        // test with image which is longer than wide but does fits in maxWidth
+                        // at the end of scaling this, the height of the view should equal maxWidth
+                        scale = maxWidth / /* height of view */(float)maxHeight;
+                    }
+                    view.setScaleX(scale);
+                    view.setScaleY(scale);
+                }
+            }
+        });
+    }
+
+    private void setImageBitmapWithSameSize(Bitmap bitmap) {
+        view.setImageBitmap(bitmap);
+        this.bitmap = bitmap;
     }
 
     public void setPaintColor(int color)
@@ -75,13 +112,16 @@ public class PaintArea {
             // play default click sound
             // see https://stackoverflow.com/a/10987791/1320237
             view.playSoundEffect(SoundEffectConstants.CLICK);
+            // get the correct position with rotation
+            float eventX = e.getX();
+            float eventY = e.getY();
             // set the position
-            int x = (int)(e.getX() * bitmap.getWidth() / view.getWidth());
-            int y = (int)(e.getY() * bitmap.getHeight() / view.getHeight());
-            Log.d("touch", "(" + e.getRawX() + ") " + e.getX() + " -> " + x);
-            Log.d("touch", "(" + e.getRawY() + ") " + e.getY() + " -> " + y);
+            int x = (int)(eventX * bitmap.getWidth() / view.getWidth());
+            int y = (int)(eventY * bitmap.getHeight() / view.getHeight());
+            Log.d("touch", "(" + e.getRawX() + ") " + eventX + " -> " + x);
+            Log.d("touch", "(" + e.getRawY() + ") " + eventY + " -> " + y);
             Bitmap newBitmap = FloodFill.fill(bitmap, x, y, paintColor);
-            setImageBitmap(newBitmap);
+            setImageBitmapWithSameSize(newBitmap);
         }
         return true;
     }
