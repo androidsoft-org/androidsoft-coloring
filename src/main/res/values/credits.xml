@@ -41,7 +41,7 @@
         <item>*by Peter Dornbach</item>
         <item>*under Apache License 2.0</item>
         <item>*for more information see</item>
-        <item>*http://www.zebra4me.com/</item>
+        <item translatable="false">*http://www.zebra4me.com/</item>
         <item translatable="false">*</item>
         <item>*Icons are published</item>
         <item>*by Everaldo Coelho</item>
@@ -59,7 +59,7 @@
         <item translatable="false">*</item>
         <item>*Peter Dornbach</item>
         <item translatable="false">*</item>
-        <item>*/* GNU version contributor */</item>
+        <item>*/* GNU version contributors */</item>
         <item translatable="false">*</item>
         <item>*Pierre Levy</item>
         <item>*Nicco Kunzmann</item>
@@ -69,11 +69,13 @@
         <item translatable="false">*</item>
         <item>*Copyright (c) 2010-2011 P. Dornbach, P. Levy</item>
         <item>*Copyright (c) 2020 Nicco Kunzmann</item>
+        <item>*Source Code:</item>
+        <item translatable="false">*https://github.com/niccokunzmann/coloring-book</item>
         <item translatable="false">*</item>
         <item translatable="false">*</item>
         <item translatable="false">*</item>
         <item>*This project is using the Weka library.</item>
-        <item>*https://www.cs.waikato.ac.nz/ml/weka/</item>
+        <item translatable="false">*https://www.cs.waikato.ac.nz/ml/weka/</item>
         <item translatable="false">*</item>
     </string-array>
 </resources>
