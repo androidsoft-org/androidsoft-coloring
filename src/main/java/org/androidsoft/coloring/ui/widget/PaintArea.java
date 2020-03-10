@@ -23,6 +23,7 @@ import org.androidsoft.coloring.util.images.NullImage;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -77,6 +78,9 @@ public class PaintArea {
             Log.d("touch", "(" + e.getRawY() + ") " + e.getY() + " -> " + y);
             Bitmap newBitmap = FloodFill.fill(bitmap, x, y, paintColor);
             setImageBitmap(newBitmap);
+            // play default click sound
+            // see https://stackoverflow.com/a/10987791/1320237
+            view.playSoundEffect(SoundEffectConstants.CLICK);
         }
         return true;
     }
