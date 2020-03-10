@@ -6,3 +6,5 @@ You can save the image on your device or share it via email and in social networ
 If you send an image to this app, it will be transformed to a coloring book image of black lines around white areas.
 This way you can add hand-drawn pictures or color pictures of cars, houses, animals, people and more in a comic style. 
 
+You can add new pictures to the app by placing them in the current saving location.
+As you can choose from pictures you saved there, your own added pictures will show up when a new picture can be chosen.
