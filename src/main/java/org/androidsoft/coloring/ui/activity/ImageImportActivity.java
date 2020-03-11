@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import org.androidsoft.coloring.util.CopyImageToLibrary;
 import org.androidsoft.coloring.util.images.BitmapImage;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -62,9 +64,25 @@ public class ImageImportActivity extends NoTitleActivity {
                 Runnable imageProcessing = new Failure();
                 Uri imageUri = null;
 
+                // list all extras of an intent
+                // see https://stackoverflow.com/a/15074150/1320237
+                Bundle bundle = intent.getExtras();
+                if (bundle != null) {
+                    for (String key : bundle.keySet()) {
+                        Log.e("Image Import", key + " : " + (bundle.get(key) != null ? bundle.get(key) : "NULL"));
+                    }
+                }
+
                 if (Intent.ACTION_SEND.equals(action) && type != null) {
                     if (type.startsWith("image/")) {
                         imageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+                        if (imageUri == null) {
+                            String file = intent.getStringExtra(Intent.EXTRA_TEXT);
+                            if (file != null) {
+                                // Uri from string, see https://stackoverflow.com/a/3487413/1320237
+                                imageUri = Uri.parse(file);
+                            }
+                        }
 
                     }
                 } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
