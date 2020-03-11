@@ -44,6 +44,10 @@ public class ImageImportActivity extends NoTitleActivity {
                 (ProgressBar)findViewById(R.id.progressBar),
                 (TextView)findViewById(R.id.progress_text));
 
+        openImageFromIntent(getIntent());
+    }
+
+    private void openImageFromIntent(final Intent intent) {
         // start the receiving when the layouting is done so we know the size of what we are showing
         // see https://stackoverflow.com/a/24035591/1320237
         imageView.post(new Runnable() {
@@ -51,7 +55,6 @@ public class ImageImportActivity extends NoTitleActivity {
             public void run() {
                 // Get intent, action and MIME type
                 // see https://developer.android.com/training/sharing/receive
-                Intent intent = getIntent();
                 String action = intent.getAction();
                 String type = intent.getType();
                 Uri linkData = intent.getData();
@@ -86,6 +89,12 @@ public class ImageImportActivity extends NoTitleActivity {
                 processor.start();
             }
         });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        openImageFromIntent(intent);
     }
 
     private class Failure implements Runnable {
