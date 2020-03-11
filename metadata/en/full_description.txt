@@ -8,3 +8,5 @@ This way you can add hand-drawn pictures or color pictures of cars, houses, anim
 
 You can add new pictures to the app by placing them in the current saving location.
 As you can choose from pictures you saved there, your own added pictures will show up when a new picture can be chosen.
+If the images on the app are not enough, you can choose from the online image gallery.
+This gallery is also open to you to contribute more images to the app.
