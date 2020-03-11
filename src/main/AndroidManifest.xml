@@ -32,7 +32,6 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- allow http access -->
@@ -41,8 +40,19 @@
                 <!-- Trying deep links does not seem to be supported everywhere -->
                 <data android:scheme="coloring" />
                 <data android:host="gallery.quelltext.eu" />
+                <data android:mimeType="image/*" />
+                <data android:pathPrefix="/images" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- allow http access -->
+                <data android:scheme="http" />
+                <!-- Trying deep links does not seem to be supported everywhere -->
+                <data android:scheme="coloring" />
                 <!-- for development purposes, change the ip to your's -->
-                <data android:host="192.168.42.108" />
+                <data android:host="192.168.42.108" android:port="4000" />
                 <data android:mimeType="image/*" />
                 <data android:pathPrefix="/images" />
             </intent-filter>
