@@ -12,3 +12,5 @@
 - new: show saved images in the list of choosable images
 - new: change color behind the buttons
 - new: rotate images so they best fit the drawing area
+- new: add gallery to get even more images and contribute new ones easily
+
