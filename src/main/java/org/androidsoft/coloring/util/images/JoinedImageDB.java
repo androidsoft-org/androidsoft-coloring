@@ -35,6 +35,13 @@ public class JoinedImageDB implements ImageDB {
         return new NullImage();
     }
 
+    @Override
+    public void attachObserver(Subject.Observer observer) {
+        for (ImageDB imageDB : imageDBs) {
+            imageDB.attachObserver(observer);
+        }
+    }
+
     public void add(ImageDB imageDB) {
         imageDBs.add(imageDB);
     }

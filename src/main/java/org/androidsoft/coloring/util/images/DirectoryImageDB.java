@@ -55,4 +55,8 @@ public class DirectoryImageDB implements ImageDB {
         File file = files.get(index);
         return new FileImage(file);
     }
+
+    @Override
+    public void attach(Subject.Observer observer) {
+    }
 }

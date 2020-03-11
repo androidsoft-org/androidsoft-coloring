@@ -26,4 +26,9 @@ public class GalleryImageDB implements ImageDB {
     public Image get(int index) {
         return new NullImage();
     }
+
+    @Override
+    public void attach(Subject.Observer observer) {
+
+    }
 }

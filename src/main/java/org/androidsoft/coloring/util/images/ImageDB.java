@@ -7,6 +7,7 @@ import android.os.Parcelable;
 public interface ImageDB {
     int size();
     Image get(int index);
+    void attachObserver(Subject.Observer observer);
 
     interface Image extends Parcelable {
         Bitmap asPreviewImage(Context context, int maxWidth);

@@ -45,6 +45,10 @@ public class ResourceImageDB implements ImageDB {
         return images.get(index);
     }
 
+    @Override
+    public void attachObserver(Subject.Observer observer) {
+    }
+
     public Image randomImage() {
         int index = new Random().nextInt(size());
         return get(index);

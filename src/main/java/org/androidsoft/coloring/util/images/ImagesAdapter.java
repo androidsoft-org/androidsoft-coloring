@@ -23,6 +23,12 @@ public class ImagesAdapter extends RecyclerView.Adapter {
 
     public ImagesAdapter(ImageDB imageDB, int layoutId, int[] imageViewIds) {
         this.imageDB = imageDB;
+        imageDB.attachObserver(new Subject.Observer() {
+            @Override
+            public void update() {
+                notifyDataSetChanged();
+            }
+        });
         this.layoutId = layoutId;
         this.imageViewIds = imageViewIds;
         this.numberOfImagesPerRow = imageViewIds.length;

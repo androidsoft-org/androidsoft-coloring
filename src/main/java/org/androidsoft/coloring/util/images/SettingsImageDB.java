@@ -21,7 +21,7 @@ import eu.quelltext.coloring.R;
 
 import static org.androidsoft.coloring.util.Settings.DEFAULT_GALLERIES;
 
-public class SettingsImageDB implements ImageDB {
+public class SettingsImageDB extends Subject implements ImageDB {
 
     private static final String VERSION = "-0";
     private static final String ID_RESOURCES = "ResourceImageDB";
@@ -102,6 +102,12 @@ public class SettingsImageDB implements ImageDB {
         return ids;
     }
 
+    @Override
+    public void attachObserver(Observer observer) {
+        super.attachObserver(observer);
+        getJoinedImageDB().attachObserver(observer);
+    }
+
     private Entry getEntryById(String id) {
         Entry result = new UserDefinedEntry(id);
         for (Entry entry : entries) {
@@ -173,6 +179,7 @@ public class SettingsImageDB implements ImageDB {
             }
         }
         entries.add(new UserDefinedEntry(url));
+        notifyObservers();
         return true;
     }
 
@@ -224,6 +231,11 @@ public class SettingsImageDB implements ImageDB {
         @Override
         public Image get(int index) {
             return db.get(index);
+        }
+
+        @Override
+        public void attachObserver(Observer observer) {
+            db.attachObserver(observer);
         }
 
         public String getId() {
@@ -288,6 +300,7 @@ public class SettingsImageDB implements ImageDB {
         @Override
         public void delete() {
             entries.remove(this);
+            notifyObservers();
             save();
         }
     }

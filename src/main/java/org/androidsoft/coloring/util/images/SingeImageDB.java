@@ -19,4 +19,8 @@ class SingeImageDB implements ImageDB {
         }
         return new NullImage();
     }
+
+    @Override
+    public void attachObserver(Subject.Observer observer) {
+    }
 }
