@@ -30,6 +30,7 @@ import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ImageListener;
 import org.androidsoft.coloring.util.images.ImagesAdapter;
 import org.androidsoft.coloring.util.images.DirectoryImageDB;
+import org.androidsoft.coloring.util.images.SettingsImageDB;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
 import eu.quelltext.coloring.R;
@@ -63,18 +64,15 @@ public class ChoosePictureActivity extends NoTitleActivity
         imagesView.setLayoutManager(layoutManager);
 
         // create a database with all the images
-        JoinedImageDB imageDB = new JoinedImageDB();
+        SettingsImageDB imageDB = Settings.of(this).getImageDB();
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null && extras.containsKey(ARG_IMAGE)) {
             ImageDB.Image image = extras.getParcelable(ARG_IMAGE);
             if (image.isVisible()) {
-                imageDB.add(image);
+                imageDB.addPaintedImage(image);
             }
         }
-        imageDB.add(new ResourceImageDB());
-        imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
-        imageDB.add(Settings.of(this).getGalleryImageDB());
 
         // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(

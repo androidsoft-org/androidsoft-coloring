@@ -4,4 +4,7 @@
     <dimen name="margin_splash_image">30dp</dimen>
     <dimen name="margin_picture_list_image">10dp</dimen>
     <dimen name="maximum_image_preview_size">100dp</dimen>
+    <dimen name="margin_settings_section">20dp</dimen>
+    <dimen name="margin_content_border">10dp</dimen>
+    <dimen name="margin_settings_between_galleries_in_listing">10dp</dimen>
 </resources>

@@ -5,33 +5,43 @@
     android:versionCode="4"
     android:versionName="1.1.4">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="false"
         android:icon="@drawable/ic_logo"
-        android:roundIcon="@drawable/ic_logo_round"
         android:label="@string/app_name"
         android:logo="@drawable/ic_logo"
-        android:usesCleartextTraffic="true" >
+        android:roundIcon="@drawable/ic_logo_round"
+        android:usesCleartextTraffic="true">
+        <!-- File provider, see https://stackoverflow.com/a/38858040 -->
+        <provider
+            android:name="org.androidsoft.coloring.util.GenericFileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <activity android:name="org.androidsoft.coloring.ui.activity.SettingsActivity"></activity>
         <activity android:name="org.androidsoft.coloring.ui.activity.ImageImportActivity">
-            <tools:validation testUrl="http://gallery.quelltext.eu/images/Benzfish.png" />
-            <tools:validation testUrl="http://192.168.42.108:4000/images/Benzfish.png" />
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- allow http access -->
@@ -45,6 +55,7 @@
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- allow http access -->
@@ -52,10 +63,14 @@
                 <!-- Trying deep links does not seem to be supported everywhere -->
                 <data android:scheme="coloring" />
                 <!-- for development purposes, change the ip to your's -->
-                <data android:host="192.168.42.108" android:port="4000" />
+                <data
+                    android:host="192.168.42.108"
+                    android:port="4000" />
                 <data android:mimeType="image/*" />
                 <data android:pathPrefix="/images" />
             </intent-filter>
+            <tools:validation testUrl="http://gallery.quelltext.eu/images/Benzfish.png" />
+            <tools:validation testUrl="http://192.168.42.108:4000/images/Benzfish.png" />
         </activity>
         <activity
             android:name="org.androidsoft.coloring.ui.activity.SplashActivity"
@@ -63,8 +78,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -83,6 +100,9 @@
             </intent-filter>
         </activity>
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

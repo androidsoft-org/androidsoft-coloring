@@ -5,7 +5,15 @@ import java.util.List;
 
 public class JoinedImageDB implements ImageDB {
 
-    List<ImageDB> imageDBs = new ArrayList<>();
+    private List<ImageDB> imageDBs;
+
+    public JoinedImageDB() {
+        imageDBs = new ArrayList<>();
+    }
+
+    JoinedImageDB(List<ImageDB> dbs) {
+        imageDBs = dbs;
+    }
 
     @Override
     public int size() {

@@ -73,5 +73,29 @@
     <string name="menu_gallery">Get more Images</string>
     <string name="title_activity_settings">Settings</string>
     <string name="menu_settings">Settings</string>
+    <!-- Settings: Save Location: Title -->
+    <string name="settings_save_location_title">Saved Pictures</string>
+    <!-- Settings: Save Location: Explanation -->
+    <string name="settings_save_location">The pictures will be saved to <xliff:g example="/DCIM/Coloring Book/" id="path">%1$s</xliff:g>.</string>
+    <!-- Settings: Save Location: Button text to open the location where the pictures are saved. -->
+    <string name="settings_open_save_location">Open</string>
+    <!-- Settings: Galleries: Title -->
+    <string name="settings_gallery_title">Image Galleries</string>
+    <!-- Settings: Galleries: Explanation -->
+    <string name="settings_galleries">Image Galleries contain much more images than the app. You can load images from the galleries into the app or show them when a new picture is created. If images are in many galleries, they are shown only once.</string>
+    <string name="settings_gallery_quelltext">This is the default gallery of the maintainer. If activated, more images are downloaded on demand and can be chosen for painting.</string>
+    <string name="settings_gallery_quelltext_http">This is an http version of the default gallery to allow access if https does not work.</string>
+    <!-- Settings: Galleries: Button to open the gallery in a browser -->
+    <string name="settings_gallery_browse">Browse</string>
+    <!-- Settings: Galleries: Button to delete the gallery -->
+    <string name="settings_gallery_delete">Delete</string>
+    <string name="settings_galleries_user_defined">If activated, images from %1$s can be chosen in this app.</string>
+    <string name="settings_galleries_resources_title">App Images</string>
+    <string name="settings_galleries_resources">If activated, (recommended) the images provided by the app can be chosen for painting. Deactivate this if you do not like to see them.</string>
+    <string name="settings_galleries_saved_images">If activated, (recommended) all the saved images are shown and painting them can be continued.</string>
+    <string name="settings_galleries_saved_images_title">Saved Images</string>
+    <string name="settings_galleries_last_painted_title">Last painted image</string>
+    <string name="settings_galleries_last_painted">If activated, (recommended) the image one was painting can be clicked and resumed. If deactivated, only the back button leads back to the current painting.</string>
+
 
 </resources>
