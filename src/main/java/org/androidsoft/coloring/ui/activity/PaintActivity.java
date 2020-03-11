@@ -162,6 +162,9 @@ public class PaintActivity extends AbstractColoringActivity
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
                 return true;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
             case R.id.gallery:
                 openGallery();
                 return true;
