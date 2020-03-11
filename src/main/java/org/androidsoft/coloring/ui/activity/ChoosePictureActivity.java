@@ -41,7 +41,7 @@ public class ChoosePictureActivity extends NoTitleActivity
     public static final String ARG_IMAGE = "image";
     private ImageDB.Image openGalleryImage;
     // TODO: put gallery link in settings
-    private static final String GALLERY_URL = "https://gallery.quelltext.eu";
+    private static final String GALLERY_URL = "https://gallery.quelltext.eu/";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -74,9 +74,9 @@ public class ChoosePictureActivity extends NoTitleActivity
             }
         }
         imageDB.add(new ResourceImageDB());
-        imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
         openGalleryImage = new DrawableResourceImage(R.drawable.download);
         imageDB.add(openGalleryImage);
+        imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
 
         // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(

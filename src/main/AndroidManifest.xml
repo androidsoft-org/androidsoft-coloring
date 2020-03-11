@@ -35,50 +35,16 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- for development purposes, change the ip to your's -->
-                <data
-                    android:scheme="http"
-                    android:host="192.168.42.108"
-                    android:port="4000"
-                    android:mimeType="image/*"
-                    android:pathPrefix="/images" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
                 <!-- allow http access -->
-                <data
-                    android:scheme="http"
-                    android:host="gallery.quelltext.eu"
-                    android:mimeType="image/*"
-                    android:pathPrefix="/images" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- used for testing, mapped in /etc/hosts -->
-                <data
-                    android:scheme="http"
-                    android:host="gallery.quelltext.eu"
-                    android:port="4000"
-                    android:mimeType="image/*"
-                    android:pathPrefix="/images" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- this should be the default -->
-                <data
-                    android:scheme="https"
-                    android:host="gallery.quelltext.eu"
-                    android:mimeType="image/*"
-                    android:pathPrefix="/images" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <!-- Trying deep links does not seem to be supported everywhere -->
+                <data android:scheme="coloring" />
+                <data android:host="gallery.quelltext.eu" />
+                <!-- for development purposes, change the ip to your's -->
+                <data android:host="192.168.42.108" />
+                <data android:mimeType="image/*" />
+                <data android:pathPrefix="/images" />
             </intent-filter>
         </activity>
         <activity
