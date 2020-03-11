@@ -70,5 +70,6 @@
     <!-- PaintActivity: Toast when the saving button is pressed. -->
     <string name="toast_save_file_again">Already saved as <xliff:g example="/DCIM/Coloring Book/20200305-200938.png" id="fileName">%1$s</xliff:g></string>
     <string name="progress_convert_binary">converting image to black and white</string>
+    <string name="menu_gallery">Get more Images</string>
 
 </resources>

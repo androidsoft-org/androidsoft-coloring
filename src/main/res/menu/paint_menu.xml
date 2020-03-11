@@ -30,6 +30,10 @@
           android:title="@string/menu_share"
           android:showAsAction="never|withText"
           android:icon="@android:drawable/ic_menu_share" />
+    <item android:id="@+id/gallery"
+        android:title="@string/menu_gallery"
+        android:showAsAction="never|withText"
+        android:icon="@drawable/download" />
     <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"

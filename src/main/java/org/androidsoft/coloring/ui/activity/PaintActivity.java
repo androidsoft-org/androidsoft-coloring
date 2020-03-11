@@ -29,6 +29,7 @@ import java.util.LinkedList;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -160,6 +161,9 @@ public class PaintActivity extends AbstractColoringActivity
                 return true;
             case R.id.about:
                 startActivity(new Intent(INTENT_ABOUT));
+                return true;
+            case R.id.gallery:
+                openGallery();
                 return true;
             case R.id.share:
                 saveBitmap(new BitmapSharer(this, paintArea.getBitmap()));
@@ -323,5 +327,12 @@ public class PaintActivity extends AbstractColoringActivity
         private List<ColorButton> _colorButtons = new ArrayList<ColorButton>();
         private LinkedList<ColorButton> _usedColorButtons = new LinkedList<ColorButton>();
         private ColorButton _selectedColorButton;
+    }
+
+    private static final String GALLERY_URL = "https://gallery.quelltext.eu/";
+    private void openGallery() {
+        // open url in browser, see https://stackoverflow.com/a/2201999/1320237
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GALLERY_URL));
+        startActivity(browserIntent);
     }
 }
