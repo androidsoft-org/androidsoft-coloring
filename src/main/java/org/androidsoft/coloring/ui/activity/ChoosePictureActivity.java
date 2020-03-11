@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.WindowManager;
 
 import org.androidsoft.coloring.util.ScreenUtils;
+import org.androidsoft.coloring.util.Settings;
 import org.androidsoft.coloring.util.images.JoinedImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -73,6 +74,7 @@ public class ChoosePictureActivity extends NoTitleActivity
         }
         imageDB.add(new ResourceImageDB());
         imageDB.add(DirectoryImageDB.atSaveLocationOf(this));
+        imageDB.add(Settings.of(this).getGalleryImageDB());
 
         // set adapter with all the images
         ImagesAdapter adapter = new ImagesAdapter(
