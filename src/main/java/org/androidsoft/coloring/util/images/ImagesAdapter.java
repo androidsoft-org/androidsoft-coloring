@@ -131,7 +131,7 @@ public class ImagesAdapter extends RecyclerView.Adapter {
 
         public ThumbPreview(ImageView imageView, int maxWidth) {
             this.imageView = imageView;
-            imageView.setImageResource(R.drawable.ic_logo);
+            imageView.setImageResource(R.drawable.download);
             this.maxWidth = maxWidth;
         }
 
