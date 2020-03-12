@@ -14,39 +14,38 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --> 
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/open_new"
         android:icon="@drawable/outline005_house"
         android:title="@string/menu_new"
-        app:showAsAction="ifRoom|withText" />
+        android:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/save"
         android:title="@string/menu_save"
         android:icon="@android:drawable/ic_menu_save"
-        app:showAsAction="ifRoom|withText" />
+        android:showAsAction="ifRoom|withText" />
           
     <item
         android:id="@+id/share"
         android:title="@string/menu_share"
         android:icon="@android:drawable/ic_menu_share"
-        app:showAsAction="never|withText" />
+        android:showAsAction="never|withText" />
     <item
         android:id="@+id/gallery"
         android:title="@string/menu_gallery"
         android:icon="@drawable/download"
-        app:showAsAction="never|withText" />
+        android:showAsAction="never|withText" />
     <item
         android:id="@+id/settings"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="@string/menu_settings"
-        app:showAsAction="never|withText" />
+        android:showAsAction="never|withText" />
     <item
         android:id="@+id/about"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="@string/menu_about"
-        app:showAsAction="never|withText" />
+        android:showAsAction="never|withText" />
 
 </menu>
