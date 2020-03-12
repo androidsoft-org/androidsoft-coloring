@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-class MemoryImageCache {
+public class MemoryImageCache {
 
     HashMap<ImageDB.Image, Bitmap> cache = new HashMap<>();
 

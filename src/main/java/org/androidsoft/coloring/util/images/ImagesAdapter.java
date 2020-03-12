@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,19 +14,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
-import org.androidsoft.coloring.util.imports.ImagePreview;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import org.androidsoft.coloring.util.images.cache.FixedSizeImagePreview;
 
 import eu.quelltext.coloring.R;
 
 public class ImagesAdapter extends RecyclerView.Adapter {
     private static final int MAX_WIDTH_HEIGHT_MULTIPLIER = 3;
+    private static final int CACHE_IMAGE_ROWS_AHEAD = 2;
     private final ImageDB imageDB;
     private final int layoutId;
     private final int[] imageViewIds;
     private final int numberOfImagesPerRow;
+    private final MemoryImageCache cache;
     private ImageListener imageListener = new NullImageListener();
 
     public ImagesAdapter(ImageDB imageDB, int layoutId, int[] imageViewIds) {
@@ -41,6 +39,7 @@ public class ImagesAdapter extends RecyclerView.Adapter {
         this.layoutId = layoutId;
         this.imageViewIds = imageViewIds;
         this.numberOfImagesPerRow = imageViewIds.length;
+        cache = new MemoryImageCache();
     }
 
     @NonNull
@@ -90,13 +89,10 @@ public class ImagesAdapter extends RecyclerView.Adapter {
                 ImageView imageView = root.findViewById(imageViewIds[i]);
                 final ImageDB.Image image = images[i];
                 if (image.canBePainted()) {
-                    int width = imageView.getWidth();
-                    width = width == 0 ? getScreenWidth() / numberOfImagesPerRow : width;
-                    if (width > maxWidth) {
-                        width = maxWidth;
-                    }
-                    // TODO: add loading animation for the time the image is loading
-                    image.asPreviewImage(new ThumbPreview(imageView, width), new LoadImageProgress(null, null));
+                    int width = getWidthOf(imageView);
+                    if (!cache.asPreviewImage(image, new ThumbPreview(imageView, width), new LoadImageProgress(null, null))) {
+                        imageView.setImageResource(R.drawable.download);
+                    };
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -108,6 +104,15 @@ public class ImagesAdapter extends RecyclerView.Adapter {
                     imageView.setVisibility(View.INVISIBLE);
                 }
             }
+        }
+
+        private int getWidthOf(ImageView imageView) {
+            int width = imageView.getWidth();
+            width = width == 0 ? getScreenWidth() / numberOfImagesPerRow : width;
+            if (width > maxWidth) {
+                width = maxWidth;
+            }
+            return width;
         }
 
         private int getScreenWidth() {
@@ -124,15 +129,13 @@ public class ImagesAdapter extends RecyclerView.Adapter {
         }
     }
 
-    class ThumbPreview implements ImagePreview {
+    class ThumbPreview extends FixedSizeImagePreview {
 
         private final ImageView imageView;
-        private final int maxWidth;
 
         public ThumbPreview(ImageView imageView, int maxWidth) {
+            super(imageView.getContext(), maxWidth, maxWidth * MAX_WIDTH_HEIGHT_MULTIPLIER);
             this.imageView = imageView;
-            imageView.setImageResource(R.drawable.download);
-            this.maxWidth = maxWidth;
         }
 
         @Override
@@ -143,21 +146,6 @@ public class ImagesAdapter extends RecyclerView.Adapter {
                     imageView.setImageBitmap(image);
                 }
             });
-        }
-
-        @Override
-        public int getWidth() {
-            return maxWidth;
-        }
-
-        @Override
-        public int getHeight() {
-            return maxWidth * MAX_WIDTH_HEIGHT_MULTIPLIER;
-        }
-
-        @Override
-        public InputStream openInputStream(Uri uri) throws FileNotFoundException {
-            return imageView.getContext().getContentResolver().openInputStream(uri);
         }
 
         @Override
