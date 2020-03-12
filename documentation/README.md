@@ -20,9 +20,16 @@ controversal as kids should be able to use the app unattended.
 Best if you ask your child which images it would like to paint.
 I am happy to inlcude these, too.
 
-Added images should be `600px` wide and consist of black and white
-pixels while it is possible to already add colors, they may be
-transformed to black and white by the app and only visible as preview.
+What to keep in mind when creating an image:
+- Added images should be `600px` wide.
+- They consist of black and white pixels.
+    While it is possible to already add colors, they may be
+    transformed to black and white by the app and only be visible as preview.
+- The outlines should be `6` to `10` pixels wide.
+  This allows scaling down images for fast drawing on smaller phones.
+  If they are too small, it might be that areas are joined i.e.
+  coloring the head will also color the background.
+  
 
 If an app contains many galleries, the user defined galleries are
 more important than the built-in galleries.
