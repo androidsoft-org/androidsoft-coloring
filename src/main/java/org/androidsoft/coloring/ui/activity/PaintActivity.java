@@ -165,9 +165,9 @@ public class PaintActivity extends AbstractColoringActivity
             case R.id.settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
-            /*case R.id.gallery:
+            case R.id.gallery:
                 openGallery();
-                return true;*/
+                return true;
             case R.id.share:
                 saveBitmap(new BitmapSharer(this, paintArea.getBitmap()));
                 return true;
