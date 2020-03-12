@@ -9,6 +9,10 @@ import org.androidsoft.coloring.util.imports.ImagePreview;
 
 public interface ImageDB {
     int size();
+    /* Get an image at an index.
+     * Expected: index >= 0
+     * If index >= size(), a NullImage is returned.
+     */
     Image get(int index);
     void attachObserver(Subject.Observer observer);
 
