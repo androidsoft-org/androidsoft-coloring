@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.androidsoft.coloring.util.images.GalleryImageDB;
+import org.androidsoft.coloring.util.images.RetrievalOptions;
 import org.androidsoft.coloring.util.images.SettingsImageDB;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,9 +12,9 @@ import org.json.JSONException;
 import eu.quelltext.coloring.R;
 
 public class Settings {
-    public static final GalleryImageDB[] DEFAULT_GALLERIES = new GalleryImageDB[]{
-            new DefaultGalleryImageDB("https://gallery.quelltext.eu", R.string.settings_gallery_quelltext),
-            new DefaultGalleryImageDB("http://gallery.quelltext.eu", R.string.settings_gallery_quelltext_http),
+    public static final Gallery[] DEFAULT_GALLERIES = new Gallery[]{
+            new Gallery("https://gallery.quelltext.eu", R.string.settings_gallery_quelltext),
+            new Gallery("http://gallery.quelltext.eu", R.string.settings_gallery_quelltext_http),
     };
     private static final String KEY_SETTINGS = "settings";
     private final Context context;
@@ -74,5 +75,28 @@ public class Settings {
             editor = preferences.edit();
         }
         return editor;
+    }
+
+    public RetrievalOptions getRetrievalOptions() {
+        return new RetrievalOptions();
+    }
+
+    public static class Gallery {
+
+        private final String url;
+        private final int description;
+
+        public Gallery(String url, int description) {
+            this.url = url;
+            this.description = description;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public int getDescription() {
+            return description;
+        }
     }
 }

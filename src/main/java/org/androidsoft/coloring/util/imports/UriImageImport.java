@@ -1,4 +1,4 @@
-package org.androidsoft.coloring.util;
+package org.androidsoft.coloring.util.imports;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,31 +8,23 @@ import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
 // see https://developer.android.com/reference/java/lang/Thread
-public class ImageProcessing implements Runnable {
+public class UriImageImport implements Runnable {
 
     private byte[] rawBytesFromTheSource = null;
-
-    public interface ImagePreview {
-        void setImage(Bitmap image);
-        double getWidth();
-        double getHeight();
-        InputStream openInputStream(Uri uri) throws FileNotFoundException;
-        void done(Bitmap bitmap);
-    }
 
     protected final LoadImageProgress progress;
     protected final ImagePreview imagePreview;
     protected final Uri imageUri;
     protected int width;
     protected int height;
+    private Thread thread = null;
 
-    public ImageProcessing(Uri imageUri, LoadImageProgress progress, ImagePreview imagePreview) {
+    public UriImageImport(Uri imageUri, LoadImageProgress progress, ImagePreview imagePreview) {
         this.imageUri = imageUri;
         this.progress = progress;
         this.imagePreview = imagePreview;
@@ -58,7 +50,8 @@ public class ImageProcessing implements Runnable {
     }
 
     protected void runWithBitmap(Bitmap image) {
-
+        progress.stepDone();
+        imagePreview.done(image);
     }
 
     private Bitmap getThumbnail(Uri uri, double maxWidth, double maxHeight) throws IOException {
@@ -119,5 +112,12 @@ public class ImageProcessing implements Runnable {
         int k = Integer.highestOneBit((int)Math.floor(ratio));
         if(k==0) return 1;
         else return k;
+    }
+
+    public synchronized void start() {
+        if (thread == null) {
+            thread = new Thread(this);
+        }
+        thread.start();
     }
 }

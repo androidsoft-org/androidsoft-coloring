@@ -13,13 +13,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
-import org.androidsoft.coloring.util.ConvertingImageImport;
-import org.androidsoft.coloring.util.ImageProcessing;
-import org.androidsoft.coloring.util.CopyImageToLibrary;
+import org.androidsoft.coloring.util.imports.ColoredImageImport;
+import org.androidsoft.coloring.util.imports.BlackAndWhiteImageImport;
 import org.androidsoft.coloring.util.images.BitmapImage;
+import org.androidsoft.coloring.util.imports.ImagePreview;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -97,9 +96,9 @@ public class ImageImportActivity extends NoTitleActivity {
                 if (imageUri != null) {
                     if (imageUri.toString().toLowerCase().endsWith(".png")) {
                         // import png images directly
-                        imageProcessing = new CopyImageToLibrary(imageUri, progress, new ViewImagePreview());
+                        imageProcessing = new BlackAndWhiteImageImport(imageUri, progress, new ViewImagePreview());
                     } else {
-                        imageProcessing = new ConvertingImageImport(imageUri, progress, new ViewImagePreview());
+                        imageProcessing = new ColoredImageImport(imageUri, progress, new ViewImagePreview());
                     }
                 }
 
@@ -124,7 +123,7 @@ public class ImageImportActivity extends NoTitleActivity {
     }
 
     /* This class cares for the images being shown to the user */
-    private class ViewImagePreview implements ImageProcessing.ImagePreview {
+    private class ViewImagePreview implements ImagePreview {
         private final Handler handler;
         private final int width;
         private final int height;
@@ -151,12 +150,12 @@ public class ImageImportActivity extends NoTitleActivity {
         }
 
         @Override
-        public double getWidth() {
+        public int getWidth() {
             return width == 0 ? 640 : width;
         }
 
         @Override
-        public double getHeight() {
+        public int getHeight() {
             return height == 0 ? 480 :height;
         }
 

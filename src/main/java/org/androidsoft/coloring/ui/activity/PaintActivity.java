@@ -15,6 +15,7 @@
  */
 package org.androidsoft.coloring.ui.activity;
 
+import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.androidsoft.coloring.ui.widget.PaintArea;
 import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.util.BitmapSaver;
@@ -23,12 +24,16 @@ import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.images.BitmapHash;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ResourceImageDB;
+import org.androidsoft.coloring.util.imports.ImagePreview;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -92,16 +97,22 @@ public class PaintActivity extends AbstractColoringActivity
         loadImageFromIntent(getIntent());
     }
 
-    private void loadImageFromIntent(Intent intent) {
-        Bundle extras = intent.getExtras();
-        ImageDB.Image image;
-        if (extras != null && extras.containsKey(ARG_IMAGE)) {
-            // we received and image and should thus paint it
-            image = extras.getParcelable(ARG_IMAGE);
-        } else {
-            image = new ResourceImageDB().randomImage();
-        }
-        paintArea.setImageBitmap(image.getImage(PaintActivity.this));
+    private void loadImageFromIntent(final Intent intent) {
+        paintView.post(new Runnable() {
+            @Override
+            public void run() {
+                Bundle extras = intent.getExtras();
+                ImageDB.Image image;
+                if (extras != null && extras.containsKey(ARG_IMAGE)) {
+                    // we received and image and should thus paint it
+                    image = extras.getParcelable(ARG_IMAGE);
+                } else {
+                    image = new ResourceImageDB(PaintActivity.this).randomImage();
+                }
+                // TODO: add loading animation for the time the image is loading
+                image.asPaintableImage(new Preview(), new LoadImageProgress(null, null));
+            }
+        });
     }
 
     @Override
@@ -227,7 +238,7 @@ public class PaintActivity extends AbstractColoringActivity
                 if (resultCode == RESULT_OK)
                 {
                     final ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
-                    paintArea.setImageBitmap(image.getImage(PaintActivity.this));
+                    image.asPaintableImage(new Preview(), new LoadImageProgress(null, null));
                 }
                 break;
             case REQUEST_PICK_COLOR:
@@ -337,5 +348,32 @@ public class PaintActivity extends AbstractColoringActivity
         // open url in browser, see https://stackoverflow.com/a/2201999/1320237
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(GALLERY_URL));
         startActivity(browserIntent);
+    }
+
+    private class Preview implements ImagePreview {
+        @Override
+        public void setImage(Bitmap image) {
+            paintArea.setImageBitmap(image);
+        }
+
+        @Override
+        public int getWidth() {
+            return paintArea.getWidth();
+        }
+
+        @Override
+        public int getHeight() {
+            return paintArea.getHeight();
+        }
+
+        @Override
+        public InputStream openInputStream(Uri uri) throws FileNotFoundException {
+            return getContentResolver().openInputStream(uri);
+        }
+
+        @Override
+        public void done(Bitmap bitmap) {
+            paintArea.setImageBitmap(bitmap);
+        }
     }
 }

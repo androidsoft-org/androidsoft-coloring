@@ -158,4 +158,12 @@ public class PaintArea {
     public int getPaintColor() {
         return paintColor;
     }
+
+    public int getWidth() {
+        return view.getWidth() == 0 ? view.getWidth() : 640;
+    }
+
+    public int getHeight() {
+        return view.getHeight() == 0 ? view.getHeight() : 480;
+    }
 }

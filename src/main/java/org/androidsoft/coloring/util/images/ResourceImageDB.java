@@ -2,8 +2,6 @@ package org.androidsoft.coloring.util.images;
 
 import android.content.Context;
 
-import org.androidsoft.coloring.ui.activity.ChoosePictureActivity;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +16,14 @@ public class ResourceImageDB implements ImageDB {
     private static final String IMAGE_PREFIX = "outline";
     private final List<Image> images = new ArrayList<>();
 
-    public ResourceImageDB() {
+    public ResourceImageDB(Context context) {
         Field[] drawables = R.drawable.class.getDeclaredFields();
         for (int i = 0; i < drawables.length; i++) {
             String name = drawables[i].getName();
             try {
                 if (name.startsWith(IMAGE_PREFIX))
                 {
-                    images.add(new DrawableResourceImage(drawables[i].getInt(null)));
+                    images.add(PreparedUriImage.fromResourceId(context, drawables[i].getInt(null)));
                 }
             } catch (IllegalAccessException e) {}
         }

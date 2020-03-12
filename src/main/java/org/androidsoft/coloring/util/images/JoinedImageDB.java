@@ -3,7 +3,7 @@ package org.androidsoft.coloring.util.images;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JoinedImageDB implements ImageDB {
+public class JoinedImageDB extends Subject implements ImageDB, Subject.Observer {
 
     private List<ImageDB> imageDBs;
 
@@ -35,18 +35,17 @@ public class JoinedImageDB implements ImageDB {
         return new NullImage();
     }
 
-    @Override
-    public void attachObserver(Subject.Observer observer) {
-        for (ImageDB imageDB : imageDBs) {
-            imageDB.attachObserver(observer);
-        }
-    }
-
     public void add(ImageDB imageDB) {
         imageDBs.add(imageDB);
+        imageDB.attachObserver(this);
     }
 
     public void add(Image image) {
-        imageDBs.add(new SingeImageDB(image));
+        add(new SingeImageDB(image));
+    }
+
+    @Override
+    public void update() {
+        notifyObservers();
     }
 }

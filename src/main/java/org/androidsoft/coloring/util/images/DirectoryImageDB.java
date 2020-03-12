@@ -53,10 +53,10 @@ public class DirectoryImageDB implements ImageDB {
             return new NullImage();
         }
         File file = files.get(index);
-        return new FileImage(file);
+        return PreparedUriImage.fromFile(file);
     }
 
     @Override
-    public void attach(Subject.Observer observer) {
+    public void attachObserver(Subject.Observer observer) {
     }
 }

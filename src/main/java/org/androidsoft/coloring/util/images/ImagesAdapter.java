@@ -6,15 +6,24 @@ import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.imports.ImagePreview;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 import eu.quelltext.coloring.R;
 
 public class ImagesAdapter extends RecyclerView.Adapter {
+    private static final int MAX_WIDTH_HEIGHT_MULTIPLIER = 3;
     private final ImageDB imageDB;
     private final int layoutId;
     private final int[] imageViewIds;
@@ -80,14 +89,14 @@ public class ImagesAdapter extends RecyclerView.Adapter {
             for (int i = 0; i < images.length; i++) {
                 ImageView imageView = root.findViewById(imageViewIds[i]);
                 final ImageDB.Image image = images[i];
-                if (image.isVisible()) {
+                if (image.canBePainted()) {
                     int width = imageView.getWidth();
                     width = width == 0 ? getScreenWidth() / numberOfImagesPerRow : width;
                     if (width > maxWidth) {
                         width = maxWidth;
                     }
-                    Bitmap bitmap = image.asPreviewImage(root.getContext(), width);
-                    imageView.setImageBitmap(bitmap);
+                    // TODO: add loading animation for the time the image is loading
+                    image.asPreviewImage(new ThumbPreview(imageView, width), new LoadImageProgress(null, null));
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -115,4 +124,45 @@ public class ImagesAdapter extends RecyclerView.Adapter {
         }
     }
 
+    class ThumbPreview implements ImagePreview {
+
+        private final ImageView imageView;
+        private final int maxWidth;
+
+        public ThumbPreview(ImageView imageView, int maxWidth) {
+            this.imageView = imageView;
+            imageView.setImageResource(R.drawable.ic_logo);
+            this.maxWidth = maxWidth;
+        }
+
+        @Override
+        public void setImage(final Bitmap image) {
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageBitmap(image);
+                }
+            });
+        }
+
+        @Override
+        public int getWidth() {
+            return maxWidth;
+        }
+
+        @Override
+        public int getHeight() {
+            return maxWidth * MAX_WIDTH_HEIGHT_MULTIPLIER;
+        }
+
+        @Override
+        public InputStream openInputStream(Uri uri) throws FileNotFoundException {
+            return imageView.getContext().getContentResolver().openInputStream(uri);
+        }
+
+        @Override
+        public void done(Bitmap bitmap) {
+            setImage(bitmap);
+        }
+    }
 }

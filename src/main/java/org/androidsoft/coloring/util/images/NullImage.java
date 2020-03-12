@@ -5,22 +5,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Parcel;
 
+import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.imports.ImagePreview;
+
 import eu.quelltext.coloring.R;
 
 public class NullImage implements ImageDB.Image {
+
     @Override
-    public Bitmap asPreviewImage(Context context, int maxWidth) {
-        return null;
+    public void asPreviewImage(ImagePreview preview, LoadImageProgress progress) {
+        progress.stepFail();
     }
 
     @Override
-    public boolean isVisible() {
+    public boolean canBePainted() {
         return false;
     }
 
     @Override
-    public Bitmap getImage(Context context) {
-        return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_logo);
+    public void asPaintableImage(ImagePreview preview, LoadImageProgress progress) {
+        progress.stepFail();
     }
 
     @Override

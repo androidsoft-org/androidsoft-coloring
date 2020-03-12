@@ -4,17 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.core.content.ContextCompat;
-
 import org.androidsoft.coloring.ui.activity.ChoosePictureActivity;
-import org.androidsoft.coloring.ui.activity.SettingsActivity;
 import org.androidsoft.coloring.util.Settings;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import eu.quelltext.coloring.R;
@@ -55,7 +50,7 @@ public class SettingsImageDB extends Subject implements ImageDB {
                 }));
         entries.add(new BrowsableEntry(
                 ID_RESOURCES,
-                new ResourceImageDB(),
+                new ResourceImageDB(settings.getContext()),
                 getString(R.string.settings_galleries_resources),
                 getString(R.string.settings_galleries_resources_title),
                 new Browsable(){
@@ -66,8 +61,8 @@ public class SettingsImageDB extends Subject implements ImageDB {
                     }
                 }));
 
-        for (GalleryImageDB gallery : DEFAULT_GALLERIES) {
-            entries.add(new GalleryEntry(gallery));
+        for (Settings.Gallery gallery : DEFAULT_GALLERIES) {
+            entries.add(new GalleryEntry(gallery.getUrl(), gallery.getDescription()));
         }
         orderEntries();
     }
@@ -94,7 +89,7 @@ public class SettingsImageDB extends Subject implements ImageDB {
             ids[1] = ID_RESOURCES;
             ids[2] = ID_SAVED_IMAGES;
             int i = 3;
-            for (GalleryImageDB entry : DEFAULT_GALLERIES) {
+            for (Settings.Gallery entry : DEFAULT_GALLERIES) {
                 ids[i] = entry.getUrl();
                 i++;
             }
@@ -116,11 +111,11 @@ public class SettingsImageDB extends Subject implements ImageDB {
                 break;
             }
         }
-        result.setActivationFromSettings(false);
+        result.setActivationInternally(false);
         String[] activated = getActivatedIds();
         for (String activatedId : activated) {
             if (id.equals(activatedId)) {
-                result.setActivationFromSettings(true);
+                result.setActivationInternally(true);
             }
         }
         return result;
@@ -199,12 +194,12 @@ public class SettingsImageDB extends Subject implements ImageDB {
 
         public void setActivation(boolean activated) {
             if (this.activated != activated) {
-                this.activated = activated;
+                setActivationInternally(activated);
                 save();
             }
         }
 
-        public void setActivationFromSettings(boolean activated) {
+        public void setActivationInternally(boolean activated) {
             this.activated = activated;
         }
 
@@ -252,11 +247,15 @@ public class SettingsImageDB extends Subject implements ImageDB {
 
         public void browse(Context context) {
         }
+
+        public ImageDB getDb() {
+            return db;
+        }
     }
 
     private class GalleryEntry extends Entry {
-        public GalleryEntry(GalleryImageDB gallery) {
-            super(gallery.getUrl(), gallery, getString(gallery.getDescriptionResourceId()), gallery.getUrl());
+        public GalleryEntry(String url, int description) {
+            super(url, new GalleryImageDB(url, settings.getRetrievalOptions()), getString(description), url);
         }
 
         @Override
@@ -280,11 +279,20 @@ public class SettingsImageDB extends Subject implements ImageDB {
         public String getUrl() {
             return getId();
         }
+
+        @Override
+        public void setActivationInternally(boolean activated) {
+            super.setActivationInternally(activated);
+            if (activated) {
+                GalleryImageDB db = (GalleryImageDB) getDb();
+                db.start();
+            }
+        }
     }
 
     private class UserDefinedEntry extends GalleryEntry {
-        public UserDefinedEntry(String id) {
-            super(new GalleryImageDB(id));
+        public UserDefinedEntry(String url) {
+            super(url, R.string.settings_galleries_user_defined);
         }
 
         @Override

@@ -1,6 +1,12 @@
 package org.androidsoft.coloring.util.images;
 
+import android.net.Uri;
 import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.imports.ImagePreview;
+import org.androidsoft.coloring.util.imports.UriImageImport;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,10 +14,26 @@ import java.net.URL;
 class ThumbNailImage extends UrlImage {
     private final int maxWidth;
 
-    public ThumbNailImage(URL thumbUrl, String thumbId, String thumbLastModified, int maxWidth) {
-        super(thumbUrl, thumbId, thumbLastModified);
+    public ThumbNailImage(URL thumbUrl, String thumbId, String thumbLastModified, int maxWidth, RetrievalOptions retrievalOptions) {
+        super(thumbUrl, thumbId, thumbLastModified, retrievalOptions);
         this.maxWidth = maxWidth;
     }
+
+    @Override
+    public void asPreviewImage(ImagePreview preview, LoadImageProgress progress) {
+        new UriImageImport(getUri(), progress, preview).start();
+    }
+
+    @Override
+    public boolean canBePainted() {
+        return false;
+    }
+
+    @Override
+    public void asPaintableImage(ImagePreview preview, LoadImageProgress progress) {
+        progress.stepFail();
+    }
+
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
@@ -25,6 +47,7 @@ class ThumbNailImage extends UrlImage {
             String urlString = parcel.readString();
             String id = parcel.readString();
             String lastModified = parcel.readString();
+            Parcelable retrievalOptions = parcel.readParcelable(RetrievalOptions.class.getClassLoader());
             int maxWidth = parcel.readInt();
             URL url = null;
             try {
@@ -33,7 +56,7 @@ class ThumbNailImage extends UrlImage {
                 e.printStackTrace();
                 return new NullImage();
             }
-            return new ThumbNailImage(url, id, lastModified, maxWidth);
+            return new ThumbNailImage(url, id, lastModified, maxWidth, (RetrievalOptions) retrievalOptions);
         }
 
         @Override
@@ -41,4 +64,8 @@ class ThumbNailImage extends UrlImage {
             return new ImageDB.Image[0];
         }
     };
+
+    public int getWidth() {
+        return maxWidth;
+    }
 }

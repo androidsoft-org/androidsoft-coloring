@@ -16,8 +16,10 @@ public class LoadImageProgress {
     public LoadImageProgress(ProgressBar progressBar, TextView textView) {
         this.progressBar = progressBar;
         this.textView = textView;
-        progressBar.setIndeterminate(false);
-        progressBar.setMax(STEPS);
+        if (progressBar != null) {
+            progressBar.setIndeterminate(false);
+            progressBar.setMax(STEPS);
+        }
         handler = new Handler();
         lastStep = System.nanoTime();
         stepStart();
@@ -29,8 +31,12 @@ public class LoadImageProgress {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                progressBar.setProgress(step);
-                textView.setText(textId);
+                if (progressBar != null) {
+                    progressBar.setProgress(step);
+                }
+                if (textView != null) {
+                    textView.setText(textId);
+                }
             }
         });
         long newStep = System.nanoTime();

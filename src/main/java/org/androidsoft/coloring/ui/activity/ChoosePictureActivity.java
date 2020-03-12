@@ -16,7 +16,6 @@
 package org.androidsoft.coloring.ui.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,12 +23,9 @@ import android.view.WindowManager;
 
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.Settings;
-import org.androidsoft.coloring.util.images.JoinedImageDB;
-import org.androidsoft.coloring.util.images.ResourceImageDB;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ImageListener;
 import org.androidsoft.coloring.util.images.ImagesAdapter;
-import org.androidsoft.coloring.util.images.DirectoryImageDB;
 import org.androidsoft.coloring.util.images.SettingsImageDB;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
@@ -69,7 +65,7 @@ public class ChoosePictureActivity extends NoTitleActivity
         Bundle extras = intent.getExtras();
         if (extras != null && extras.containsKey(ARG_IMAGE)) {
             ImageDB.Image image = extras.getParcelable(ARG_IMAGE);
-            if (image.isVisible()) {
+            if (image.canBePainted()) {
                 imageDB.addPaintedImage(image);
             }
         }

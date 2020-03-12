@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.util.Log;
 
+import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.imports.ImagePreview;
+
 import java.io.ByteArrayOutputStream;
 
 public class BitmapImage implements ImageDB.Image {
@@ -17,22 +20,21 @@ public class BitmapImage implements ImageDB.Image {
     }
 
     @Override
-    public Bitmap asPreviewImage(Context context, int maxWidth) {
-        int maxHeight = bitmap.getHeight() * maxWidth / bitmap.getWidth();
+    public void asPreviewImage(ImagePreview preview, LoadImageProgress progress) {
         // create a scaled down version of a bitmap
         // see https://stackoverflow.com/a/4837803
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, maxWidth, maxHeight, false);
-        return scaledBitmap;
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, preview.getWidth(), preview.getHeight(), false);
+        preview.done(bitmap);
     }
 
     @Override
-    public boolean isVisible() {
+    public boolean canBePainted() {
         return true;
     }
 
     @Override
-    public Bitmap getImage(Context context) {
-        return bitmap;
+    public void asPaintableImage(ImagePreview preview, LoadImageProgress progress) {
+        preview.done(bitmap);
     }
 
     @Override

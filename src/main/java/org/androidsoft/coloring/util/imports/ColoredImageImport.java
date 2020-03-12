@@ -1,4 +1,4 @@
-package org.androidsoft.coloring.util;
+package org.androidsoft.coloring.util.imports;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,7 +15,7 @@ import eu.quelltext.images.LineasAroundAreas;
 import eu.quelltext.images.Measurement;
 import eu.quelltext.images.RandomColorGenerator;
 
-public class ConvertingImageImport extends ImageProcessing {
+public class ColoredImageImport extends UriImageImport {
 
     private static final int NUMBER_OF_COLORS = 9;
     private static final int LINE_WIDTH = 7;
@@ -28,13 +28,12 @@ public class ConvertingImageImport extends ImageProcessing {
     private ClusteredColors cluster;
     private int[] colors;
 
-    public ConvertingImageImport(Uri imageUri, LoadImageProgress progress, ImagePreview imagePreview) {
+    public ColoredImageImport(Uri imageUri, LoadImageProgress progress, ImagePreview imagePreview) {
         super(imageUri, progress, imagePreview);
     }
 
     @Override
     protected void runWithBitmap(Bitmap image) {
-        super.runWithBitmap(image);
         colors = getPixels(image);
         showImage(colors);
         // run cluster the colors used in the image
@@ -48,8 +47,7 @@ public class ConvertingImageImport extends ImageProcessing {
         removeSmallAreasByKernel();
         removeSmallAreasByConnectedComponents();
         drawLinesAroundTheAreas();
-        progress.stepDone();
-        imagePreview.done(getBitmap(colors));
+        super.runWithBitmap(getBitmap(colors));
     }
 
     private void drawLinesAroundTheAreas() {
