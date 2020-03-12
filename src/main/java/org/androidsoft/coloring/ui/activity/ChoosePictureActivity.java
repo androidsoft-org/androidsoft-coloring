@@ -15,12 +15,17 @@
  */
 package org.androidsoft.coloring.ui.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import org.androidsoft.coloring.ui.widget.PreCachingLayoutManager;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.Settings;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -50,6 +55,10 @@ public class ChoosePictureActivity extends NoTitleActivity
 
         setContentView(R.layout.choose_picture);
         RecyclerView imagesView = findViewById(R.id.images);
+        // load images ahead
+        int space = getScreenHeight() / 2;
+        LinearLayoutManager manager = new PreCachingLayoutManager(this, space);
+        imagesView.setLayoutManager(manager);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -98,5 +107,12 @@ public class ChoosePictureActivity extends NoTitleActivity
         if (hasFocus) {
             ScreenUtils.setFullscreen(this);
         }
+    }
+
+    private int getScreenHeight() {
+        // from https://stackoverflow.com/a/4744499
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.heightPixels;
     }
 }
