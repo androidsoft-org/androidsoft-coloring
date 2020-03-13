@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import org.androidsoft.coloring.util.images.ImagesAdapter;
 import org.androidsoft.coloring.util.imports.ImagePreview;
 
 import java.io.FileNotFoundException;

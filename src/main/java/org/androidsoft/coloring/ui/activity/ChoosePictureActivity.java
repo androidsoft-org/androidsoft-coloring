@@ -15,8 +15,6 @@
  */
 package org.androidsoft.coloring.ui.activity;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +28,7 @@ import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.Settings;
 import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.ImageListener;
-import org.androidsoft.coloring.util.images.ImagesAdapter;
+import org.androidsoft.coloring.util.images.SectionsAdapter;
 import org.androidsoft.coloring.util.images.SettingsImageDB;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
@@ -80,7 +78,7 @@ public class ChoosePictureActivity extends NoTitleActivity
         }
 
         // set adapter with all the images
-        ImagesAdapter adapter = new ImagesAdapter(
+        SectionsAdapter adapter = new SectionsAdapter(
                 imageDB, R.layout.choose_picture_line,
                 new int[]{R.id.image1, R.id.image2});
         adapter.setImageListener(new ImageListener() {

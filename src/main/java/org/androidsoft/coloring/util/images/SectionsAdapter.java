@@ -12,23 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
 import org.androidsoft.coloring.util.images.cache.FixedSizeImagePreview;
 
 import eu.quelltext.coloring.R;
 
-public class ImagesAdapter extends RecyclerView.Adapter {
+public class SectionsAdapter extends RecyclerView.Adapter {
     private static final int MAX_WIDTH_HEIGHT_MULTIPLIER = 3;
-    private static final int CACHE_IMAGE_ROWS_AHEAD = 2;
-    private final ImageDB imageDB;
+    private final SettingsImageDB imageDB;
     private final int layoutId;
     private final int[] imageViewIds;
     private final int numberOfImagesPerRow;
     private final MemoryImageCache cache;
     private ImageListener imageListener = new NullImageListener();
 
-    public ImagesAdapter(ImageDB imageDB, int layoutId, int[] imageViewIds) {
+    public SectionsAdapter(SettingsImageDB imageDB, int layoutId, int[] imageViewIds) {
         this.imageDB = imageDB;
         imageDB.attachObserver(new Subject.Observer() {
             @Override
@@ -53,21 +53,48 @@ public class ImagesAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int index) {
-        ViewHolder holder = (ViewHolder)viewHolder;
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int row) {
         ImageDB.Image[] images = new ImageDB.Image[numberOfImagesPerRow];
-        int start = index * numberOfImagesPerRow;
-        for (int i = 0; i < numberOfImagesPerRow; i++) {
-            images[i] = imageDB.get(start + i);
+        for (SettingsImageDB.Entry section : imageDB.entries()) {
+            int sectionRows = numberOfRows(section);
+            if (sectionRows > row) {
+                // we found the section!
+                int start = row * numberOfImagesPerRow;
+                for (int i = 0; i < numberOfImagesPerRow; i++) {
+                    images[i] = section.get(start + i);
+                }
+                // display the images
+                ViewHolder holder = (ViewHolder)viewHolder;
+                holder.display(images);
+                if (row == 0) {
+                    holder.addSectionStart(section);
+                } else {
+                    holder.removeSectionStart();
+                }
+                break;
+            } else {
+                row -= sectionRows;
+            }
         }
-        holder.display(images);
     }
 
     @Override
     public int getItemCount() {
-        int numberOfImages = imageDB.size();
-        int numberOfRows = numberOfImages / numberOfImagesPerRow;
-        return numberOfRows + (numberOfImages % numberOfImagesPerRow == 0 ? 0 : 1);
+        int rows = 0;
+        for (SettingsImageDB.Entry section : imageDB.entries()) {
+            rows += numberOfRows(section);
+        }
+        return rows;
+    }
+
+    private int numberOfRows(SettingsImageDB.Entry section) {
+        int numberOfImages = section.size();
+        // increase rows according to the images
+        int rows = numberOfImages / numberOfImagesPerRow;
+        if (numberOfImages % numberOfImagesPerRow != 0) {
+            rows++; // does not fully fit the count
+        }
+        return rows;
     }
 
     public void setImageListener(ImageListener listener) {
@@ -77,11 +104,18 @@ public class ImagesAdapter extends RecyclerView.Adapter {
     private class ViewHolder extends RecyclerView.ViewHolder {
         private final View root;
         private final int maxWidth;
+        private final TextView title;
+        private final TextView description;
+        private final View titleContainer;
+
 
         public ViewHolder(@NonNull View root) {
             super(root);
             this.root = root;
             maxWidth = root.getContext().getResources().getDimensionPixelSize(R.dimen.maximum_image_preview_size);
+            title  = root.findViewById(R.id.title);
+            description  = root.findViewById(R.id.description);
+            titleContainer  = root.findViewById(R.id.title_container);
         }
 
         public void display(ImageDB.Image[] images) {
@@ -126,6 +160,23 @@ public class ImagesAdapter extends RecyclerView.Adapter {
                 return 400; // default width
             }
             return displayMetrics.widthPixels;
+        }
+
+        public void addSectionStart(SettingsImageDB.Entry section) {
+            titleContainer.setVisibility(View.VISIBLE);
+            title.setText(section.getName());
+            int numberOfImages = section.size();
+            if (numberOfImages >= 5) {
+                String description = this.description.getContext().getString(R.string.image_list_section_description, numberOfImages);
+                this.description.setText(description);
+                this.description.setVisibility(View.VISIBLE);
+            } else {
+                this.description.setVisibility(View.GONE);
+            }
+        }
+
+        public void removeSectionStart() {
+            titleContainer.setVisibility(View.GONE);
         }
     }
 

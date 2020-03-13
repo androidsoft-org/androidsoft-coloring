@@ -103,4 +103,5 @@
     <!-- Error Reporter: This is the link to the issues page https://github.com/niccokunzmann/coloring-book/issues/ -->
     <string name="error_link">shorturl.de/coloring</string>
     <string name="error_occurred_toast">Error copied to clipboard</string>
+    <string name="image_list_section_description">Number of images: <xliff:g example="10">%1$d</xliff:g></string>
 </resources>
