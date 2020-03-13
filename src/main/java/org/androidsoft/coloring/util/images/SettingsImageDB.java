@@ -18,7 +18,7 @@ import static org.androidsoft.coloring.util.Settings.DEFAULT_GALLERIES;
 
 public class SettingsImageDB extends Subject implements ImageDB {
 
-    private static final String VERSION = "-0";
+    private static final String VERSION = "-1";
     private static final String ID_RESOURCES = "ResourceImageDB";
     private static final String ID_SAVED_IMAGES = "SavedImages";
     private static final String ID_LAST_PAINTED = "LastPaintedImage";
@@ -84,11 +84,11 @@ public class SettingsImageDB extends Subject implements ImageDB {
     private String[] getEntryOrderIds() {
         String[] ids = settings.getStringArray(KEY_ENTRY_ORDER);
         if (ids == null) {
-            ids = new String[3 + DEFAULT_GALLERIES.length];
-            ids[0] = ID_LAST_PAINTED;
-            ids[1] = ID_RESOURCES;
-            ids[2] = ID_SAVED_IMAGES;
-            int i = 3;
+            String[] defaultIds = getDefaultIds();
+            ids = new String[defaultIds.length + DEFAULT_GALLERIES.length];
+            // see https://www.tutorialspoint.com/java/lang/system_arraycopy.htm
+            System.arraycopy(defaultIds, 0, ids, 0, defaultIds.length);
+            int i = defaultIds.length;
             for (Settings.Gallery entry : DEFAULT_GALLERIES) {
                 ids[i] = entry.getUrl();
                 i++;
@@ -124,9 +124,13 @@ public class SettingsImageDB extends Subject implements ImageDB {
     private String[] getActivatedIds() {
         String[] ids = settings.getStringArray(KEY_ENTRY_ACTIVATED);
         if (ids == null) {
-            ids = new String[]{ID_LAST_PAINTED, ID_RESOURCES, ID_SAVED_IMAGES};
+            ids = getDefaultIds();
         }
         return ids;
+    }
+
+    private String[] getDefaultIds() {
+        return new String[]{ID_LAST_PAINTED, ID_RESOURCES, ID_SAVED_IMAGES};
     }
 
     private void save() {
@@ -173,7 +177,8 @@ public class SettingsImageDB extends Subject implements ImageDB {
                 return false; // no duplicates
             }
         }
-        entries.add(new UserDefinedEntry(url));
+        entries.add(getDefaultIds().length, new UserDefinedEntry(url));
+        save();
         notifyObservers();
         return true;
     }
