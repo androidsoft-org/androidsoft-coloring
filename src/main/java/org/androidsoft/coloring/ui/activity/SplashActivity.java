@@ -50,7 +50,7 @@ public class SplashActivity extends WhatsNewActivity
 {
 
     private static final String CHANGELOG_FOLDER = "changelogs";
-    private static final int PERMISSION_REQUEST = 0;
+    private int permissionRequest = 0;
     private Button mButtonPlay;
 
     @Override
@@ -82,6 +82,11 @@ public class SplashActivity extends WhatsNewActivity
         // see https://developer.android.com/guide/topics/resources/string-resource#java
         // credits to https://stackoverflow.com/a/51109685/1320237
         versionText.setText(getString(R.string.credits_current_version, getVersionName()));
+
+        checkForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, R.string.permission_read_external_storage);
+        checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.permission_write_external_storage);
+        checkForPermission(Manifest.permission.EXPAND_STATUS_BAR, R.string.permission_expand_status_bar);
+        checkForPermission(Manifest.permission.SYSTEM_ALERT_WINDOW, R.string.permission_expand_status_bar);
     }
 
     public String getVersionName() {
@@ -176,13 +181,6 @@ public class SplashActivity extends WhatsNewActivity
         return CHANGELOG_FOLDER + "/" + language + "-" + country + "/" + getVersionCode() + ".txt";
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, R.string.permission_read_external_storage);
-        checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.permission_write_external_storage);
-    }
-
     public void checkForPermission(final String permissionName, int explanationResourceId) {
         // check for permissions
         // see https://developer.android.com/training/permissions/requesting#java
@@ -205,7 +203,7 @@ public class SplashActivity extends WhatsNewActivity
                                 // Continue with delete operation
                                 ActivityCompat.requestPermissions(SplashActivity.this,
                                         new String[]{permissionName},
-                                        PERMISSION_REQUEST);
+                                        permissionRequest++);
                             }
                         })
 
@@ -217,7 +215,7 @@ public class SplashActivity extends WhatsNewActivity
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{permissionName},
-                        PERMISSION_REQUEST);
+                        permissionRequest++);
             }
         } else {
             // Permission has already been granted

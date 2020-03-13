@@ -125,6 +125,14 @@ public class PaintActivity extends AbstractColoringActivity
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!hasFocus) {
+            ScreenUtils.collapseStatusBar(this);
+        }
+    }
+
+    @Override
     protected void onNewIntent(Intent intent) {
         // capture the new intent
         // see https://developer.android.com/guide/components/activities/tasks-and-back-stack

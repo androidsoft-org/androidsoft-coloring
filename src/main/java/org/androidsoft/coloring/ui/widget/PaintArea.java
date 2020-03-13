@@ -21,6 +21,7 @@ import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.images.NullImage;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
@@ -31,7 +32,7 @@ import android.widget.ImageView;
 public class PaintArea {
 
     private final ViewGroup.LayoutParams layoutParams;
-    private Bitmap bitmap = null;
+    private Bitmap bitmap = Bitmap.createBitmap(1, 1, Config.ARGB_8888);
     private int paintColor;
     private final ImageView view;
 
