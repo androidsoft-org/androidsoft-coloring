@@ -53,7 +53,7 @@ public class DirectoryImageDB implements ImageDB {
             return new NullImage();
         }
         File file = files.get(index);
-        return PreparedUriImage.fromFile(file);
+        return PreparedUriImage.fromPaintedImageFile(file);
     }
 
     @Override

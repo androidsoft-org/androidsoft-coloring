@@ -361,8 +361,13 @@ public class PaintActivity extends AbstractColoringActivity
 
     private class Preview implements ImagePreview {
         @Override
-        public void setImage(Bitmap image) {
-            paintArea.setImageBitmap(image);
+        public void setImage(final Bitmap image) {
+            paintView.post(new Runnable() {
+                @Override
+                public void run() {
+                    paintArea.setImageBitmap(image);
+                }
+            });
         }
 
         @Override
@@ -381,8 +386,8 @@ public class PaintActivity extends AbstractColoringActivity
         }
 
         @Override
-        public void done(Bitmap bitmap) {
-            paintArea.setImageBitmap(bitmap);
+        public void done(final Bitmap bitmap) {
+            setImage(bitmap);
         }
     }
 }
