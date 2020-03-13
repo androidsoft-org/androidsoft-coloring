@@ -14,6 +14,9 @@ import org.androidsoft.coloring.util.imports.UriImageImport;
 
 import java.io.File;
 
+/* This is an image which is prepared (black and white) to drawing located at a Uri.
+ *
+ */
 public class PreparedUriImage implements ImageDB.Image {
     private final Uri uri;
 
@@ -55,14 +58,15 @@ public class PreparedUriImage implements ImageDB.Image {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        uri.writeToParcel(parcel, flags);
+        parcel.writeString(uri.toString());
     }
 
     public static Creator CREATOR = new Creator() {
+
         @Override
         public ImageDB.Image createFromParcel(Parcel parcel) {
-            Parcelable uri = parcel.readParcelable(Uri.class.getClassLoader());
-            return new PreparedUriImage((Uri) uri);
+            Uri uri = Uri.parse(parcel.readString());
+            return new PreparedUriImage(uri);
         }
 
         @Override
