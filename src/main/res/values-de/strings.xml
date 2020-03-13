@@ -56,4 +56,6 @@
     <string name="progress_show_cluster" tools:ignore="MissingTranslation">zeige das klassifizierte Bild</string>
     <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">zeige das Bild mit den größeren bemalbaren Gebieten</string>
     <string name="progress_draw_lines" tools:ignore="MissingTranslation">male Linien um die Gebiete</string>
+    <!-- Error Reporter: This is the link to the issues page https://github.com/niccokunzmann/coloring-book/issues/ -->
+    <string name="error_link">shorturl.de/malbuch</string>
     </resources>

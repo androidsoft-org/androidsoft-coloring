@@ -96,6 +96,10 @@
     <string name="settings_galleries_saved_images_title">Saved Images</string>
     <string name="settings_galleries_last_painted_title">Last painted image</string>
     <string name="settings_galleries_last_painted">If activated, (recommended) the image one was painting can be clicked and resumed. If deactivated, only the back button leads back to the current painting.</string>
-
-
+    <string name="error_occurred_message">An error occurred. You can send it to %1$s. Or report it at %2$s.</string>
+    <string name="error_report_title">Error Report from %1$s</string>
+    <string name="error_email" translatable="false">niccokunzmann@rambler.ru</string>
+    <!-- Error Reporter: This is the link to the issues page https://github.com/niccokunzmann/coloring-book/issues/ -->
+    <string name="error_link">shorturl.de/coloring</string>
+    <string name="error_occurred_toast">Error copied to clipboard</string>
 </resources>

@@ -20,6 +20,7 @@ import org.androidsoft.coloring.ui.widget.PaintArea;
 import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.util.BitmapSaver;
 import org.androidsoft.coloring.util.BitmapSharer;
+import org.androidsoft.coloring.util.ErrorReporter;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.images.BitmapHash;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -35,8 +36,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.BadParcelableException;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -237,7 +240,13 @@ public class PaintActivity extends AbstractColoringActivity
             case REQUEST_CHOOSE_PICTURE:
                 if (resultCode == RESULT_OK)
                 {
-                    final ImageDB.Image image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
+                    ImageDB.Image image;
+                    try {
+                        image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
+                    } catch (BadParcelableException e) {
+                        ErrorReporter.of(this).report(e);
+                        return;
+                    }
                     image.asPaintableImage(new Preview(), new LoadImageProgress(null, null));
                 }
                 break;
