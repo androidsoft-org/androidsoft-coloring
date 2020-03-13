@@ -1,3 +1,4 @@
 - add gallery to browse more images
 - if an error occurs loading an image, this is reported to the user
 - try to close the status bar of Android in some cases when painting
+- add sections in the image listing
