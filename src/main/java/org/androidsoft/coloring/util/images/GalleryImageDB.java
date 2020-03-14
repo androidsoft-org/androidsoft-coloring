@@ -30,7 +30,7 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
      * see https://learn.cloudcannon.com/jekyll-cheat-sheet/
      * see https://stackoverflow.com/a/3914498/1320237
      */
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
+    //public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
 
     public static Date parseTimeStamp(String dateString) throws NumberFormatException {
         // using the DATE_FORMAT did not work
