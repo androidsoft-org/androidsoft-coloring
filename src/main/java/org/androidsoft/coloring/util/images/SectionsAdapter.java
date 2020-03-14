@@ -104,7 +104,6 @@ public class SectionsAdapter extends RecyclerView.Adapter {
 
     private class ViewHolder extends RecyclerView.ViewHolder {
         private final View root;
-        private final int maxWidth;
         private final TextView title;
         private final TextView description;
         private final View titleContainer;
@@ -113,7 +112,6 @@ public class SectionsAdapter extends RecyclerView.Adapter {
         public ViewHolder(@NonNull View root) {
             super(root);
             this.root = root;
-            maxWidth = root.getContext().getResources().getDimensionPixelSize(R.dimen.maximum_image_preview_size);
             title  = root.findViewById(R.id.title);
             description  = root.findViewById(R.id.description);
             titleContainer  = root.findViewById(R.id.title_container);
@@ -143,7 +141,8 @@ public class SectionsAdapter extends RecyclerView.Adapter {
 
         private int getWidthOf(ImageView imageView) {
             int width = imageView.getWidth();
-            width = width == 0 ? getScreenWidth() / numberOfImagesPerRow : width;
+            int maxWidth = getScreenWidth() / numberOfImagesPerRow;
+            width = width == 0 ? maxWidth : width;
             if (width > maxWidth) {
                 width = maxWidth;
             }
