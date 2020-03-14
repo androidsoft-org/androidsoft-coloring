@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/download"
                 tools:ignore="ContentDescription" />
 
@@ -55,7 +55,7 @@
                 android:adjustViewBounds="true"
                 android:background="#FFFFFF"
                 android:overScrollMode="never"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/download"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
