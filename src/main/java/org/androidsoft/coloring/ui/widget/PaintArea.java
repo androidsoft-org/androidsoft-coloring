@@ -61,16 +61,13 @@ public class PaintArea {
 
     public void setImageBitmap(final Bitmap bm) {
         setImageBitmapWithSameSize(bm);
-        layoutParams.width = layoutParams.WRAP_CONTENT;
-        layoutParams.height = layoutParams.MATCH_PARENT;
         view.setLayoutParams(layoutParams);
-        view.setScaleX(1);
-        view.setScaleY(1);
         view.setRotation(0);
         // use post to defer execution until the size of the view is determined
         view.post(new Runnable() {
             @Override
             public void run() {
+                ViewGroup.LayoutParams params = view.getLayoutParams();
                 int bmHeight = bm.getHeight();
                 int bmWidth = bm.getWidth();
                 int maxWidth = ((View)view.getParent()).getWidth();
@@ -85,35 +82,37 @@ public class PaintArea {
                     if (scale1 < scale2) {
                         // height determines size
                         // test with image which is longer than wide but does not fit in maxWidth
-                        scale = bmHeight / (float)bmWidth;
+                        // example: http://gallery.quelltext.eu/images/freesvg.org/beachview.png
+                        layoutParams.width = maxHeight;
+                        layoutParams.height = maxHeight * bmHeight / bmWidth;
                     } else {
                         // width determines size
                         // test with image which is longer than wide but does fits in maxWidth
+                        // example: http://gallery.quelltext.eu/images/freesvg.org/mascarin-parrot.png
                         // at the end of scaling this, the height of the view should equal maxWidth
-                        scale = maxWidth / /* height of view */(float)maxHeight;
+                        layoutParams.width = maxWidth * bmWidth / bmHeight;
+                        layoutParams.height = maxWidth;
                     }
-                    view.setScaleX(scale);
-                    view.setScaleY(scale);
                 } else {
                     float scale1 = maxHeight / (float)bmHeight;
                     float scale2 = maxWidth / (float)bmWidth;
                     if (scale1 < scale2) {
                         // height determines size
-                        // test this is the case with the default image
-
+                        // test this is the case with the default image from the app
+                        layoutParams.width = maxHeight * bmWidth / bmHeight;
+                        layoutParams.height = maxHeight;
                     } else {
                         // width determines size
                         // test with an image which is very wide
-                        int viewHeight = (int)(maxWidth / (float)bmWidth * bmHeight);
+                        // example: http://gallery.quelltext.eu/images/freesvg.org/cartoon_kids.png
                         // set width and height of view
                         // see https://stackoverflow.com/a/17066696/1320237
                         // see https://stackoverflow.com/a/5042326/1320237
-                        ViewGroup.LayoutParams params = view.getLayoutParams();
-                        layoutParams.width = layoutParams.MATCH_PARENT;
-                        layoutParams.height = layoutParams.WRAP_CONTENT;
-                        view.setLayoutParams(params);
+                        layoutParams.width = maxWidth;
+                        layoutParams.height = maxWidth * bmHeight / bmWidth;
                     }
                 }
+                view.setLayoutParams(params);
             }
         });
     }
