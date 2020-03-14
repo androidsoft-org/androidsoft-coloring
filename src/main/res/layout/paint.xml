@@ -15,46 +15,56 @@
  limitations under the License.
 --> 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:coloring="http://schemas.android.com/apk/res-auto"
+    xmlns:coloring="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/color_buttons_container"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
                   
         <!-- The colors used here should match one of the colors in pick_color.xml -->
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#FF0000"/>
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#FFA500"/>
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#FFFF00"/>
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#32CD32"/>
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#0000FF"/>
-        <org.androidsoft.coloring.ui.widget.ColorButton android:layout_width="wrap_content"
-                                         android:layout_height="wrap_content"
-                                         coloring:color="#800080"/>
-<!--        <org.androidsoft.coloring.ui.widget.ColoringImageButton android:id="@+id/pick_color_button"
-                                         android:layout_width="wrap_content" 
-                                         android:layout_height="wrap_content"/>
-                                         -->
-        <ImageView android:id="@+id/pick_color_button"
-                android:src="@drawable/palette"
-                android:layout_width="fill_parent" 
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#FF0000"/>
+
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#FFA500"/>
+
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#FFFF00"/>
+
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#32CD32"/>
+
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#0000FF"/>
+
+        <org.androidsoft.coloring.ui.widget.ColorButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            coloring:color="#800080"/>
+
+        <ImageView
+            android:id="@+id/pick_color_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/palette" />
 
     </LinearLayout>
 
