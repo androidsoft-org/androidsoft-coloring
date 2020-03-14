@@ -67,12 +67,14 @@ public class PaintActivity extends AbstractColoringActivity
     private BitmapSaver bitmapSaver = null;
     private int lastSavedHash; // the hash value of the last saved bitmap
     private ImageView paintView;
+    private ScreenUtils.StatusBarCollapser statusBar;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        statusBar = new ScreenUtils.StatusBarCollapser(this);
 
         setContentView(R.layout.paint);
         paintView = (ImageView) findViewById(R.id.paint_view);
@@ -121,13 +123,20 @@ public class PaintActivity extends AbstractColoringActivity
     protected void onResume() {
         super.onResume();
         ScreenUtils.setFullscreen(this);
+        statusBar.shouldCollapse();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        statusBar.shouldNotCollapse();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus) {
-            ScreenUtils.collapseStatusBar(this);
+            statusBar.collapse();
         }
     }
 

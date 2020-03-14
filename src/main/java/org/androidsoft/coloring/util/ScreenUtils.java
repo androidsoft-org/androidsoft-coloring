@@ -11,11 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import org.androidsoft.coloring.ui.activity.PaintActivity;
-
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 // Based on http://stackoverflow.com/questions/22265945/full-screen-action-bar-immersive#22560946
 public class ScreenUtils {
@@ -29,20 +27,22 @@ public class ScreenUtils {
         }
     }
 
-    public static void collapseStatusBar(Context context) {
-        try {
-            // see https://stackoverflow.com/a/10380535/1320237
-            @SuppressLint("WrongConstant") Object service = context.getSystemService("statusbar");
-            Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-            Method collapse = statusbarManager.getMethod("collapse");
-            collapse.setAccessible(true);
-            collapse.invoke(service);
-        } catch (Exception e) {
-            // see https://stackoverflow.com/a/31349378/1320237
-            WindowManager manager = ((WindowManager) context.getApplicationContext()
-                    .getSystemService(Context.WINDOW_SERVICE));
+    public static class StatusBarCollapser {
 
-            Activity activity = (Activity) context;
+        private final Activity activity;
+        private final WindowManager manager;
+        private List<View> addedViews = new ArrayList<>();
+        private boolean isInterceptingTheStatusBar = false;
+
+        public StatusBarCollapser(Activity activity) {
+            this.activity = activity;
+            manager = ((WindowManager) this.activity.getApplicationContext()
+                    .getSystemService(Context.WINDOW_SERVICE));
+            attachStatusBarListener();
+        }
+
+        private void attachStatusBarListener() {
+            // see https://stackoverflow.com/a/31349378/1320237
             // see also https://stackoverflow.com/a/36101111/1320237
             // see also https://stackoverflow.com/a/47103959/1320237
             // see also https://stackoverflow.com/questions/32224452/android-unable-to-add-window-permission-denied-for-this-window-type#comment62111778_36101111
@@ -78,10 +78,11 @@ public class ScreenUtils {
 
                 localLayoutParams.format = PixelFormat.TRANSPARENT;
 
-                customViewGroup view = new customViewGroup(context);
+                StatusBarViewGroup view = new StatusBarViewGroup(this.activity);
 
                 try {
                     manager.addView(view, localLayoutParams);
+                    addedViews.add(view);
                 } catch (Exception e2) {
                     // permission is not granted
                     Log.e("collapseStatusBar", "type: " + type + " at index: " + i);
@@ -89,23 +90,53 @@ public class ScreenUtils {
                 }
                 i++;
             }
+            isInterceptingTheStatusBar = true;
+        }
+
+        private void detachStatusBarListener() {
+            for (View view: addedViews) {
+                manager.removeView(view);
+            }
+            isInterceptingTheStatusBar = false;
+        }
+
+        public void collapse() {
+            try {
+                // see https://stackoverflow.com/a/10380535/1320237
+                @SuppressLint("WrongConstant") Object service = activity.getSystemService("statusbar");
+                Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+                Method collapse = statusbarManager.getMethod("collapse");
+                collapse.setAccessible(true);
+                collapse.invoke(service);
+            } catch (Exception e) {
+                // do not care - does not always work
+            }
+        }
+
+        public void shouldCollapse() {
+            attachStatusBarListener();
+        }
+
+        public void shouldNotCollapse() {
+            detachStatusBarListener();
+        }
+
+        public class StatusBarViewGroup extends ViewGroup {
+
+            public StatusBarViewGroup(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected void onLayout(boolean changed, int l, int t, int r, int b) {
+            }
+
+            @Override
+            public boolean onInterceptTouchEvent(MotionEvent ev) {
+                Log.v("StatusBarCollapser", "********** Intercepted Status Bar opening. Should collapse: " + isInterceptingTheStatusBar);
+                return isInterceptingTheStatusBar;
+            }
         }
     }
 
-    public static class customViewGroup extends ViewGroup {
-
-        public customViewGroup(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(MotionEvent ev) {
-            Log.v("customViewGroup", "**********Intercepted");
-            return true;
-        }
-    }
 }

@@ -39,6 +39,7 @@ public class ChoosePictureActivity extends NoTitleActivity
 
     public static final String RESULT_IMAGE = "image";
     public static final String ARG_IMAGE = "image";
+    private ScreenUtils.StatusBarCollapser statusBar;
     // TODO: put gallery link in settings
 
 
@@ -47,6 +48,7 @@ public class ChoosePictureActivity extends NoTitleActivity
     {
         super.onCreate(savedInstanceState);
         ScreenUtils.setFullscreen(this);
+        statusBar = new ScreenUtils.StatusBarCollapser(this);
         // Apparently this cannot be set from the style.
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
                 WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
@@ -98,19 +100,31 @@ public class ChoosePictureActivity extends NoTitleActivity
         finish();
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            ScreenUtils.setFullscreen(this);
-        }
-    }
-
     private int getScreenHeight() {
         // from https://stackoverflow.com/a/4744499
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.heightPixels;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ScreenUtils.setFullscreen(this);
+        statusBar.shouldCollapse();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        statusBar.shouldNotCollapse();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!hasFocus) {
+            statusBar.collapse();
+        }
     }
 }
