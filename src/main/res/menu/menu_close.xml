@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_close"
-          android:icon="@android:drawable/ic_menu_close_clear_cancel"
-          android:title="@android:string/ok"
-          android:showAsAction="always|withText" />
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_close"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@android:string/ok"
+        android:showAsAction="always|withText"
+        tools:ignore="AppCompatResource" />
 </menu>

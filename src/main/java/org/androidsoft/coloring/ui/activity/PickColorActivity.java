@@ -22,7 +22,9 @@ import android.view.View;
 import android.view.WindowManager;
 import java.util.ArrayList;
 import java.util.List;
-import org.androidsoft.coloring.R;
+
+import eu.quelltext.coloring.R;
+
 
 public class PickColorActivity extends AbstractColoringActivity implements
         View.OnClickListener
