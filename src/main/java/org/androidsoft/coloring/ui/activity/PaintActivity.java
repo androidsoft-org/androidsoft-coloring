@@ -56,7 +56,6 @@ public class PaintActivity extends AbstractColoringActivity
 
     private static final int REQUEST_CHOOSE_PICTURE = 0;
     private static final int REQUEST_PICK_COLOR = 1;
-    private static final int DIALOG_PROGRESS = 1;
     public static final String ARG_IMAGE = "bitmap";
     private PaintArea paintArea;
     private ProgressDialog _progressDialog;
@@ -67,14 +66,12 @@ public class PaintActivity extends AbstractColoringActivity
     private BitmapSaver bitmapSaver = null;
     private int lastSavedHash; // the hash value of the last saved bitmap
     private ImageView paintView;
-    private ScreenUtils.StatusBarCollapser statusBar;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        statusBar = new ScreenUtils.StatusBarCollapser(this);
 
         setContentView(R.layout.paint);
         paintView = (ImageView) findViewById(R.id.paint_view);
@@ -117,27 +114,6 @@ public class PaintActivity extends AbstractColoringActivity
                 image.asPaintableImage(new Preview(), new LoadImageProgress(null, null));
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        ScreenUtils.setFullscreen(this);
-        statusBar.shouldCollapse();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        statusBar.shouldNotCollapse();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (!hasFocus) {
-            statusBar.collapse();
-        }
     }
 
     @Override

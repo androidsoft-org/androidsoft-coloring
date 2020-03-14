@@ -97,6 +97,7 @@ public class ScreenUtils {
             for (View view: addedViews) {
                 manager.removeView(view);
             }
+            addedViews.clear();
             isInterceptingTheStatusBar = false;
         }
 

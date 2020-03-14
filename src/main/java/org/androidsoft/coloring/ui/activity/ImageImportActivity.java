@@ -30,7 +30,7 @@ import static org.androidsoft.coloring.ui.activity.PaintActivity.ARG_IMAGE;
 /* Activity to receive shared images and pass them to the paint activity
  * see https://developer.android.com/training/sharing/receive
  */
-public class ImageImportActivity extends NoTitleActivity {
+public class ImageImportActivity extends FullScreenActivity {
 
     private ImageView imageView;
     private LoadImageProgress progress;

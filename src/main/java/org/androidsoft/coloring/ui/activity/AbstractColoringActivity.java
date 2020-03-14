@@ -28,7 +28,7 @@ import android.view.WindowManager;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.ui.NoTitleActivity;
 
-public abstract class AbstractColoringActivity extends NoTitleActivity
+public abstract class AbstractColoringActivity extends FullScreenActivity
 {
 
     public static final String INTENT_PICK_COLOR = "org.androidsoft.coloring.paint.PICK_COLOR";
