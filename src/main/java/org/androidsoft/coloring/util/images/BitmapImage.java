@@ -24,6 +24,7 @@ public class BitmapImage implements ImageDB.Image {
         // create a scaled down version of a bitmap
         // see https://stackoverflow.com/a/4837803
         Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, preview.getWidth(), preview.getHeight(), false);
+        progress.stepDone();
         preview.done(bitmap);
     }
 
@@ -34,6 +35,7 @@ public class BitmapImage implements ImageDB.Image {
 
     @Override
     public void asPaintableImage(ImagePreview preview, LoadImageProgress progress) {
+        progress.stepDone();
         preview.done(bitmap);
     }
 
