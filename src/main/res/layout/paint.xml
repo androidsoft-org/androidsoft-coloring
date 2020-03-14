@@ -17,9 +17,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:coloring="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/color_buttons_container"
@@ -58,11 +59,12 @@
             android:layout_height="wrap_content"
             coloring:color="#800080"/>
 
-        <ImageView android:id="@+id/pick_color_button"
-                android:src="@drawable/palette"
-                android:layout_width="fill_parent" 
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+        <ImageView
+            android:id="@+id/pick_color_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/palette" />
 
     </LinearLayout>
 
