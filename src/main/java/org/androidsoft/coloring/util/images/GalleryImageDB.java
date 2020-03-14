@@ -16,8 +16,6 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -89,7 +87,6 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
     private static final int VERSION_MAJOR = 2;
     private static final int VERSION_MINOR = 0;
     private static final String JSON_VERSION = "version";
-    private static final String JSON_IMAGES = "images";
     private final String url;
     private final RetrievalOptions retrievalOptions;
     private final Thread thread;
@@ -124,46 +121,27 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
     public void run() {
         code = CODE.STARTED;
         Cache cache = retrievalOptions.getCache();
-        InputStream stream = null;
-        URL url;
         try {
-            url = new URL(getUrl("images.json"));
-            stream = cache.openStreamIfAvailable(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-            code = CODE.ERROR.URL;
-            return;
-        }
-        String data;
-        try {
-            byte[] rawBytesFromTheSource = IOUtils.toByteArray(stream);
-            data = new String(rawBytesFromTheSource, "UTF-8");
-        } catch (IOException e) {
-            code = CODE.ERROR.DECODE;
-            e.printStackTrace();
-            return;
-        }
-        try {
-            JSONObject json = new JSONObject(data);
-            String version = json.getString(JSON_VERSION);
-            String[] codes = version.split("\\.");
-            if (codes.length < 2) {
-                code = CODE.ERROR.VERSION_INVALID;
+            JSONObject lastModification = getJSONFrom(getUrl("latest-modification.json"), cache);
+            if (lastModification == null) {
                 return;
             }
-            if (Integer.parseInt(codes[0]) != VERSION_MAJOR || Integer.parseInt(codes[1]) < VERSION_MINOR) {
-                code = CODE.VERSION_INCOMPATIBLE;
+            String lastModifiedString = lastModification.getString("last-modified");
+            Date lastModified = parseTimeStamp(lastModifiedString);
+            String url = getUrl("images.json");
+            JSONObject json = getJSONFrom(url, cache.forId(url, lastModified));
+            if (json == null) {
                 return;
             }
             final JoinedImageDB db = new JoinedImageDB();
-            JSONArray images = json.getJSONArray(JSON_IMAGES);
+            JSONArray images = json.getJSONArray("images");
             for (int i = 0; i < images.length(); i++) {
                 JSONObject imageJSON = images.getJSONObject(i);
                 String id = imageJSON.getString("id");
                 String path = imageJSON.getString("path");
-                String lastModified = imageJSON.getString("last-modified");
+                lastModifiedString = imageJSON.getString("last-modified");
                 URL imageUrl = new URL(getUrl(path));
-                UrlImageWithPreview image = new UrlImageWithPreview(imageUrl, id, parseDate(lastModified), retrievalOptions);
+                UrlImageWithPreview image = new UrlImageWithPreview(imageUrl, id, parseDate(lastModifiedString), retrievalOptions);
                 JSONArray thumbs = imageJSON.getJSONArray("thumbnails");
                 for (int j = 0; j < thumbs.length(); j++) {
                     JSONObject thumbJSON = thumbs.getJSONObject(j);
@@ -195,7 +173,48 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
             code = CODE.ERROR.JSON;
             e.printStackTrace();
             return;
+        } catch (IOException e) {
+            code = CODE.ERROR.DECODE;
+            e.printStackTrace();
+            return;
         }
+    }
+
+    private JSONObject getJSONFrom(String urlString, Cache cache) throws IOException, JSONException {
+        InputStream stream;
+        try {
+            URL url = new URL(urlString);
+            stream = cache.openStreamIfAvailable(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+            code = CODE.ERROR.URL;
+            return null;
+        }
+        return getJSONFrom(stream);
+    }
+
+    private JSONObject getJSONFrom(InputStream stream) throws JSONException, IOException {
+        byte[] rawBytesFromTheSource = IOUtils.toByteArray(stream);
+        String data = new String(rawBytesFromTheSource, "UTF-8");
+        JSONObject json = new JSONObject(data);
+        if (!checkVersionIsCompatible(json)) {
+            return null;
+        }
+        return json;
+    }
+
+    private boolean checkVersionIsCompatible(JSONObject json) throws JSONException {
+        String version = json.getString(JSON_VERSION);
+        String[] codes = version.split("\\.");
+        if (codes.length < 2) {
+            code = CODE.ERROR.VERSION_INVALID;
+            return false;
+        }
+        if (Integer.parseInt(codes[0]) != VERSION_MAJOR || Integer.parseInt(codes[1]) < VERSION_MINOR) {
+            code = CODE.VERSION_INCOMPATIBLE;
+            return false;
+        }
+        return true;
     }
 
     private Date parseDate(String lastModified) throws ParseException {
