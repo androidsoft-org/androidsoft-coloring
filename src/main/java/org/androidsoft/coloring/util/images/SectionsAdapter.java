@@ -15,7 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
-import org.androidsoft.coloring.util.images.cache.FixedSizeImagePreview;
+import org.androidsoft.coloring.util.cache.MemoryImageCache;
+import org.androidsoft.coloring.util.imports.FixedSizeImagePreview;
 
 import eu.quelltext.coloring.R;
 

@@ -3,11 +3,17 @@ package org.androidsoft.coloring.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.androidsoft.coloring.util.cache.Cache;
+import org.androidsoft.coloring.util.cache.FileCache;
+import org.androidsoft.coloring.util.cache.NullCache;
+import org.androidsoft.coloring.util.errors.UIErrorReporter;
 import org.androidsoft.coloring.util.images.GalleryImageDB;
 import org.androidsoft.coloring.util.images.RetrievalOptions;
 import org.androidsoft.coloring.util.images.SettingsImageDB;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.io.File;
 
 import eu.quelltext.coloring.R;
 
@@ -17,6 +23,7 @@ public class Settings {
             new Gallery("http://gallery.quelltext.eu", R.string.settings_gallery_quelltext_http),
     };
     private static final String KEY_SETTINGS = "settings";
+    private static final String URL_CACHE_DIRECTORY = "urls";
     private final Context context;
     private final SharedPreferences preferences;
     private SharedPreferences.Editor editor = null;
@@ -78,7 +85,12 @@ public class Settings {
     }
 
     public RetrievalOptions getRetrievalOptions() {
-        return new RetrievalOptions();
+        File directory = new File(context.getCacheDir(), URL_CACHE_DIRECTORY);
+        Cache cache = new FileCache(directory);
+        //cache = new NullCache();
+        RetrievalOptions options = new RetrievalOptions(cache);
+        options.setErrorReporter(UIErrorReporter.of(context));
+        return options;
     }
 
     public static class Gallery {

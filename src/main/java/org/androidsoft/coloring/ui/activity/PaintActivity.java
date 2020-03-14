@@ -20,7 +20,7 @@ import org.androidsoft.coloring.ui.widget.PaintArea;
 import org.androidsoft.coloring.ui.widget.ColorButton;
 import org.androidsoft.coloring.util.BitmapSaver;
 import org.androidsoft.coloring.util.BitmapSharer;
-import org.androidsoft.coloring.util.ErrorReporter;
+import org.androidsoft.coloring.util.errors.UIErrorReporter;
 import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.coloring.util.images.BitmapHash;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -39,7 +39,6 @@ import android.net.Uri;
 import android.os.BadParcelableException;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -252,7 +251,7 @@ public class PaintActivity extends AbstractColoringActivity
                     try {
                         image = data.getParcelableExtra(ChoosePictureActivity.RESULT_IMAGE);
                     } catch (BadParcelableException e) {
-                        ErrorReporter.of(this).report(e);
+                        UIErrorReporter.of(this).report(e);
                         return;
                     }
                     image.asPaintableImage(new Preview(), new LoadImageProgress(null, null));

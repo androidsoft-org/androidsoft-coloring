@@ -1,6 +1,5 @@
 package org.androidsoft.coloring.util.images;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,18 +9,19 @@ import org.androidsoft.coloring.util.imports.UriImageImport;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 class ThumbNailImage extends UrlImage {
     private final int maxWidth;
 
-    public ThumbNailImage(URL thumbUrl, String thumbId, String thumbLastModified, int maxWidth, RetrievalOptions retrievalOptions) {
+    public ThumbNailImage(URL thumbUrl, String thumbId, Date thumbLastModified, int maxWidth, RetrievalOptions retrievalOptions) {
         super(thumbUrl, thumbId, thumbLastModified, retrievalOptions);
         this.maxWidth = maxWidth;
     }
 
     @Override
     public void asPreviewImage(ImagePreview preview, LoadImageProgress progress) {
-        new UriImageImport(getUri(), progress, preview).start();
+        new UriImageImport(getUri(), progress, preview).startWith(getCache());
     }
 
     @Override
@@ -46,7 +46,7 @@ class ThumbNailImage extends UrlImage {
         public ImageDB.Image createFromParcel(Parcel parcel) {
             String urlString = parcel.readString();
             String id = parcel.readString();
-            String lastModified = parcel.readString();
+            Date lastModified = new Date(parcel.readLong());
             Parcelable retrievalOptions = parcel.readParcelable(RetrievalOptions.class.getClassLoader());
             int maxWidth = parcel.readInt();
             URL url = null;

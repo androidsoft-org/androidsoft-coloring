@@ -1,15 +1,14 @@
 package org.androidsoft.coloring.util.images;
 
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.androidsoft.coloring.util.cache.Cache;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -17,11 +16,12 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
-import eu.quelltext.coloring.R;
+import java.util.TimeZone;
 
 public class GalleryImageDB extends Subject implements ImageDB, Runnable {
 
@@ -32,14 +32,39 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
      * see https://learn.cloudcannon.com/jekyll-cheat-sheet/
      * see https://stackoverflow.com/a/3914498/1320237
      */
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.ENGLISH);
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.ENGLISH);
 
-    public static Calendar parse(String dateString) throws ParseException {
-        Date date = DATE_FORMAT.parse(dateString);
+    public static Date parseTimeStamp(String dateString) throws NumberFormatException {
+        // using the DATE_FORMAT did not work
+        int year = parseInt(dateString, 0, 4, 1000, 3000);
+        int month = parseInt(dateString, 5, 2, 1, 13) - 1;
+        int day = parseInt(dateString, 8, 2, 1, 32);
+        int hour = parseInt(dateString, 11, 2, 0, 24);
+        int minute = parseInt(dateString, 14, 2, 0, 60);
+        int second = parseInt(dateString, 17, 2, 1, 13);
+        String tzSign = dateString.substring(19, 20);
+        String tz = dateString.substring(19);
+        int tzHour = parseInt(dateString, 20, 2, 0, 13);
+        int tzMinute = parseInt(dateString, 23, 2, 0, 60);
         Calendar calendar = Calendar.getInstance();
-        // see https://mkyong.com/java/java-date-and-calendar-examples/
-        calendar.setTime(date);
-        return calendar;
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        //calendar.set(Calendar.ZONE_OFFSET, (tzSign.equals("+") ?  1 : -1) * (tzHour * 60 + tzMinute) * 1000);
+        //String tz = (tzSign.equals("+") ?  tzHour : 24 - tzHour) + ":" + (tzMinute < 10 ? "0" : "") + tzMinute;
+        calendar.setTimeZone(TimeZone.getTimeZone(tz));
+        return calendar.getTime();
+    }
+
+    /* Parse a string into a number, using max (exclusive) and min (inclusive) values
+     *
+     */
+    private static int parseInt(String dateString, int index, int length, int min, int max) {
+        String s = dateString.substring(index, index + length);
+        return Integer.parseInt(s);
     }
 
     public static class CODE {
@@ -98,11 +123,12 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
     @Override
     public void run() {
         code = CODE.STARTED;
+        Cache cache = retrievalOptions.getCache();
         InputStream stream = null;
         URL url;
         try {
             url = new URL(getUrl("images.json"));
-            stream = url.openStream();
+            stream = cache.openStreamIfAvailable(url);
         } catch (IOException e) {
             e.printStackTrace();
             code = CODE.ERROR.URL;
@@ -137,7 +163,7 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
                 String path = imageJSON.getString("path");
                 String lastModified = imageJSON.getString("last-modified");
                 URL imageUrl = new URL(getUrl(path));
-                UrlImageWithPreview image = new UrlImageWithPreview(imageUrl, id, lastModified, retrievalOptions);
+                UrlImageWithPreview image = new UrlImageWithPreview(imageUrl, id, parseDate(lastModified), retrievalOptions);
                 JSONArray thumbs = imageJSON.getJSONArray("thumbnails");
                 for (int j = 0; j < thumbs.length(); j++) {
                     JSONObject thumbJSON = thumbs.getJSONObject(j);
@@ -146,7 +172,7 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
                     String thumbLastModified = imageJSON.getString("last-modified");
                     String thumbId = thumbJSON.getString("id");
                     URL thumbUrl = new URL(getUrl(thumbPath));
-                    ThumbNailImage thumb = new ThumbNailImage(thumbUrl, thumbId, thumbLastModified, thumbMaxWidth, retrievalOptions);
+                    ThumbNailImage thumb = new ThumbNailImage(thumbUrl, thumbId, parseDate(thumbLastModified), thumbMaxWidth, retrievalOptions);
                     image.addPreviewImage(thumb);
                 }
                 db.add(image);
@@ -165,14 +191,19 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
                 }
             });
             code = CODE.WAITING_FOR_MAIN_THREAD;
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException | MalformedURLException e) {
             code = CODE.ERROR.JSON;
             e.printStackTrace();
             return;
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            code = CODE.ERROR.JSON;
-            return;
+        }
+    }
+
+    private Date parseDate(String lastModified) throws ParseException {
+        try {
+            return parseTimeStamp(lastModified);
+        } catch (Exception e){
+            retrievalOptions.getErrorReporter().report(e);
+            throw e;
         }
     }
 

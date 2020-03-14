@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.cache.Cache;
+import org.androidsoft.coloring.util.cache.NullCache;
 import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayInputStream;
@@ -23,6 +25,7 @@ public class UriImageImport implements Runnable {
     protected int width;
     protected int height;
     private Thread thread = null;
+    private Cache cache = new NullCache();
 
     public UriImageImport(Uri imageUri, LoadImageProgress progress, ImagePreview imagePreview) {
         this.imageUri = imageUri;
@@ -99,7 +102,7 @@ public class UriImageImport implements Runnable {
         }
         if (uri.getScheme().startsWith("http")) {
             // download file, see https://stackoverflow.com/a/51271706/1320237
-            InputStream stream = new URL(uri.toString()).openStream();
+            InputStream stream = cache.openStreamIfAvailable(new URL(uri.toString()));
             rawBytesFromTheSource = IOUtils.toByteArray(stream);
             return new ByteArrayInputStream(rawBytesFromTheSource);
         } else {
@@ -119,5 +122,14 @@ public class UriImageImport implements Runnable {
             thread = new Thread(this);
         }
         thread.start();
+    }
+
+    public void setCache(Cache cache) {
+        this.cache = cache;
+    }
+
+    public void startWith(Cache cache) {
+        setCache(cache);
+        start();
     }
 }

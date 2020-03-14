@@ -1,6 +1,8 @@
-package org.androidsoft.coloring.util;
+package org.androidsoft.coloring.util.errors;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Toast;
 
 import java.io.PrintWriter;
@@ -8,24 +10,30 @@ import java.io.StringWriter;
 
 import eu.quelltext.coloring.R;
 
-public class ErrorReporter {
+public class UIErrorReporter implements ErrorReporter {
     private final Context context;
 
-    public ErrorReporter(Context context) {
+    public UIErrorReporter(Context context) {
 
         this.context = context;
     }
 
-    public static ErrorReporter of(Context context) {
-        return new ErrorReporter(context);
+    public static UIErrorReporter of(Context context) {
+        return new UIErrorReporter(context);
     }
 
-    public void report(Exception e) {
+    @Override
+    public void report(final Exception e) {
         e.printStackTrace();
-        String message = context.getResources().getString(R.string.error_occurred_toast);
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-        String report = getReport(e);
-        copyToClipboard(report);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                String message = context.getResources().getString(R.string.error_occurred_toast);
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                String report = getReport(e);
+                copyToClipboard(report);
+            }
+        });
     }
 
     private String getReport(Exception e) {

@@ -1,4 +1,4 @@
-package org.androidsoft.coloring.util.images.cache;
+package org.androidsoft.coloring.util.imports;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,30 +1,32 @@
 package org.androidsoft.coloring.util.images;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
-import org.androidsoft.coloring.util.FloodFill;
+import org.androidsoft.coloring.util.cache.Cache;
 import org.androidsoft.coloring.util.imports.ImagePreview;
 
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Date;
 
 class UrlImage implements ImageDB.Image {
     private final URL url;
     private final String id;
-    private final String lastModified;
+    private final Date lastModified;
     private final RetrievalOptions retrievalOptions;
 
-    public UrlImage(URL url, String id, String lastModified, RetrievalOptions retrievalOptions) {
+    public UrlImage(URL url, String id, Date lastModified, RetrievalOptions retrievalOptions) {
         this.url = url;
         this.id = id;
         this.lastModified = lastModified;
         this.retrievalOptions = retrievalOptions;
+    }
+
+    protected Cache getCache() {
+        return retrievalOptions.getCache().forId(id, lastModified);
     }
 
     @Override
@@ -51,7 +53,7 @@ class UrlImage implements ImageDB.Image {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(url.toString());
         parcel.writeString(id);
-        parcel.writeString(lastModified);
+        parcel.writeLong(lastModified.getTime());
         parcel.writeParcelable(retrievalOptions, flags);
     }
 
@@ -60,7 +62,7 @@ class UrlImage implements ImageDB.Image {
         public ImageDB.Image createFromParcel(Parcel parcel) {
             String urlString = parcel.readString();
             String id = parcel.readString();
-            String lastModified = parcel.readString();
+            Date lastModified = new Date(parcel.readLong());
             Parcelable retrievalOptions = parcel.readParcelable(RetrievalOptions.class.getClassLoader());
             URL url = null;
             try {

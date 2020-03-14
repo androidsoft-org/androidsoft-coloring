@@ -1,7 +1,5 @@
 package org.androidsoft.coloring.util.images;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,6 +11,7 @@ import org.androidsoft.coloring.util.imports.UriImageImport;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UrlImageWithPreview extends UrlImage {
@@ -20,7 +19,7 @@ public class UrlImageWithPreview extends UrlImage {
     private final List<ThumbNailImage> thumbs = new ArrayList<>();
 
 
-    public UrlImageWithPreview(URL url, String id, String lastModified, RetrievalOptions retrievalOptions) {
+    public UrlImageWithPreview(URL url, String id, Date lastModified, RetrievalOptions retrievalOptions) {
         super(url, id, lastModified, retrievalOptions);
     }
 
@@ -37,7 +36,7 @@ public class UrlImageWithPreview extends UrlImage {
             }
         }
         if (bestThumb == null) {
-            new UriImageImport(getUri(), progress, preview).start();
+            new UriImageImport(getUri(), progress, preview).startWith(getCache());
         } else {
             bestThumb.asPreviewImage(preview, progress);
         }
@@ -50,7 +49,7 @@ public class UrlImageWithPreview extends UrlImage {
 
     @Override
     public void asPaintableImage(ImagePreview preview, LoadImageProgress progress) {
-        new BlackAndWhiteImageImport(getUri(), progress, preview).start();
+        new BlackAndWhiteImageImport(getUri(), progress, preview).startWith(getCache());
     }
 
 
@@ -72,7 +71,7 @@ public class UrlImageWithPreview extends UrlImage {
         public ImageDB.Image createFromParcel(Parcel parcel) {
             String urlString = parcel.readString();
             String id = parcel.readString();
-            String lastModified = parcel.readString();
+            Date lastModified = new Date(parcel.readLong());
             Parcelable retrievalOptions = parcel.readParcelable(RetrievalOptions.class.getClassLoader());
             int size = parcel.readInt();
             URL url = null;

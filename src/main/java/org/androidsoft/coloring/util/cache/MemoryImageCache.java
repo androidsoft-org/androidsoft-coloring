@@ -1,9 +1,10 @@
-package org.androidsoft.coloring.util.images;
+package org.androidsoft.coloring.util.cache;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.images.ImageDB;
 import org.androidsoft.coloring.util.imports.ImagePreview;
 
 import java.io.FileNotFoundException;
