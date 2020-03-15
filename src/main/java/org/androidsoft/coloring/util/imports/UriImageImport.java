@@ -47,6 +47,10 @@ public class UriImageImport implements Runnable {
         }
         rawBytesFromTheSource = null; // clean up
         // set attributes
+        if (image == null) {
+            progress.stepFail();
+            return;
+        }
         width = image.getWidth();
         height = image.getHeight();
         runWithBitmap(image);
