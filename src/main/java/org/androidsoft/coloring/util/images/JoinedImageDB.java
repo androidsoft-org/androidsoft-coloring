@@ -5,14 +5,15 @@ import java.util.List;
 
 public class JoinedImageDB extends Subject implements ImageDB, Subject.Observer {
 
-    private List<ImageDB> imageDBs;
+    private List<ImageDB> imageDBs = new ArrayList<>();;
 
     public JoinedImageDB() {
-        imageDBs = new ArrayList<>();
     }
 
     JoinedImageDB(List<ImageDB> dbs) {
-        imageDBs = dbs;
+        for (ImageDB db : dbs) {
+            add(db);
+        }
     }
 
     @Override
