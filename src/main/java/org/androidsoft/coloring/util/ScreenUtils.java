@@ -85,8 +85,8 @@ public class ScreenUtils {
                     addedViews.add(view);
                 } catch (Exception e2) {
                     // permission is not granted
-                    Log.e("collapseStatusBar", "type: " + type + " at index: " + i);
-                    e2.printStackTrace();
+                    Log.e("collapseStatusBar", "could not attach: type: " + type + " at index: " + i);
+                    //e2.printStackTrace();
                 }
                 i++;
             }
