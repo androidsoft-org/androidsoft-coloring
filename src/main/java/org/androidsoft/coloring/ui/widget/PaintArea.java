@@ -15,6 +15,7 @@
  */
 package org.androidsoft.coloring.ui.widget;
 
+import org.androidsoft.coloring.util.BitmapColorSearch;
 import org.androidsoft.coloring.util.FloodFill;
 import org.androidsoft.coloring.util.images.BitmapImage;
 import org.androidsoft.coloring.util.images.ImageDB;
@@ -29,8 +30,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import eu.quelltext.images.ColorComparator;
+import eu.quelltext.images.ColorSearch;
+
 public class PaintArea {
 
+    private static final int COLOR_SEARCH_RADIUS = 10;
     private final ViewGroup.LayoutParams layoutParams;
     private Bitmap bitmap = Bitmap.createBitmap(1, 1, Config.ARGB_8888);
     private int paintColor;
@@ -143,8 +148,19 @@ public class PaintArea {
             // set the position
             int x = (int)(eventX * bitmap.getWidth() / view.getWidth());
             int y = (int)(eventY * bitmap.getHeight() / view.getHeight());
-            Log.d("touch", "(" + e.getRawX() + ") " + eventX + " -> " + x);
-            Log.d("touch", "(" + e.getRawY() + ") " + eventY + " -> " + y);
+            Log.d("touch", "X (" + e.getRawX() + ") " + eventX + " -> " + x + " | Y (" + e.getRawY() + ") " + eventY + " -> " + y);
+            if (bitmap.getPixel(x, y) == FloodFill.BORDER_COLOR) {
+                // touching a border, we want to find a better place to color
+                BitmapColorSearch search = new BitmapColorSearch(bitmap);
+                search.startSearch(x, y, ColorComparator.unequal(FloodFill.BORDER_COLOR, paintColor), COLOR_SEARCH_RADIUS);
+                if (!search.wasSuccessful()) {
+                    search.startSearch(x, y, ColorComparator.unequal(FloodFill.BORDER_COLOR), COLOR_SEARCH_RADIUS);
+                }
+                if (search.wasSuccessful()){
+                    x = search.getX();
+                    y = search.getY();
+                }
+            }
             Bitmap newBitmap = FloodFill.fill(bitmap, x, y, paintColor);
             setImageBitmapWithSameSize(newBitmap);
         }
