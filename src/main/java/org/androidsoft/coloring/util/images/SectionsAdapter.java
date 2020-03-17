@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.androidsoft.coloring.ui.widget.LoadImageProgress;
+import org.androidsoft.coloring.util.cache.ImageCache;
 import org.androidsoft.coloring.util.cache.MemoryImageCache;
+import org.androidsoft.coloring.util.cache.NullImageCache;
 import org.androidsoft.coloring.util.imports.FixedSizeImagePreview;
 
 import eu.quelltext.coloring.R;
@@ -26,7 +28,7 @@ public class SectionsAdapter extends RecyclerView.Adapter {
     private final int layoutId;
     private final int[] imageViewIds;
     private final int numberOfImagesPerRow;
-    private final MemoryImageCache cache;
+    private final ImageCache cache = new NullImageCache(); // TODO: use MemoryImageCache if willed so
     private ImageListener imageListener = new NullImageListener();
 
     public SectionsAdapter(SettingsImageDB imageDB, int layoutId, int[] imageViewIds) {
@@ -40,7 +42,6 @@ public class SectionsAdapter extends RecyclerView.Adapter {
         this.layoutId = layoutId;
         this.imageViewIds = imageViewIds;
         this.numberOfImagesPerRow = imageViewIds.length;
-        cache = new MemoryImageCache();
     }
 
     @NonNull
@@ -125,7 +126,7 @@ public class SectionsAdapter extends RecyclerView.Adapter {
                     int width = getWidthOf(imageView);
                     if (!cache.asPreviewImage(image, new ThumbPreview(imageView, width), new LoadImageProgress(null, null))) {
                         imageView.setImageResource(R.drawable.download);
-                    };
+                    }
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

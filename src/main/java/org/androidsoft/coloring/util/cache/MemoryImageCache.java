@@ -11,10 +11,11 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-public class MemoryImageCache {
+public class MemoryImageCache implements ImageCache {
 
     HashMap<ImageDB.Image, Bitmap> cache = new HashMap<>();
 
+    @Override
     public boolean asPreviewImage(ImageDB.Image image, ImagePreview preview, LoadImageProgress progress) {
         if (cache.containsKey(image)) {
             progress.stepDone();
