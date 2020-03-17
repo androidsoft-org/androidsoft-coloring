@@ -17,16 +17,18 @@ class UrlImage implements ImageDB.Image {
     private final String id;
     private final Date lastModified;
     private final RetrievalOptions retrievalOptions;
+    private final Cache cache;
 
     public UrlImage(URL url, String id, Date lastModified, RetrievalOptions retrievalOptions) {
         this.url = url;
         this.id = id;
         this.lastModified = lastModified;
         this.retrievalOptions = retrievalOptions;
+        cache = retrievalOptions.getCache().forId(id, lastModified);
     }
 
     protected Cache getCache() {
-        return retrievalOptions.getCache().forId(id, lastModified);
+        return cache;
     }
 
     @Override
@@ -83,5 +85,14 @@ class UrlImage implements ImageDB.Image {
     protected Uri getUri() {
         // see https://stackoverflow.com/a/9662933/1320237
         return Uri.parse(url.toString());
+    }
+
+    public boolean isCached() {
+        return getCache().isCached(id);
+    }
+
+    public boolean canBeRetrieved() {
+        // TODO: if the url is localhost should be true
+        return retrievalOptions.networkIsConnected();
     }
 }

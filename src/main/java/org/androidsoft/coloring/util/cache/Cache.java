@@ -17,4 +17,5 @@ public interface Cache extends Parcelable {
      */
     Cache forId(String id);
     Cache forId(String id, Date lastModified);
+    boolean isCached(String id);
 }

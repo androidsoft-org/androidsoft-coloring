@@ -32,6 +32,11 @@ public class FileCache implements Cache {
         return cache;
     }
 
+    @Override
+    public boolean isCached(String id) {
+        return forId(id).isCached();
+    }
+
     protected File getDirectory() {
         return directory;
     }

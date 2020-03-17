@@ -13,10 +13,12 @@ import org.androidsoft.coloring.util.cache.Cache;
  */
 public class RetrievalOptions implements Parcelable {
     private final Cache cache;
+    private final boolean networkIsConnected;
     private ErrorReporter errorReporter = new LoggingErrorReporter();
 
-    public RetrievalOptions(Cache cache) {
+    public RetrievalOptions(Cache cache, boolean networkIsConnected) {
         this.cache = cache;
+        this.networkIsConnected = networkIsConnected;
     }
 
     @Override
@@ -27,13 +29,15 @@ public class RetrievalOptions implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeParcelable(cache, flags);
+        parcel.writeInt(networkIsConnected ? 1 : 0);
     }
 
     public static Creator CREATOR = new Creator() {
         @Override
         public RetrievalOptions createFromParcel(Parcel parcel) {
             Cache cache = parcel.readParcelable(Cache.class.getClassLoader());
-            return new RetrievalOptions(cache);
+            boolean networkIsConnected = parcel.readInt() != 0;
+            return new RetrievalOptions(cache, networkIsConnected);
         }
 
         @Override
@@ -52,5 +56,9 @@ public class RetrievalOptions implements Parcelable {
 
     public void setErrorReporter(ErrorReporter errorReporter) {
         this.errorReporter = errorReporter;
+    }
+
+    public boolean networkIsConnected() {
+        return networkIsConnected;
     }
 }

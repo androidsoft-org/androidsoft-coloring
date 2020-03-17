@@ -24,6 +24,7 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import org.androidsoft.coloring.util.Settings;
 import org.androidsoft.utils.ui.WhatsNewActivity;
 import org.apache.commons.io.IOUtils;
 
@@ -87,6 +89,9 @@ public class SplashActivity extends WhatsNewActivity
         checkForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, R.string.permission_write_external_storage);
         checkForPermission(Manifest.permission.EXPAND_STATUS_BAR, R.string.permission_expand_status_bar);
         checkForPermission(Manifest.permission.SYSTEM_ALERT_WINDOW, R.string.permission_expand_status_bar);
+        if (Settings.of(this).requireInternetConnection()) {
+            checkForPermission(Manifest.permission.ACCESS_WIFI_STATE, R.string.permission_access_wifi_state);
+        }
     }
 
     public String getVersionName() {

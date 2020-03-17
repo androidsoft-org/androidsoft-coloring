@@ -104,4 +104,5 @@
     <string name="error_link">shorturl.de/coloring</string>
     <string name="error_occurred_toast">Error copied to clipboard</string>
     <string name="image_list_section_description">Number of images: <xliff:g example="10">%1$d</xliff:g></string>
+    <string name="permission_access_wifi_state">The app would like to have your permission to check if wifi is active, so that the app only displays images which can be accessed offline. If you do not plan to enable the online gallery in the app, you can ignore this.</string>
 </resources>

@@ -11,6 +11,8 @@ import org.androidsoft.coloring.util.imports.UriImageImport;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +27,27 @@ public class UrlImageWithPreview extends UrlImage {
 
     @Override
     public void asPreviewImage(ImagePreview preview, LoadImageProgress progress) {
-        int width = preview.getWidth();
-        ImageDB.Image bestThumb = null;
-        int bestDistance = width;
-        for (ThumbNailImage thumb : thumbs) {
-            int distance = Math.abs(thumb.getWidth() - width);
-            if (bestDistance > distance) {
-                bestThumb = thumb;
-                bestDistance = distance;
+        if (this.thumbs.size() == 0) {
+            new UriImageImport(getUri(), progress, preview).startWith(getCache());
+            return;
+        }
+        List<ThumbNailImage> thumbs = new ArrayList(this.thumbs);
+        final int width = preview.getWidth();
+        Collections.sort(thumbs, new Comparator<ThumbNailImage>() {
+            @Override
+            public int compare(ThumbNailImage thumb1, ThumbNailImage thumb2) {
+                int distance1 = Math.abs(thumb1.getWidth() - width);
+                int distance2 = Math.abs(thumb2.getWidth() - width);
+                return distance1 - distance2;
+            }
+        });
+        for (ThumbNailImage bestThumb : thumbs) {
+            if (bestThumb.canBeRetrieved() || bestThumb.isCached()) {
+                bestThumb.asPreviewImage(preview, progress);
+                return;
             }
         }
-        if (bestThumb == null) {
-            new UriImageImport(getUri(), progress, preview).startWith(getCache());
-        } else {
-            bestThumb.asPreviewImage(preview, progress);
-        }
+        new UriImageImport(getUri(), progress, preview).startWith(getCache());
     }
 
     @Override

@@ -182,6 +182,15 @@ public class SettingsImageDB extends Subject implements ImageDB, Subject.Observe
         notifyObservers();
     }
 
+    public boolean requiresInternetConnection() {
+        for (Entry entry : entries) {
+            if (entry.isActivated() && entry.requiresInternetConnection()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class Entry implements ImageDB {
         private final String id;
         private final ImageDB db;
@@ -256,6 +265,10 @@ public class SettingsImageDB extends Subject implements ImageDB, Subject.Observe
         public ImageDB getDb() {
             return db;
         }
+
+        public boolean requiresInternetConnection() {
+            return false;
+        }
     }
 
     private class GalleryEntry extends Entry {
@@ -292,6 +305,11 @@ public class SettingsImageDB extends Subject implements ImageDB, Subject.Observe
                 GalleryImageDB db = (GalleryImageDB) getDb();
                 db.start();
             }
+        }
+
+        @Override
+        public boolean requiresInternetConnection() {
+            return true;
         }
     }
 

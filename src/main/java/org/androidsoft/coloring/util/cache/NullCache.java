@@ -27,6 +27,11 @@ public class NullCache implements Cache {
     }
 
     @Override
+    public boolean isCached(String id) {
+        return false;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

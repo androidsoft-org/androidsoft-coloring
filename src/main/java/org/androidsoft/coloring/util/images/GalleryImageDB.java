@@ -162,7 +162,7 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
                 @Override
                 public void run() {
                     code = CODE.SUCCESS;
-                    GalleryImageDB.this.db = db;
+                    GalleryImageDB.this.db = new SelectiveImageDB(db, getImageSelector());
                     if (db.size() > 0) {
                         notifyObservers();
                     }
@@ -229,4 +229,16 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
     private String getUrl(String path) {
         return getUrl() + (getUrl().endsWith("/") ? "" : "/" ) + path;
     }
+
+    /* This selects which image gets shown */
+    private SelectiveImageDB.ImageSelector getImageSelector() {
+        return new SelectiveImageDB.ImageSelector() {
+            @Override
+            public boolean isSelected(Image image) {
+                UrlImageWithPreview imageWithPreview = (UrlImageWithPreview)image;
+                return imageWithPreview.isCached() || imageWithPreview.canBeRetrieved();
+            }
+        };
+    }
+
 }

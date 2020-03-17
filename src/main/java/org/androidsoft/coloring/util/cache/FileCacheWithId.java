@@ -1,18 +1,18 @@
 package org.androidsoft.coloring.util.cache;
 
 import android.os.Parcel;
-import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
+
+import static org.androidsoft.coloring.util.cache.SimulateOfflineMode.SIMULATE_OFFLINE_MODE;
 
 /* This caches requests to a url under a given id.
  *
@@ -20,11 +20,13 @@ import java.util.Date;
 public class FileCacheWithId extends FileCache {
     private static final String[] REMOVE_START = new String[]{"https://", "http://"};
     private final String id;
+    private final boolean isCached;
     private Date lastModified = null;
 
     public FileCacheWithId(File directory, String id) {
         super(directory);
         this.id = makeIdReadyForDirectory(id);
+        isCached = getPath().isFile();
     }
 
     public static String makeIdReadyForDirectory(String id) {
@@ -93,6 +95,9 @@ public class FileCacheWithId extends FileCache {
     }
 
     private InputStream retrieveFromUrlToFile(File path, URL url) throws IOException {
+        if (SIMULATE_OFFLINE_MODE) {
+            throw new IOException("test the offline capabilities");
+        }
         new File(path.getParent()).mkdirs();
         InputStream source = url.openStream();
         FileOutputStream destination = new FileOutputStream(path);
@@ -139,5 +144,9 @@ public class FileCacheWithId extends FileCache {
 
     public void invalidateIfOlderThan(Date lastModified) {
         this.lastModified = lastModified;
+    }
+
+    public boolean isCached() {
+        return isCached;
     }
 }

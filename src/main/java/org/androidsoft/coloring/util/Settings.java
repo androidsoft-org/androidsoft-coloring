@@ -2,6 +2,8 @@ package org.androidsoft.coloring.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import org.androidsoft.coloring.util.cache.Cache;
 import org.androidsoft.coloring.util.cache.FileCache;
@@ -17,6 +19,8 @@ import java.io.File;
 
 import eu.quelltext.coloring.R;
 
+import static org.androidsoft.coloring.util.cache.SimulateOfflineMode.SIMULATE_OFFLINE_MODE;
+
 public class Settings {
     public static final Gallery[] DEFAULT_GALLERIES = new Gallery[]{
             new Gallery("https://gallery.quelltext.eu", R.string.settings_gallery_quelltext),
@@ -27,6 +31,7 @@ public class Settings {
     private final Context context;
     private final SharedPreferences preferences;
     private SharedPreferences.Editor editor = null;
+    // also see SimulateOfflineMode
 
     public Settings(Context context) {
         this.context = context;
@@ -87,10 +92,34 @@ public class Settings {
     public RetrievalOptions getRetrievalOptions() {
         File directory = new File(context.getCacheDir(), URL_CACHE_DIRECTORY);
         Cache cache = new FileCache(directory);
+        boolean networkIsConnected = hasNetworkConnection();
         //cache = new NullCache();
-        RetrievalOptions options = new RetrievalOptions(cache);
+        RetrievalOptions options = new RetrievalOptions(cache, networkIsConnected);
         options.setErrorReporter(UIErrorReporter.of(context));
         return options;
+    }
+
+    private boolean hasNetworkConnection() {
+        if (SIMULATE_OFFLINE_MODE) {
+            return false;
+        }
+        // check for wifi connection, see https://stackoverflow.com/a/34904367/1320237
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+            if( wifiInfo.getNetworkId() == -1 ){
+                return false; // Not connected to an access point
+            }
+            return true; // Connected to an access point
+        }
+        else {
+            return false; // Wi-Fi adapter is OFF
+        }
+    }
+
+    public boolean requireInternetConnection() {
+        SettingsImageDB db = getImageDB();
+        return db.requiresInternetConnection();
     }
 
     public static class Gallery {
