@@ -37,6 +37,9 @@ This software is open-source under the [GPLv3](LICENSE).
 - [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
 - [comic clustering](https://github.com/niccokunzmann/comic-cluster)
 
+## Related:
+- [coloring-book-gallery](https://github.com/niccokunzmann/coloring-book-gallery)
+
 [issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
 [Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
 [read the Documentation]: documentation/README.md#readme
