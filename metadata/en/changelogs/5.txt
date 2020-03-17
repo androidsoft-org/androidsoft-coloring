@@ -5,3 +5,4 @@
 - fix bug: images were scaled incorrectly on Samsung Galaxy Node 8
 - fix bug: pictures have different heights in picture choice
 - fix bug: only pictures which can be painted are shown if no internet connection is available
+- new: make painting small areas easier by searching for them next to the click
