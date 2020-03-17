@@ -131,7 +131,7 @@ public class PaintArea {
     {
         paintColor = color;
         if (paintColor == FloodFill.BORDER_COLOR) {
-            paintColor ++;
+            paintColor = paintColor ^ 1;
         }
     }
 
