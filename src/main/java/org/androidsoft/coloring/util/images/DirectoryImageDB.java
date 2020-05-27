@@ -33,6 +33,9 @@ public class DirectoryImageDB implements ImageDB {
     protected List<File> imagesInDirectory(File directory) {
         File[] files = directory.listFiles();
         List<File> images = new ArrayList<>();
+        if (files == null) {
+            return images; // directory does not exist
+        }
         for (File file : files) {
             if (isImage(file)) {
                 // add latest files to the front
