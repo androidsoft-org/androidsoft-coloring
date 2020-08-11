@@ -30,7 +30,10 @@ If so and you need help, do not hesitate to open an [issue][issues] to ask!
     number, underscore and name.
     Also, we do need PNG images of size 600x480, so the app stays small.
 
-**Translate the app**: Go to [Transifex] and [read the Documentation].
+**Translate the app**:
+- Go to [Transifex] and [read the Documentation].
+- If you do not find your language, you are invited to request it!
+- The updated version of the translations will be pushed automatically to the repository.
 
 ## License
 
