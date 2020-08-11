@@ -3,6 +3,11 @@
 
 <img src="metadata/en/images/phoneScreenshots/02choose.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/03colors.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/05classify.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/06paint.png" width="24%">
 
+## Contribution
+
+- You can translate the app on [Transifex](https://www.transifex.com/mundraub-android/coloring-book/)
+- You can donate with [Liberapay](https://liberapay.com/Fruit-Radar-Development)
+
 ## Development
 
 This app is developed using Android Studio.
