@@ -45,10 +45,11 @@ This software is open-source under the [GPLv3](LICENSE).
 - [androidsoft-lib-utils](https://github.com/niccokunzmann/androidsoft-lib-utils)
 - [comic clustering](https://github.com/niccokunzmann/comic-cluster)
 
-## Related:
+## Components
 - [coloring-book-gallery](https://github.com/niccokunzmann/coloring-book-gallery)
 - [coloringbook-lib-utils](https://github.com/niccokunzmann/coloringbook-lib-utils)
 - [androidsoft-lib-credits](https://github.com/androidsoft-org/androidsoft-lib-credits/)
+- [Weka-for-Android](https://github.com/rjmarsan/Weka-for-Android)
 
 [issues]: https://github.com/niccokunzmann/androidsoft-coloring/issues
 [Transifex]: https://www.transifex.com/mundraub-android/coloring-book/dashboard/
