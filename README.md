@@ -3,6 +3,12 @@
 
 <img src="metadata/en/images/phoneScreenshots/02choose.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/03colors.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/05classify.png" width="24%"> <img src="metadata/en/images/phoneScreenshots/06paint.png" width="24%">
 
+## Download
+
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/eu.quelltext.coloring/)
+
 ## Contribution
 
 - You can translate the app on [Transifex](https://www.transifex.com/mundraub-android/coloring-book/)
