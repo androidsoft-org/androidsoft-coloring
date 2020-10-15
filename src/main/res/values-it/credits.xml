@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/* Copyright (c) 2010-2011 Pierre LEVY androidsoft.org
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+
+<resources>
+    <string-array name="credits">
+        <item>*di Nicco Kunzmann</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>Licenza</item>
+        <item>*</item>
+        <item>*Questo programma è software libero</item>
+        <item>*puoi redistribuirlo e/o </item>
+        <item>*modificarlo sotto i termini della</item>
+        <item>*licenza GNU General Public License</item>
+        <item>*come pubblicata dalla Free Software</item>
+        <item>*Foundation, o la versione 3</item>
+        <item>*della licenza o (come tua opzione)</item>
+        <item>*un\'altra versione successiva.</item>
+        <item>*</item>
+        <item>*La vecchia versione Coloring for Kids</item>
+        <item>*era pubblicata da androidsoft.org</item>
+        <item>*</item>
+        <item>*La versione originale è stata pubblicata</item>
+        <item>*da Peter Dornbach</item>
+        <item>*sotto la licenza Apache 2.0</item>
+        <item>*Per maggiori informazioni visitate</item>
+        <item>*http://www.zebra4me.com/</item>
+        <item>*</item>
+        <item>*Le icone sono pubblicate</item>
+        <item>*da Everaldo Coelho</item>
+        <item>*sotto i termini della licenza GNU</item>
+        <item>*Lesser General Public License.</item>
+        <item>*</item>
+        <item>*I disegni sono stati offerti per gentile</item>
+        <item>*cortesia di Peter Dornbach</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>Crediti</item>
+        <item>*</item>
+        <item>*/* Sviluppatore principale */</item>
+        <item>*</item>
+        <item>*Peter Dornbach</item>
+        <item>*</item>
+        <item>*/* contributori della versione GNU */</item>
+        <item>*</item>
+        <item>*Pierre Levy</item>
+        <item>*Nicco Kunzmann</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*Copyright (c) 2010-2011 P. Dornbach, P. Levy</item>
+        <item>*Copyright (c) 2020 Nicco Kunzmann</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*</item>
+        <item>*Questo progetto usa le librerie Weka.</item>
+        <item>*https://www.cs.waikato.ac.nz/ml/weka/</item>
+        <item>*</item>
+    </string-array>
+</resources>
+
