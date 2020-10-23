@@ -52,18 +52,44 @@ If you do not manage to translate 100% but want to have it included
 in the next release, please open an issue.
 We can pull the translations then.
 
-## Releasing new Versions
+### Create a new release
 
-To release new versions, do the following:
+Changes go to the master branch of the app.
+Follow this process to publish the latest version.
 
 1. Check that the tests are running. [![Android CI](https://github.com/niccokunzmann/androidsoft-coloring/workflows/Android%20CI/badge.svg)](https://github.com/niccokunzmann/androidsoft-coloring/actions?query=workflow%3A%22Android+CI%22)
-2. Increase the `versionCode` and `versionName` in the `AndroidManifest.xml`
-3. Make sure the changelog file in `metadata/en/changelogs` of the corresponding `versionCode` includes the relevant changes
+2. Fetch all the tags from this repository.
+    ```
+    git fetch --tags origin
+    ```
+2. List the releases.
+    ```
+    git tag
+    ```
+3. See the changes since the latest release
+    ```
+    git diff HEAD v1.1.4
+    ```
+    or the commits - you should see the tags in the commit history.
+    ```
+    git log
+    ```
+4. Edit [src/main/AndroidManifest.xml](src/main/AndroidManifest.xml) and increase the `versionCode` and the `versionName`.
+5. Create or edit the file for the changes in the [metadata/en/changelogs/](metadata/en/changelogs) folder with the number of the `versionCode`.
+    Make sure the changelog file includes the relevant changes:
     - added/removed/improved features
     - changes in language
     - changes in permissions
-4. commit the changes with `version <versionName>` and push the commit
-5. create a tag `git tag v<versionName>` and push the tag
+6. Create a commit with the changes, named `version <versionName>`, tag it as `v<versionName>` and push it as branch and tag
+    ```
+    git chechout master
+    git add src/main/AndroidManifest.xml metadata/en/changelogs/
+    git commit -m"version 1.1.5"
+    git tag v1.1.5
+    git push
+    git push origin v1.1.5
+    ```
+
 
 ## Screenshots
 

@@ -43,39 +43,6 @@ If you like to maintain this app, please leave a note.
 - If you do not find your language, you are invited to request it!
 - The updated version of the translations will be pushed automatically to the master branch of the repository.
 
-### Create a new release
-
-Changes go to the master branch of the app.
-Follow this process to publish the latest version.
-
-1. Fetch all the tags from this repository.
-    ```
-    git fetch --tags origin
-    ```
-2. List the releases.
-    ```
-    git tag
-    ```
-3. See the changes since the latest release
-    ```
-    git diff HEAD v1.1.4
-    ```
-    or the commits - you should see the tags in the commit history.
-    ```
-    git log
-    ```
-4. Edit [src/main/AndroidManifest.xml](src/main/AndroidManifest.xml) and increase the `versionCode` and the `versionName`.
-5. Create or edit the file for the changes in the [metadata/en/changelogs/](metadata/en/changelogs) folder with the number of the `versionCode`.
-6. Create a commit with the changes, tag it and push it.
-    ```
-    git chechout master
-    git add src/main/AndroidManifest.xml metadata/en/changelogs/
-    git commit -m"version 1.1.5"
-    git tag v1.1.5
-    git push
-    git push origin v1.1.5
-    ```
-
 ## License
 
 This software is open-source under the [GPLv3](LICENSE).
