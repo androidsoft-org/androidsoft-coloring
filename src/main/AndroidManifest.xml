@@ -71,7 +71,7 @@
                 <data android:pathPrefix="/images" />
             </intent-filter>
             <tools:validation testUrl="http://gallery.quelltext.eu/images/Benzfish.png" />
-            <tools:validation testUrl="http://192.168.42.108:4000/images/Benzfish.png" />
+            <!-- <tools:validation testUrl="http://192.168.42.108:4000/images/Benzfish.png" /> -->
         </activity>
         <activity
             android:name="org.androidsoft.coloring.ui.activity.SplashActivity"
