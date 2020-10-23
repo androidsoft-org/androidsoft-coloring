@@ -60,7 +60,15 @@ Follow this process to publish the latest version.
     ```
 4. Edit [src/main/AndroidManifest.xml](src/main/AndroidManifest.xml) and increase the `versionCode` and the `versionName`.
 5. Create or edit the file for the changes in the [metadata/en/changelogs/](metadata/en/changelogs) folder with the number of the `versionCode`.
-
+6. Create a commit with the changes, tag it and push it.
+    ```
+    git chechout master
+    git add src/main/AndroidManifest.xml metadata/en/changelogs/
+    git commit -m"version 1.1.5"
+    git tag v1.1.5
+    git push
+    git push origin v1.1.5
+    ```
 
 ## License
 
