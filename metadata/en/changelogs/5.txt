@@ -6,3 +6,7 @@
 - fix bug: pictures have different heights in picture choice
 - fix bug: only pictures which can be painted are shown if no internet connection is available
 - new: make painting small areas easier by searching for them next to the click
+- fix bug: app crashed when folder of images was empty
+- translated app to Italian
+- partly translated app to Bengali
+
