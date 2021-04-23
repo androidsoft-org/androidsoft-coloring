@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ Copyright (C) 2010 Peter Dornbach.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Kolorowanka</string>
+
+    <string name="menu_new">Nowe</string>
+    <string name="menu_save">Zapisz</string>
+    <string name="menu_share">Opublikuj</string>
+    <string name="menu_about">O</string>
+
+    <string name="dialog_saving">Zapisywanie do Obrazków...</string>
+    <string name="dialog_saving_ok">OK!</string>
+    <string name="dialog_saving_error">BŁĄD!</string>
+    <string name="dialog_share">Opublikuj obrazek używając</string>
+    <!-- Credits screen -->
+    <string name="credits_current_version" formatted="true">Wersja <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
+
+    <string name="button_go">Idź</string>
+
+    <!-- What's new dialog -->
+    <string name="first_run_dialog_title">Witaj w Kolorowance</string>
+    <string name="first_run_dialog_message">Dzięki za pobranie Kolorowanki\n\n
+Szybka instrukcja startu :\n
+\t• Wybierz kolor i maluj szablon swoimi palcami.\n
+\n\n Miłej Zabawy\n</string>
+    <string name="whats_new_dialog_title">Co nowego w tej wersji Kolorowanki</string>
+    <string name="whats_new_dialog_message" formatted="true">Dzięki za ulepszanie Kolorowanki\n\n
+<b>Nowe w wersji<xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:</b>\n
+<xliff:g example="\t• Minor bugs fixes.\n" id="changelog">%2$s</xliff:g>
+\n\nMiłej zabawy oraz nie zapomnij ocenić aby pomóc w ulepszaniu</string>
+    <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Proszę kliknąć COFNIJ ponownie aby wyjść</string>
+    <string name="progress_starting" tools:ignore="MissingTranslation">startowanie</string>
+    <string name="progress_done" tools:ignore="MissingTranslation">zrobione</string>
+    <string name="progress_error" tools:ignore="MissingTranslation">wykryto błąd</string>
+    <string name="progress_input_preview" tools:ignore="MissingTranslation">dostawanie zdjęcia</string>
+    <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">przygotowanie klastrowania</string>
+    <string name="progress_sample_data" tools:ignore="MissingTranslation">wybieranie kolorów do klasyfikacji</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">znajdowanie odpowiednich kolorów dla obrazu</string>
+    <string name="progress_create_cluster" tools:ignore="MissingTranslation">tworzenie klasyfikującego obrazka</string>
+    <string name="progress_counting_sizes" tools:ignore="MissingTranslation">obszary pomiarowe</string>
+    <string name="progress_removing_noise" tools:ignore="MissingTranslation">usuwanie małych powierzchni których nie można pomalować</string>
+    <string name="progress_show_cluster" tools:ignore="MissingTranslation">pokazywanie klasyfikującego obrazka</string>
+    <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">pokazywanie obrazka z większą areną do rysowania</string>
+    <string name="progress_draw_lines" tools:ignore="MissingTranslation">rysowanie linii poza areną</string>
+    </resources>
