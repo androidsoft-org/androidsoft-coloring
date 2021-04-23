@@ -1,0 +1,1 @@
+Drobne bugi naprawione (odinstaluj synchronizacje)
