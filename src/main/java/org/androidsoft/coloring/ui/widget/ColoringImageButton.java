@@ -22,7 +22,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import org.androidsoft.coloring.R;
+
+import eu.quelltext.coloring.R;
 
 public class ColoringImageButton extends ColoringButton
 {

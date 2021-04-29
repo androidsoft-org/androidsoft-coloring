@@ -1,0 +1,12 @@
+- add gallery to browse more images and cache selected images on the device
+- if an error occurs loading an image, this is reported to the user
+- on older versions of Android, the status bar can not be activated when painting or choosing a picture or color.
+- add sections in the image listing and allow to choose them in the settings
+- fix bug: images were scaled incorrectly on Samsung Galaxy Node 8
+- fix bug: pictures have different heights in picture choice
+- fix bug: only pictures which can be painted are shown if no internet connection is available
+- new: make painting small areas easier by searching for them next to the click
+- fix bug: app crashed when folder of images was empty
+- translated app to Italian
+- partly translated app to Bengali
+

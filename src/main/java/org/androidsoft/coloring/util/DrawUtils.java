@@ -30,14 +30,8 @@ public final class DrawUtils {
 		RectF srcRect = new RectF(0, 0, src.getWidth(), src.getHeight());
 		RectF destRect = new RectF(0, 0, dest.getWidth(), dest.getHeight());
 
-		// Because the current SDK does not directly support the "dest fits
-		// inside src" mode, we calculate the reverse matrix and invert to
-		// get what we want.
-		Matrix mDestSrc = new Matrix();
-		mDestSrc.setRectToRect(destRect, srcRect, Matrix.ScaleToFit.CENTER);
 		Matrix mSrcDest = new Matrix();
-		mDestSrc.invert(mSrcDest);
-
+		mSrcDest.setRectToRect(srcRect, destRect, Matrix.ScaleToFit.CENTER);
 		canvas.drawBitmap(src, mSrcDest, new Paint(Paint.DITHER_FLAG));
 	}
 

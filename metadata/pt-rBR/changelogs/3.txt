@@ -1,0 +1,5 @@
+- Duplo clique para sair da atividade de pintura
+- Remove as imagens em miniatura para tornar o apk menor
+- Adiciona as traduções para Alemão e Português do Brasil
+- Adiciona o modo tela inteira
+- Permite que as imagens sejam classificadas e compartilhadas com o aplicativo

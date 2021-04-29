@@ -1,0 +1,5 @@
+- add double click to exit painting activity
+- remove preview images to make the apk smaller
+- add Indonese, German and Brazilian Portuguese translations
+- add fullscreen mode
+- allow images to be shared with the app and classified

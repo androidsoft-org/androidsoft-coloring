@@ -1,0 +1,5 @@
+- doppeltes Klicken auf Zurück verlässt die Malaktivität
+- Vorschaubilder entfernt, um die APK-Datei kleiner zu machen
+- Deutsche und Portugisische Übersetzung
+- Vollbildmodus
+- Bilder können mit der App geteilt werden und werden klassifiziert

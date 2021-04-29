@@ -5,3 +5,6 @@
 /build/
 /private/
 /.idea/
+/coloring-book.iml
+local.properties
+connect.sh

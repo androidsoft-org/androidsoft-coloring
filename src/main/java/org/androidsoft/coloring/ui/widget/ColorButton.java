@@ -22,7 +22,8 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
 import android.util.AttributeSet;
-import org.androidsoft.coloring.R;
+
+import eu.quelltext.coloring.R;
 
 public class ColorButton extends ColoringButton
 {

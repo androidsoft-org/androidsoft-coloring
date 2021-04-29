@@ -16,108 +16,57 @@
 
 package org.androidsoft.coloring.util;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 
-public class FloodFill {
-	public interface PixelMatcher {
-		// Return true if the pixel at x,y should be filled. It must be prepared
-		// to handle x < 0, y < 0. It must return false for a pixel already set.
-		boolean match(int x, int y);
+import eu.quelltext.images.BlackAndWhiteConversion;
+
+public class FloodFill extends BitmapConverter {
+	public static int BORDER_COLOR = Color.BLACK;
+	public static int BACKGROUND_COLOR = Color.WHITE;
+	private final int color;
+	private final eu.quelltext.images.FloodFill floodFill;
+
+	public FloodFill(Bitmap bitmap, int color) {
+		super(bitmap);
+		this.color = color;
+		floodFill = new eu.quelltext.images.FloodFill(getPixelsOfBitmap(), getWidth(), getHeight(), BORDER_COLOR);
 	}
 
-	public interface PixelSetter {
-		// Set the a row of pixels from x1 until x2 in row y.
-		// x1 included, x2 excluded.
-		void set(int x1, int x2, int y);
+	public static Bitmap fill(Bitmap bitmap, int x, int y, int color) {
+		FloodFill fill = new FloodFill(bitmap, color);
+		fill.fillAt(x, y);
+		return fill.getNewBitmap();
 	}
 
-	// The "nice" fill that works with any PixelMatcher and PixelSetter.
-	public static void fill(int x, int y, PixelMatcher matcher, PixelSetter setter) {
-		Queue<Pixel> queue = new LinkedList<Pixel>();
-		queue.add(new Pixel(x, y));
-		while (!queue.isEmpty()) {
-			Pixel p = queue.remove();
-			int px1 = p._x;
-			int px2 = p._x;
-			int py = p._y;
-			if (matcher.match(px1, py)) {
-				while (matcher.match(px1, py))
-					px1--;
-				px1++;
-				while (matcher.match(px2, py))
-					px2++;
-				boolean prevMatchUp = false;
-				boolean prevMatchDn = false;
-				setter.set(px1, px2, py);
-				for (int px = px1; px < px2; px++) {
-					boolean matchUp = matcher.match(px, py - 1);
-					if (matchUp && !prevMatchUp)
-						queue.add(new Pixel(px, py - 1));
-					boolean matchDn = matcher.match(px, py + 1);
-					if (matchDn && !prevMatchDn)
-						queue.add(new Pixel(px, py + 1));
-					prevMatchUp = matchUp;
-					prevMatchDn = matchDn;
-				}
-			}
-		}
+	private void fillAt(int x, int y) {
+		floodFill.fillAt(x, y, color);
 	}
 
-	// The plain dumb ugly fill - but because it's fast we use this one.
-	// @param mask 1 if the pixel can be filled, 0 if it cannot. Must contain
-	//             exactly width * height pixels.
-	// @param pixels the array where we fill matching pixels with color.
-	// @param x, y we start the fill here.
-	public static void fillRaw(int x, int y, int width, int height, byte[] mask,
-			int[] pixels, int color) {
-		Queue<Pixel> queue = new LinkedList<Pixel>();
-		queue.add(new Pixel(x, y));
-		while (!queue.isEmpty()) {
-			Pixel p = queue.remove();
-			int px1 = p._x;
-			int px2 = p._x;
-			int py = p._y;
-			int pp = py * width;
-
-			if (mask[pp + px1] != 0) {
-				while (px1 >= 0 && mask[pp + px1] != 0)
-					px1--;
-				px1++;
-				while (px2 < width && mask[pp + px2] != 0)
-					px2++;
-				Arrays.fill(pixels, pp + px1, pp + px2, color);
-				Arrays.fill(mask, pp + px1, pp + px2, (byte) 0);
-				boolean prevMatchUp = false;
-				boolean prevMatchDn = false;
-				int ppUp = pp - width;
-				int ppDn = pp + width;
-				for (int px = px1; px < px2; px++) {
-					if (py > 0) {
-						boolean matchUp = mask[ppUp + px] != 0;
-						if (matchUp && !prevMatchUp)
-							queue.add(new Pixel(px, py - 1));
-						prevMatchUp = matchUp;
-					}
-					if (py + 1 < height) {
-						boolean matchDn = mask[ppDn + px] != 0;
-						if (matchDn && !prevMatchDn)
-							queue.add(new Pixel(px, py + 1));
-						prevMatchDn = matchDn;
-					}
-				}
-			}
-		}
+	@Override
+	public int[] getPixelsForNewBitmap() {
+		return super.getPixelsForNewBitmap();
 	}
 
-	private static class Pixel {
-		public Pixel(int x, int y) {
-			_x = x;
-			_y = y;
+	public static Bitmap asBlackAndWhite(Bitmap bitmap) {
+		BlackAndWhite bin = new BlackAndWhite(bitmap);
+		return bin.getNewBitmap();
+	}
+
+	public static class BlackAndWhite extends BitmapConverter {
+
+		private final BlackAndWhiteConversion bw;
+
+		public BlackAndWhite(Bitmap bitmap) {
+			super(bitmap);
+			bw = new BlackAndWhiteConversion(BACKGROUND_COLOR, BORDER_COLOR);
 		}
 
-		public int _x;
-		public int _y;
+		@Override
+		public int[] getPixelsForNewBitmap() {
+			int[] pixels = super.getPixelsForNewBitmap();
+			bw.toBlackAndWhite(pixels);
+			return pixels;
+		}
 	}
 }

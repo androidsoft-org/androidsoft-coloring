@@ -1,0 +1,5 @@
+- aggiunto doppio click per uscire dall'attività di pittura
+- rimossa l'anteprima delle immagini per rendere il file APK più leggero
+- aggiunte le traduzioni in tedesco e portoghese brasiliano
+- aggiunta la modalità a schermo intero
+- aggiunta la possibilità di condividere e classificare le immagini

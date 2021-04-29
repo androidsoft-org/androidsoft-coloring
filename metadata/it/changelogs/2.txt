@@ -1,0 +1,1 @@
+Sistemati bug minori (rimossa la sincronizzazione)

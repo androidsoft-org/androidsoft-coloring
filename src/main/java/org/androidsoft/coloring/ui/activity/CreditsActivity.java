@@ -17,10 +17,11 @@ package org.androidsoft.coloring.ui.activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
-import org.androidsoft.coloring.R;
+import org.androidsoft.coloring.util.ScreenUtils;
 import org.androidsoft.utils.credits.CreditsParams;
 import org.androidsoft.utils.credits.CreditsView;
 import org.androidsoft.utils.ui.BasicActivity;
+import eu.quelltext.coloring.R;
 
 /**
  * Credits activity
@@ -33,10 +34,20 @@ public class CreditsActivity extends BasicActivity
     public void onCreate(Bundle icicle)
     {
         super.onCreate(icicle);
+        ScreenUtils.setFullscreen(this);
 
         View view = new CreditsView(this, getCreditsParams());
         setContentView(view);
 
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            ScreenUtils.setFullscreen(this);
+        }
     }
 
     /**
@@ -60,8 +71,8 @@ public class CreditsActivity extends BasicActivity
     private CreditsParams getCreditsParams()
     {
         CreditsParams p = new CreditsParams();
-        p.setAppNameRes(R.string.credits_app_name);
-        p.setAppVersionRes(R.string.credits_current_version);
+        p.setAppNameRes(R.string.app_name);
+        p.setAppVersionRes(R.string.empty);
         p.setBitmapBackgroundRes(R.drawable.background);
         p.setBitmapBackgroundLandscapeRes(R.drawable.background_land);
         p.setArrayCreditsRes(R.array.credits);

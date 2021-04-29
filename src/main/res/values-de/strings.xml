@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ Copyright (C) 2010 Peter Dornbach.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Malbuch</string>
+
+    <string name="menu_new">Neu</string>
+    <string name="menu_save">Speichern</string>
+    <string name="menu_share">Teilen</string>
+    <string name="menu_about">Über</string>
+
+    <string name="dialog_saving">Speichere in Bilder…</string>
+    <string name="dialog_saving_ok">OK!</string>
+    <string name="dialog_saving_error">Fehler!</string>
+    <string name="dialog_share">Teile das Bild mit</string>
+    <!-- Credits screen -->
+    <string name="credits_current_version" formatted="true">Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g></string>
+
+    <string name="button_go">Los</string>
+
+    <!-- What's new dialog -->
+    <string name="first_run_dialog_title">Willkommen im Malbuch!</string>
+    <string name="first_run_dialog_message">"Schön, dass Dudas malbuch runtergeladen hast!\n\n
+        Kurze Einführung:\n
+        \t• Wähle eine Farbe und bemale das Bild mit dem Finger.\n
+        Viel Spaß!\n"</string>
+    <string name="whats_new_dialog_title">Was ist neu im Malbuch</string>
+    <string name="whats_new_dialog_message" formatted="true">"Danke,  dass Du das Malbuch erneuert hast.\n\n
+        <b>Neu in Version <xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:\n
+        </b>
+        <xliff:g example="\t• Kleinere Fehler wurden behoben.\n" id="changelog">%2$s</xliff:g>
+        \n\nViel Spaß und vergiß nicht, die Entwickler zu unterstützen.     "</string>
+    <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Drücke Zurück nochmal zum Beenden</string>
+    <string name="progress_starting" tools:ignore="MissingTranslation">starte</string>
+    <string name="progress_done" tools:ignore="MissingTranslation">fertig</string>
+    <string name="progress_error" tools:ignore="MissingTranslation">ein Fehler trat auf</string>
+    <string name="progress_input_preview" tools:ignore="MissingTranslation">empfange Bild</string>
+    <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">bereite Clustering vor</string>
+    <string name="progress_sample_data" tools:ignore="MissingTranslation">wähle Farben zum Klassifizieren</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">finde gute Farben für das Bild</string>
+    <string name="progress_create_cluster" tools:ignore="MissingTranslation">erstelle klassifiziertes Bild</string>
+    <string name="progress_counting_sizes" tools:ignore="MissingTranslation">messe Gebiete</string>
+    <string name="progress_removing_noise" tools:ignore="MissingTranslation">entferne kleine Gebiete, die nicht bemalt werden können</string>
+    <string name="progress_show_cluster" tools:ignore="MissingTranslation">zeige das klassifizierte Bild</string>
+    <string name="progress_show_smoothed_image" tools:ignore="MissingTranslation">zeige das Bild mit den größeren bemalbaren Gebieten</string>
+    <string name="progress_draw_lines" tools:ignore="MissingTranslation">male Linien um die Gebiete</string>
+    <!-- Error Reporter: This is the link to the issues page https://github.com/niccokunzmann/coloring-book/issues/ -->
+    <string name="error_link">shorturl.de/malbuch</string>
+    </resources>

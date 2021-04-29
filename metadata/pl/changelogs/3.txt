@@ -1,0 +1,5 @@
+- dodaj podwójne kliknięcie aby przestać malować
+- usuń poprzednie obrazki aby zrobić aplikację mniejszą
+- dodaj tłumaczenie Niemieckie oraz Brazylijskie, Portugalskie
+- dodaj moduł cały ekran
+- umożliwia udostępnianie zdjęć w aplikacji i ich klasyfikacje
