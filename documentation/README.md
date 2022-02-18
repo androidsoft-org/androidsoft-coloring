@@ -68,7 +68,7 @@ Follow this process to publish the latest version.
     ```
 3. See the changes since the latest release
     ```
-    git diff HEAD v1.1.4
+    git diff v1.1.6 HEAD
     ```
     or the commits - you should see the tags in the commit history.
     ```
