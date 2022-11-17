@@ -82,7 +82,7 @@ Follow this process to publish the latest version.
     - changes in permissions
 6. Create a commit with the changes, named `version <versionName>`, tag it as `v<versionName>` and push it as branch and tag
     ```
-    git chechout master
+    git checkout master
     git add src/main/AndroidManifest.xml metadata/en/changelogs/
     git commit -m"version 1.1.5"
     git tag v1.1.5
