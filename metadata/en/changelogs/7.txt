@@ -1,0 +1,2 @@
+- Add Hungarian language by Balázs Úr
+- Add Ukrainian language
