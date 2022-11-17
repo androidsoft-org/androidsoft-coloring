@@ -48,12 +48,12 @@ public class GalleryImageDB extends Subject implements ImageDB, Runnable {
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
-        calendar.set(Calendar.HOUR_OF_DAY, hour - 1);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, second);
         //calendar.set(Calendar.ZONE_OFFSET, (tzSign.equals("+") ?  1 : -1) * (tzHour * 60 + tzMinute) * 1000);
         //String tz = (tzSign.equals("+") ?  tzHour : 24 - tzHour) + ":" + (tzMinute < 10 ? "0" : "") + tzMinute;
-        calendar.setTimeZone(TimeZone.getTimeZone(tz));
+        //calendar.setTimeZone(TimeZone.getTimeZone(tz));
         return calendar.getTime();
     }
 

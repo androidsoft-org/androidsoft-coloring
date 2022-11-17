@@ -1,4 +1,4 @@
-package org.androidsoft.util.images;
+package org.androidsoft.coloring.util.images;
 
 import org.androidsoft.coloring.util.images.GalleryImageDB;
 import org.junit.Test;

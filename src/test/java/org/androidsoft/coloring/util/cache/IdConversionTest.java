@@ -1,9 +1,10 @@
-package org.androidsoft.util.images;
+package org.androidsoft.coloring.util.cache;
 
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.androidsoft.coloring.util.cache.FileCacheWithId.makeIdReadyForDirectory;
+
 
 /* This class tests the conversion of ids to a path in the file system.
  */
