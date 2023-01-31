@@ -1,0 +1,5 @@
+- ajouter un double-clic pour quitter l'activité de peinture
+- supprimer les images d'aperçu pour rendre l'apk plus petit
+- ajouter des traductions en allemand et en portugais brésilien
+- ajouter le mode plein écran
+- permettre aux images d'être partagées avec l'application et classées
