@@ -40,8 +40,7 @@ Instructions de démarrage rapide :\n
     <string name="whats_new_dialog_message" formatted="true">Merci d\'avoir mis à jour le livre de coloriage\n\n
 <b>Nouveau dans la version<xliff:g example="1.0.1" id="versionName">%1$s</xliff:g>:</b>\n
 <xliff:g example="\t• Minor bugs fixes.\n" id="changelog">%2$s</xliff:g>
-\n\nApprécier ça et n\'oubliez pas de noter pour soutenir le développement.
-</string>
+\n\nApprécier ça et n\'oubliez pas de noter pour soutenir le développement.</string>
     <string name="toast_double_click_back_button" tools:ignore="MissingTranslation">Veuillez cliquer à nouveau sur RETOUR pour quitter</string>
     <string name="progress_starting" tools:ignore="MissingTranslation">Commencer</string>
     <string name="progress_done" tools:ignore="MissingTranslation">terminer</string>
