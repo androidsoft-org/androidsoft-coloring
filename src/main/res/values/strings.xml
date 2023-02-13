@@ -50,7 +50,7 @@
     <string name="progress_input_preview" tools:ignore="MissingTranslation">receiving image</string>
     <string name="progress_preparing_clustering" tools:ignore="MissingTranslation">preparing clustering</string>
     <string name="progress_sample_data" tools:ignore="MissingTranslation">choosing colors to classify</string>
-    <string name="progress_clustering_data" tools:ignore="MissingTranslation">finding suitible colors for the image</string>
+    <string name="progress_clustering_data" tools:ignore="MissingTranslation">finding suitable colors for the image</string>
     <string name="progress_create_cluster" tools:ignore="MissingTranslation">creating classified image</string>
     <string name="progress_counting_sizes" tools:ignore="MissingTranslation">measuring areas</string>
     <string name="progress_removing_noise" tools:ignore="MissingTranslation">removing small areas which can not be painted</string>
