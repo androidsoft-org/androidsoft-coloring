@@ -1,0 +1,5 @@
+- Dupla kattintás hozzáadása a színezési tevékenységből való kilépéshez.
+- Előnézeti képek eltávolítása, hogy az APK kisebb legyen.
+- Német és brazíliai portugál fordítás hozzáadása.
+- Teljes képernyős mód hozzáadása.
+- Annak lehetővé tétele, hogy a képek megoszthatók legyenek az alkalmazással és osztályozva legyenek.

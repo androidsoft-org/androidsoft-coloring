@@ -1,41 +1,49 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3' 
-}
-
-
 buildscript {
     repositories {
         //mavenCentral()
+        google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:3.4.2'
     }
 }
 
 repositories {
     //mavenCentral()
     jcenter()
+    google()
 }
 
 
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile fileTree( dir: 'libs', include:'*.jar' )
+    implementation fileTree(dir: 'libs', include: '*.jar')
+    implementation 'commons-io:commons-io:2.4'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    testImplementation 'junit:junit:4.12'
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 29
 
-    buildToolsVersion "19.1.0"
 
     lintOptions {
         enable 'UnusedIds', 'EasterEgg' //, 'NewerVersionAvailable'
+        disable 'MissingTranslation' // see https://stackoverflow.com/a/32676398
     }
 
     apply from: 'sign.gradle'
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 29
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
-
-

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_text">16dp</dimen>
+    <dimen name="margin_splash_image">30dp</dimen>
+    <dimen name="margin_picture_list_image">10dp</dimen>
+    <dimen name="margin_settings_section">20dp</dimen>
+    <dimen name="margin_content_border">10dp</dimen>
+    <dimen name="margin_settings_between_galleries_in_listing">10dp</dimen>
+    <dimen name="spacer_height_between_sections_in_images_list">5dp</dimen>
+</resources>
